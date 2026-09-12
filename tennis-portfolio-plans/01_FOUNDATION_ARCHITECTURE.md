@@ -173,13 +173,13 @@ If WebGL cannot initialize:
 - resize/orientation change does not throw.
 
 ## Acceptance criteria
-- [ ] Next.js app boots and builds cleanly.
-- [ ] One persistent R3F Canvas exists.
-- [ ] DOM portfolio layer and Canvas are architecturally separate.
-- [ ] Zustand contains only coarse state.
-- [ ] GSAP integration has deterministic cleanup.
-- [ ] WebGL fallback exists.
-- [ ] Debug mode can be enabled without affecting production UI.
+- [x] Next.js app boots and builds cleanly.
+- [x] One persistent R3F Canvas exists.
+- [x] DOM portfolio layer and Canvas are architecturally separate.
+- [x] Zustand contains only coarse state.
+- [x] GSAP integration has deterministic cleanup.
+- [x] WebGL fallback exists.
+- [x] Debug mode can be enabled without affecting production UI.
 
 ## Do not proceed until
 A plain box/sphere can render in Canvas while ordinary HTML content remains usable above it.
