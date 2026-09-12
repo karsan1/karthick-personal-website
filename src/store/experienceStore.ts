@@ -16,7 +16,7 @@ type ExperienceState = {
 };
 
 export const useExperienceStore = create<ExperienceState>((set) => ({
-  activeChapter: "home",
+  activeChapter: "hero",
   qualityTier: "high",
   sceneReady: false,
   soundEnabled: false,

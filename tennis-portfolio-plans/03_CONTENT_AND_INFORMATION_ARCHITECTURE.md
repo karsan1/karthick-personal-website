@@ -130,9 +130,9 @@ Provide semantic headings in proper order, meaningful link labels, and visible f
 ---
 
 ## Acceptance criteria
-- [ ] All real portfolio sections have production content.
-- [ ] Content data is separated from rendering logic.
-- [ ] Each chapter has a defined match/camera beat.
-- [ ] Global navigation reaches every section.
-- [ ] Projects have a consistent interaction model.
-- [ ] Full portfolio remains comprehensible without WebGL.
+- [x] All real portfolio sections have production content.
+- [x] Content data is separated from rendering logic.
+- [x] Each chapter has a defined match/camera beat.
+- [x] Global navigation reaches every section.
+- [x] Projects have a consistent interaction model.
+- [x] Full portfolio remains comprehensible without WebGL.
