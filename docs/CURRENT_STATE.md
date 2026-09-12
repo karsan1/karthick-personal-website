@@ -2,21 +2,28 @@
 
 ## Current phase
 
-Phase 01 foundation is complete. Phase 02 (`02_INTERACTION_PROTOTYPE.md`) is the next incomplete phase.
+Phases 01 foundation, 02 interaction prototype, and 03 content/information
+architecture are complete.
 
 ## Current objective
 
-- Prove the scroll-controlled serve/rally and independent camera choreography with primitives.
+- Use the accepted scroll-controlled primitive rally as the coordinate and timing
+  reference for the next production phase.
 
 ## Completed
 
 - Next.js App Router shell with one persistent, client-only R3F Canvas and semantic portfolio content.
 - Coarse Zustand state, browser-safe GSAP/ScrollTrigger registration, WebGL fallback, loading state, and `?debug=1` helpers.
+- Typed portfolio data, centralized chapter/match beats, production section copy, hash navigation, and a consistent DOM project-detail interaction.
+- Semantic hero, about, experience, research, projects, capabilities, and contact sections that remain readable without WebGL.
+- A scroll-scrubbed primitive serve/rally with deterministic curve sampling,
+  independent camera keyframes, capsule-player response, quiet content cues,
+  debug markers/readout, lifecycle cleanup, and a reduced-motion resting pose.
 
 ## In progress / known gaps
 
-- The scene is foundation/debug geometry only; no scroll-driven ball or camera timeline is wired yet.
-- Phase 02 acceptance criteria remain unchecked, and no runtime performance measurements are recorded.
+- No runtime performance measurements are recorded yet; production models,
+  textures, and detailed character clips are still intentionally absent.
 
 ## Current architecture facts
 
@@ -31,4 +38,5 @@ Phase 01 foundation is complete. Phase 02 (`02_INTERACTION_PROTOTYPE.md`) is the
 
 ## Next milestone
 
-Gate A: a reversible primitive rally with independent camera motion, readable content pauses, and resize-safe behavior.
+Phase 04 asset-pipeline work may now begin, using the prototype court coordinate
+contract and motion labels as its integration reference.

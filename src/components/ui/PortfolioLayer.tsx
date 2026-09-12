@@ -186,6 +186,14 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
         </div>
       </section>
 
+      <div className="prototype-content-cue" data-prototype-cue="about" aria-hidden="true">
+        <span>About · quiet interval</span>
+        <strong>Make space for the story.</strong>
+      </div>
+      <div className="prototype-content-cue" data-prototype-cue="experience" aria-hidden="true">
+        <span>Experience · return</span>
+        <strong>Momentum, then focus.</strong>
+      </div>
       <aside className="debug-readout" data-camera-readout aria-hidden="true" />
     </div>
   );

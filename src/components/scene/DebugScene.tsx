@@ -1,10 +1,8 @@
-import { CameraRig } from "@/components/camera/CameraRig";
-
 export function DebugScene() {
   return (
     <>
       <axesHelper args={[3]} />
-      <CameraRig debug />
+      <gridHelper args={[16, 16, "#d8ff39", "#3c5b4a"]} />
     </>
   );
 }

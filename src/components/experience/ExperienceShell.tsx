@@ -1,7 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { usePrototypeTimeline } from "@/animations/usePrototypeTimeline";
+import type { NarrativeProgress } from "@/animations/prototypeMotion";
 import { LoadingOverlay } from "@/components/ui/LoadingOverlay";
 import { WebGLGuard } from "./WebGLGuard";
 
@@ -13,6 +16,11 @@ const ExperienceCanvas = dynamic(
 
 export function ExperienceShell() {
   const [debug, setDebug] = useState(false);
+  const scope = useRef<HTMLDivElement>(null);
+  const progress = useRef<NarrativeProgress>({ value: 0 });
+  const reducedMotion = useReducedMotion();
+
+  usePrototypeTimeline({ scope, progress, debug, reducedMotion });
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -23,9 +31,9 @@ export function ExperienceShell() {
   }, []);
 
   return (
-    <div className="experience-shell" aria-hidden="true">
+    <div ref={scope} className="experience-shell" aria-hidden="true">
       <WebGLGuard>
-        <ExperienceCanvas debug={debug} />
+        <ExperienceCanvas debug={debug} progress={progress} />
         <LoadingOverlay />
       </WebGLGuard>
     </div>

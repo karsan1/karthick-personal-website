@@ -150,13 +150,13 @@ Inspect:
 ---
 
 ## Acceptance criteria
-- [ ] Scroll controls serve toss, contact, ball flight, bounce, and at least one return.
-- [ ] Reverse scroll exactly rewinds motion.
-- [ ] Camera path is independent from ball path.
-- [ ] About/Experience placeholders appear during quiet camera moments.
-- [ ] Resize recalculates correctly.
-- [ ] No React state is updated at animation-frame frequency.
-- [ ] Interaction still feels compelling with primitives only.
+- [x] Scroll controls serve toss, contact, ball flight, bounce, and at least one return.
+- [x] Reverse scroll exactly rewinds motion.
+- [x] Camera path is independent from ball path.
+- [x] About/Experience placeholders appear during quiet camera moments.
+- [x] Resize recalculates correctly.
+- [x] No React state is updated at animation-frame frequency.
+- [x] Interaction still feels compelling with primitives only.
 
 ## Stop condition
 Do not begin detailed Blender work until you would willingly show this primitive prototype to someone as proof that the interaction itself works.

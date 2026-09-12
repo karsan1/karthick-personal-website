@@ -1,15 +1,17 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, type MutableRefObject } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "@/components/scene/Scene";
 import { useExperienceStore } from "@/store/experienceStore";
+import type { NarrativeProgress } from "@/animations/prototypeMotion";
 
 type ExperienceCanvasProps = {
   debug: boolean;
+  progress: MutableRefObject<NarrativeProgress>;
 };
 
-export function ExperienceCanvas({ debug }: ExperienceCanvasProps) {
+export function ExperienceCanvas({ debug, progress }: ExperienceCanvasProps) {
   useEffect(
     () => () => useExperienceStore.getState().setSceneReady(false),
     [],
@@ -24,7 +26,7 @@ export function ExperienceCanvas({ debug }: ExperienceCanvasProps) {
       onCreated={() => useExperienceStore.getState().setSceneReady(true)}
     >
       <Suspense fallback={null}>
-        <Scene debug={debug} />
+        <Scene debug={debug} progress={progress} />
       </Suspense>
     </Canvas>
   );
