@@ -1,6 +1,7 @@
 import { DebugScene } from "./DebugScene";
 import { Lighting } from "./Lighting";
-import { PrototypeCourt } from "./PrototypeCourt";
+import { ProductionEnvironment } from "./ProductionEnvironment";
+import { RallyActors } from "./PrototypeCourt";
 import { CameraRig } from "@/components/camera/CameraRig";
 import type { MutableRefObject } from "react";
 import type { NarrativeProgress } from "@/animations/prototypeMotion";
@@ -17,7 +18,8 @@ export function Scene({ debug, progress }: SceneProps) {
       <fog attach="fog" args={["#07120f", 12, 26]} />
       <Lighting />
       <CameraRig progress={progress} debug={debug} />
-      <PrototypeCourt progress={progress} />
+      <ProductionEnvironment />
+      <RallyActors progress={progress} />
 
       {debug ? <DebugScene /> : null}
     </>

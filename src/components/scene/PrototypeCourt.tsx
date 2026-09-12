@@ -163,7 +163,7 @@ function TennisBall({ progress }: PrototypeCourtProps) {
   );
 }
 
-export function PrototypeCourt({ progress }: PrototypeCourtProps) {
+export function PrimitiveCourtFallback() {
   return (
     <group>
       <mesh receiveShadow position={[0, -0.13, 0]}>
@@ -173,9 +173,30 @@ export function PrototypeCourt({ progress }: PrototypeCourtProps) {
       <CourtLines />
       <Net />
       <UmpireChair />
+    </group>
+  );
+}
+
+export function RallyActors({ progress }: PrototypeCourtProps) {
+  return (
+    <group>
       <PlayerCapsule progress={progress} side="a" />
       <PlayerCapsule progress={progress} side="b" />
       <TennisBall progress={progress} />
     </group>
+  );
+}
+
+/**
+ * Retained for an explicit primitive-only fallback. Production scene composition
+ * uses `ProductionEnvironment` plus `RallyActors` so the court GLB can stream
+ * without changing the Phase 02 animation coordinate system.
+ */
+export function PrototypeCourt({ progress }: PrototypeCourtProps) {
+  return (
+    <>
+      <PrimitiveCourtFallback />
+      <RallyActors progress={progress} />
+    </>
   );
 }

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "sourceKind": "blender-export",
+  "coordinateSystem": "Y-up glTF; court center [0, 0, 0]; +Z is north baseline; 8.2m x 12.4m outer court.",
+  "optimization": [
+    "inspect",
+    "prune",
+    "dedup",
+    "weld",
+    "meshopt"
+  ],
+  "compression": {
+    "meshopt": true,
+    "encoder": "@gltf-transform/cli 4.5.0",
+    "level": "high",
+    "runtime": "Drei useGLTF MeshoptDecoder"
+  },
+  "textureWorkflow": {
+    "ktx2": false,
+    "reason": "This phase contains no raster textures. Add KTX2/Basis only with an authored texture and visual comparison."
+  },
+  "assets": [
+    {
+      "file": "court.glb",
+      "sourceBytes": 20584,
+      "optimizedBytes": 8544,
+      "budgetBytes": 100000,
+      "texturePolicy": "No raster textures; PBR base-color materials only."
+    },
+    {
+      "file": "props.glb",
+      "sourceBytes": 9960,
+      "optimizedBytes": 5044,
+      "budgetBytes": 100000,
+      "texturePolicy": "No raster textures; PBR base-color materials only."
+    },
+    {
+      "file": "scoreboard.glb",
+      "sourceBytes": 3828,
+      "optimizedBytes": 3076,
+      "budgetBytes": 60000,
+      "texturePolicy": "No raster textures; PBR base-color materials only."
+    },
+    {
+      "file": "stadium-shell.glb",
+      "sourceBytes": 6700,
+      "optimizedBytes": 3224,
+      "budgetBytes": 100000,
+      "texturePolicy": "No raster textures; PBR base-color materials only."
+    }
+  ]
+}

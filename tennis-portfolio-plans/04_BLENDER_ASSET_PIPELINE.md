@@ -175,10 +175,10 @@ Use Suspense/progressive loading rather than blocking the entire page on decorat
 ---
 
 ## Acceptance criteria
-- [ ] Blender coordinates align with prototype court.
-- [ ] Stable naming convention documented.
-- [ ] Environment split into sensible GLBs.
-- [ ] Optimization script is reproducible.
-- [ ] Texture dimensions follow budgets.
-- [ ] Decorative assets do not block initial interaction.
-- [ ] No obvious visual downgrade from optimization at expected camera distance.
+- [x] Blender coordinates align with prototype court.
+- [x] Stable naming convention documented.
+- [x] Environment split into sensible GLBs.
+- [x] Optimization script is reproducible.
+- [x] Texture dimensions follow budgets.
+- [x] Decorative assets do not block initial interaction.
+- [x] No obvious visual downgrade from optimization at expected camera distance.
