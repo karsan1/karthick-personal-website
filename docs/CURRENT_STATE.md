@@ -6,16 +6,16 @@ Phases 01 foundation, 02 interaction prototype, 03 content/information
 architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
 06 retro character prototype are complete and accepted.
 
-Phase 08 adds deterministic authored-character clip playback and synchronizes it
+Phase 09 restyles the visible environment as a procedural retro court and venue
+while retaining the accepted Phase 04 GLB loader as a progressive fallback. Phase 08 adds deterministic authored-character clip playback and synchronizes it
 to the accepted rally while preserving smooth ball, camera, scroll, and DOM motion.
 The checked-in animated GLBs remain generated calibration fixtures; human
 Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Replace the generated animated calibration fixtures with visually reviewed
-  Blockbench Player A and B exports, then verify every clip, racket contact, grip,
-  foot placement, and transition in normal and `?debug=1` reference modes.
+- Visually approve the procedural retro environment across the application camera
+  path, including court legibility behind DOM content and legacy fallback behavior.
 
 ## Completed baseline
 
@@ -128,14 +128,29 @@ Blockbench authoring and final visual approval are still required.
   smooth, exactly one ball renders in normal/debug modes, and the Phase 06 prototype
   remains the Suspense/error fallback.
 
+## Phase 09 implementation status
+
+- The primary environment is now a procedural low-poly court, net, courtside props,
+  retro scoreboard, stadium shell, seats, crowd silhouettes, and light fixtures.
+  Court center, footprint, net axis, player baseline compatibility, ball curves, and
+  camera coordinates retain the Phase 04 contract.
+- Court lines, props, stands, seats, crowd, scoreboard digits, and fixtures use six
+  shared material instances and instanced geometry. The fully mounted environment
+  uses 14 structural draw submissions against a 15-call ceiling, six material instances,
+  eight instanced groups, and 91 instances; there are no
+  per-frame transforms, large textures, extra canvases, or postprocessing.
+- Critical court geometry mounts first; props, scoreboard, then venue decoration
+  mount over subsequent frames. A retro render failure resolves to the accepted
+  Phase 04 staged GLB loader, which retains its primitive court fallback. Use
+  `?environment=legacy` to exercise that accepted loader directly during review.
+
 ## Do not work on yet
 
-- Do not begin Phase 09 or any later phase without an explicit request.
-- Do not restyle the environment/UI, alter the accepted camera/ball choreography,
-  or delete Phase 04 assets outside the requirements of an explicitly requested phase.
+- Do not begin Phase 10 or any later phase without an explicit request.
+- Do not alter accepted camera/ball choreography, DOM/UI content, or delete Phase 04
+  assets while the Phase 09 fallback chain remains under review.
 
 ## Next milestone
 
-Complete human Blockbench character and clip authoring/export plus application-camera
-visual approval documented in `assets-source/README.md`. Phase 09 environment work
-remains out of scope until explicitly requested.
+Complete Phase 09 browser visual/performance approval, then complete human Blockbench
+character and clip authoring/export approval documented in `assets-source/README.md`.

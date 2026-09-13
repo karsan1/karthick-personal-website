@@ -18,7 +18,7 @@ const PRODUCTION_ASSETS = {
 
 type AssetBoundaryProps = { children: ReactNode; fallback: ReactNode; onError?: () => void };
 
-class AssetBoundary extends Component<AssetBoundaryProps, { failed: boolean }> {
+export class AssetBoundary extends Component<AssetBoundaryProps, { failed: boolean }> {
   state = { failed: false };
 
   static getDerivedStateFromError() {

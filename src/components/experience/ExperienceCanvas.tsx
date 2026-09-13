@@ -8,10 +8,11 @@ import type { NarrativeProgress } from "@/animations/prototypeMotion";
 
 type ExperienceCanvasProps = {
   debug: boolean;
+  legacyEnvironment?: boolean;
   progress: MutableRefObject<NarrativeProgress>;
 };
 
-export function ExperienceCanvas({ debug, progress }: ExperienceCanvasProps) {
+export function ExperienceCanvas({ debug, legacyEnvironment = false, progress }: ExperienceCanvasProps) {
   useEffect(
     () => () => useExperienceStore.getState().setSceneReady(false),
     [],
@@ -26,7 +27,7 @@ export function ExperienceCanvas({ debug, progress }: ExperienceCanvasProps) {
       onCreated={() => useExperienceStore.getState().setSceneReady(true)}
     >
       <Suspense fallback={null}>
-        <Scene debug={debug} progress={progress} />
+        <Scene debug={debug} legacyEnvironment={legacyEnvironment} progress={progress} />
       </Suspense>
     </Canvas>
   );
