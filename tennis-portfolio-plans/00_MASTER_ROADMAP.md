@@ -10,9 +10,10 @@ Phases 01–04 are **accepted and remain the foundation**:
 - `04_BLENDER_ASSET_PIPELINE.md`
 
 This roadmap **supersedes the original roadmap from Phase 05 onward**. Do not redo
-Phases 01–04. Phase 05 retro art-direction migration is complete and accepted;
-**Phase 06 — Retro Character Prototype** is the current next milestone and must
-not begin without an explicit request.
+Phases 01–04. Phases 05 retro art-direction migration and 06 retro character
+prototype are complete and accepted; **Phase 07 — Blockbench Character
+Pipeline** is the current next milestone and must not begin without an explicit
+request.
 
 The Phase 04 Blender environment and optimization pipeline remain the current production baseline and fallback while the new retro art direction is introduced. Blockbench is preferred immediately for new retro character authoring; Blender is optional for new work and remains supported for Phase 04 assets and legacy migration. Do not retire those Blender sources or GLBs until verified retro replacements exist.
 

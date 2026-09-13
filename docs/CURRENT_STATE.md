@@ -3,19 +3,19 @@
 ## Current phase
 
 Phases 01 foundation, 02 interaction prototype, 03 content/information
-architecture, 04 Blender/3D asset pipeline, and 05 retro art-direction migration
-are complete and accepted.
+architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
+06 retro character prototype are complete and accepted.
 
-Phase 05 established the visual, authoring, and migration contracts without
-changing the accepted runtime. The current next milestone is **Phase 06 — Retro
-Character Prototype**.
+Phase 06 replaced the capsule/sphere production players with an articulated,
+faceted direct-R3F style proof while preserving the accepted rally and camera.
+The current next milestone is **Phase 07 — Blockbench Character Pipeline**.
 
 ## Current objective
 
-- Implement only `tennis-portfolio-plans/06_RETRO_CHARACTER_PROTOTYPE.md` when
+- Implement only `tennis-portfolio-plans/07_BLOCKBENCH_CHARACTER_PIPELINE.md` when
   explicitly requested.
-- Prove the low-poly character silhouette directly in R3F while preserving the
-  accepted rally, camera, scroll, content, fallback, and asset-loader contracts.
+- Establish the reproducible Blockbench source/export/optimization contract for
+  final characters without replacing the accepted Phase 06 prototype early.
 
 ## Completed baseline
 
@@ -25,9 +25,9 @@ Character Prototype**.
   fallback, loading state, and `?debug=1` helpers.
 - Typed portfolio data, centralized chapter/match beats, production section
   copy, hash navigation, and a consistent DOM project-detail interaction.
-- A scroll-scrubbed primitive serve/rally with deterministic curve sampling,
-  independent camera keyframes, temporary capsule/sphere player responses,
-  lifecycle cleanup, and a reduced-motion resting pose.
+- A scroll-scrubbed serve/rally with deterministic curve sampling, independent
+  camera keyframes, articulated low-poly player responses, lifecycle cleanup,
+  and a reduced-motion resting pose.
 - Functional Blender-export environment GLBs for court, stadium shell, props,
   and scoreboard, with progressive loading and primitive/error fallbacks.
 - A repeatable Phase 04 Blender source-generation/export workflow plus glTF
@@ -45,8 +45,8 @@ Character Prototype**.
   copying a particular copyrighted game.
 - Retro styling belongs primarily in the 3D world. The professional portfolio
   UI and meaningful content remain clean, modern, readable semantic HTML.
-- Existing capsule/sphere players are temporary prototype actors specifically
-  scheduled for replacement in the retro character phases.
+- The former capsule/sphere production players were removed in Phase 06 and
+  replaced by articulated direct-R3F prototypes pending final authored assets.
 - Blockbench is preferred for new low-poly character authoring and `.bbmodel`
   source assets. Blender remains supported for existing Phase 04 assets and is
   optional/legacy rather than mandatory for new character work.
@@ -79,13 +79,29 @@ Character Prototype**.
   records under `tennis-portfolio-plans/archive/pre-retro-roadmap/`.
 - No runtime code, rally/camera behavior, or production Phase 04 asset was changed.
 
+## Phase 06 completion
+
+- Production `RallyActors` now renders two articulated, faceted low-poly players
+  with stable hips/torso/head/limb transform groups and readable wrist-attached
+  rackets; the primitive tennis ball system is unchanged.
+- Direct `useFrame` ref mutation derives every root and joint pose from normalized
+  progress. Reverse scroll is deterministic and introduces no per-frame
+  React/Zustand updates or avoidable math allocations.
+- Character pose sampling defaults to 18 fps, while player root movement, ball,
+  camera, master scroll, and DOM rendering remain smooth.
+- Contact-frame measurements are approximately 0.087 m for Player B and 0.346 m
+  for Player A. Reduced motion rests at the existing stable `contentPause` pose.
+- Desktop, reverse-scroll, and narrow-viewport visual review passed without
+  weakening portfolio readability. No Blockbench/Phase 07 assets were created.
+
 ## Do not work on yet
 
-- Do not begin Phase 06 or any later phase without an explicit request.
-- Do not create final Blockbench character assets, alter rally or camera behavior,
-  restyle the environment/UI, or delete Phase 04 assets as part of Phase 05.
+- Do not begin Phase 07 or any later phase without an explicit request.
+- Do not replace the accepted prototype with final characters, alter rally or
+  camera behavior, restyle the environment/UI, or delete Phase 04 assets outside
+  the requirements of the explicitly requested current phase.
 
 ## Next milestone
 
-Phase 06 — Retro Character Prototype:
-`tennis-portfolio-plans/06_RETRO_CHARACTER_PROTOTYPE.md`.
+Phase 07 — Blockbench Character Pipeline:
+`tennis-portfolio-plans/07_BLOCKBENCH_CHARACTER_PIPELINE.md`.

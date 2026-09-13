@@ -84,6 +84,25 @@ All tennis poses and hit moments remain authored. Do not add a physics engine fo
 rally synchronization. Reduced-motion mode must retain a readable resting
 composition without requiring cinematic movement.
 
+### Phase 06 prototype decision
+
+The accepted direct-R3F prototype uses an approximately 2.15 m athletic
+silhouette with distinct hips, a tapered five-sided torso, faceted head and hair,
+articulated upper/lower limbs, simplified shoes, and a chunky wrist-attached
+racket. These proportions read as intentionally early-3D at the authored desktop
+camera while remaining secondary to portfolio copy at narrow widths.
+
+Character pose sampling defaults to **18 fps** using rounded normalized-progress
+steps. Visual review found 12 and 15 fps more likely to move an authored return
+beat away from its contact pose; smooth sampling weakened the deliberate retro
+cadence. Only joint posing is stepped. Player root placement, ball sampling,
+camera motion, master scroll, and DOM rendering remain smooth. The setting stays
+local and easy to switch among 12, 15, 18, and smooth for later comparison.
+
+At the existing return labels, the measured prototype racket-frame distance from
+the deterministic ball is approximately 0.087 m for Player B and 0.346 m for
+Player A. These are style-proof measurements, not final biomechanics.
+
 ## DOM and WebGL boundary
 
 - Portfolio, résumé, project, and contact copy remains semantic HTML.

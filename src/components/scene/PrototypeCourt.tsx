@@ -1,11 +1,12 @@
 import { useRef, type MutableRefObject } from "react";
 import { useFrame } from "@react-three/fiber";
-import { type Group, type Mesh, Vector3 } from "three";
+import { type Mesh, Vector3 } from "three";
 import {
   COURT_DIMENSIONS,
   sampleBallPosition,
   type NarrativeProgress,
 } from "@/animations/prototypeMotion";
+import { RetroPlayerPrototype } from "./characters/RetroPlayerPrototype";
 
 type PrototypeCourtProps = {
   progress: MutableRefObject<NarrativeProgress>;
@@ -96,49 +97,6 @@ function UmpireChair() {
   );
 }
 
-function PlayerCapsule({
-  progress,
-  side,
-}: {
-  progress: MutableRefObject<NarrativeProgress>;
-  side: "a" | "b";
-}) {
-  const player = useRef<Group>(null);
-  const baseline = side === "a" ? -COURT_DIMENSIONS.playerBaselineZ : COURT_DIMENSIONS.playerBaselineZ;
-  const direction = side === "a" ? 1 : -1;
-
-  useFrame(() => {
-    const group = player.current;
-    if (!group) {
-      return;
-    }
-
-    const t = progress.current.value;
-    const returnBeat = side === "a" ? 0.55 : 0.33;
-    const distanceToReturn = Math.abs(t - returnBeat);
-    const activeReturn = Math.max(0, 1 - distanceToReturn / 0.08);
-
-    group.position.x = side === "a" ? -0.12 + activeReturn * 0.52 : 0.14 - activeReturn * 0.5;
-    group.position.z = baseline - direction * activeReturn * 0.28;
-    group.rotation.y = side === "a" ? 0.12 - activeReturn * 0.38 : Math.PI + 0.12 + activeReturn * 0.38;
-    group.rotation.z = direction * activeReturn * 0.1;
-    group.scale.y = 1 - activeReturn * 0.1;
-  });
-
-  return (
-    <group ref={player} position={[0, 0.8, baseline]}>
-      <mesh castShadow>
-        <capsuleGeometry args={[0.33, 1.1, 8, 16]} />
-        <meshStandardMaterial color={side === "a" ? "#d8ff39" : "#e5eee4"} roughness={0.62} />
-      </mesh>
-      <mesh position={[0, 0.95, 0.04]}>
-        <sphereGeometry args={[0.23, 16, 16]} />
-        <meshStandardMaterial color="#ba8766" roughness={0.76} />
-      </mesh>
-    </group>
-  );
-}
-
 function TennisBall({ progress }: PrototypeCourtProps) {
   const ball = useRef<Mesh>(null);
 
@@ -180,8 +138,8 @@ export function PrimitiveCourtFallback() {
 export function RallyActors({ progress }: PrototypeCourtProps) {
   return (
     <group>
-      <PlayerCapsule progress={progress} side="a" />
-      <PlayerCapsule progress={progress} side="b" />
+      <RetroPlayerPrototype progress={progress} side="a" />
+      <RetroPlayerPrototype progress={progress} side="b" />
       <TennisBall progress={progress} />
     </group>
   );
