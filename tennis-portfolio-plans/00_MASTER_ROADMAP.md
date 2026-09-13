@@ -1,189 +1,224 @@
-# 3D Tennis Portfolio — Master Implementation Roadmap
+# 3D Tennis Portfolio — Canonical Retro Roadmap
 
-## Product vision
-Build a premium interactive personal website presented as a stylized-realistic tennis match. The tennis court is not decorative background art: it is the site's spatial navigation and storytelling system. Scroll progression drives a choreographed match while accessible HTML overlays communicate the actual portfolio content.
+## Status of the existing roadmap
 
-The finished experience should feel closer to an editorial sports campaign / interactive product launch than a game or typical "3D developer portfolio".
+Phases 01–04 are **accepted and remain the foundation**:
 
-## Non-negotiable design principles
-1. **Portfolio first.** Visitors must be able to understand who you are, what you do, and what you built even if WebGL fails.
-2. **One persistent 3D world.** Use one long-lived R3F Canvas. Do not mount a different Canvas for every section.
-3. **HTML for meaningful content.** Resume text, links, project descriptions, contact details, navigation, accessibility labels, and SEO content stay in the DOM.
-4. **3D for storytelling.** Court, ball, players, umpire, scoreboard, camera, lighting, props, and environmental motion belong in R3F/Three.js.
-5. **Motion is authored, not random.** Camera and ball movement are choreographed around the narrative.
-6. **Stylized realism, not photorealism.** Real proportions and convincing motion; restrained materials and faces.
-7. **Performance is a feature.** Every asset has a performance budget before it enters production.
-8. **Mobile is a separate composition.** Same story and content, reduced scene complexity and different camera choreography.
-9. **Reduced motion is first-class.** Never force cinematic movement on users who request reduced motion.
-10. **No tacky WebGL defaults.** Avoid excessive bloom, neon gradients, glass cards, particle spam, cursor gimmicks, constant camera parallax, and giant 3D typography.
+- `01_FOUNDATION_ARCHITECTURE.md`
+- `02_INTERACTION_PROTOTYPE.md`
+- `03_CONTENT_AND_INFORMATION_ARCHITECTURE.md`
+- `04_BLENDER_ASSET_PIPELINE.md`
+
+This roadmap **supersedes the original roadmap from Phase 05 onward**. Do not redo Phases 01–04. Phase 05 is the current next milestone; no Phase 05 implementation has started as part of roadmap integration.
+
+The Phase 04 Blender environment and optimization pipeline remain the current production baseline and fallback while the new retro art direction is introduced. Blockbench is preferred immediately for new retro character authoring; Blender is optional for new work and remains supported for Phase 04 assets and legacy migration. Do not retire those Blender sources or GLBs until verified retro replacements exist.
 
 ---
 
-## Recommended stack
+## Revised product vision
 
-### Core
-- Next.js App Router
+Build a professional personal portfolio presented inside a stylized retro 3D tennis match.
+
+The target is **early-console / PS1-N64/early-2000s sports-game visual language interpreted through a modern web portfolio**, not literal pixel art and not photorealism. Evoke the era without copying any particular copyrighted game, character, branding, or asset.
+
+The contrast is intentional:
+
+```text
+DOM portfolio UI
+├── modern
+├── highly readable
+├── professional
+├── accessible
+└── restrained
+
+3D tennis world
+├── low-poly
+├── faceted
+├── retro-game-inspired
+├── limited palette
+├── deliberately simplified
+└── expressive through silhouette + animation
+```
+
+The site should feel authored and memorable, not like a generic WebGL demo, Minecraft clone, or AI-generated 3D portfolio.
+
+---
+
+## Architecture that must not change
+
+These contracts survived Phases 01–04 and remain non-negotiable:
+
+1. One persistent React Three Fiber Canvas.
+2. Semantic portfolio content remains in HTML/DOM.
+3. GSAP/ScrollTrigger owns normalized narrative progress.
+4. `useFrame`/refs own per-frame 3D transforms.
+5. Zustand stores coarse state only.
+6. Ball trajectories remain deterministic and authored; do not add a physics engine.
+7. Camera has one owner.
+8. Reduced-motion and non-WebGL paths remain first-class.
+9. Project/resume/contact access must not depend on interacting with the 3D world.
+10. Progressive loading remains intact.
+
+---
+
+## Revised visual principles
+
+### Characters
+- angular low-poly silhouettes,
+- no capsule-body + sphere-head final design,
+- no realistic digital-human goal,
+- readable pose from expected camera distance,
+- simplified hands/feet/faces,
+- chunky but recognizable racket,
+- flat/faceted shading,
+- small texture palette if textures are used.
+
+### Environment
+- retain correct tennis-court proportions,
+- simplify stadium and prop geometry,
+- use limited material families,
+- prefer shape, lighting, and composition over texture detail,
+- crowds should be cards/sprites/instanced silhouettes rather than individual characters,
+- environment can mix procedural R3F geometry and authored Blockbench assets.
+
+### Motion
+- ball and camera remain smooth,
+- character clips may intentionally use stepped/low-frame-rate playback,
+- poses should be exaggerated enough to read like a sports game,
+- gameplay beats should synchronize with portfolio chapters,
+- no motion-capture realism requirement.
+
+### UI
+- main DOM UI stays crisp and modern,
+- retro styling is concentrated in the 3D world, scoreboard, subtle labels, and small accents,
+- never make résumé/project copy look like an unreadable 8-bit game screen.
+
+---
+
+## Revised toolchain
+
+### Runtime
+- Next.js
 - React 19
 - TypeScript
-- React Three Fiber 9
+- React Three Fiber
 - Three.js
 - Drei
 - GSAP + ScrollTrigger
 - Zustand
-- CSS Modules or Tailwind CSS for DOM UI
-- Blender for modeling, lighting references, rig cleanup, and animation editing
-- GLB / glTF for 3D delivery
-- glTF Transform for optimization
-- Meshopt preferred for general GLB compression; KTX2/Basis for production texture compression
-- Vercel for deployment, previews, production hosting, analytics
-- GitHub for source control and preview-deployment workflow
 
-### Optional, only when justified
-- Mixamo or mocap source for base tennis animations, edited in Blender
-- postprocessing package for subtle AO/DOF, only after performance gates pass
-- Howler/Web Audio for opt-in ambience if native audio management becomes cumbersome
-- Sentry only if runtime error telemetry becomes useful
+### Asset authoring
+- **Blockbench becomes the preferred authoring tool for new low-poly characters and selected props/environment pieces.**
+- GLTF/GLB remains the runtime interchange format.
+- glTF Transform + Meshopt remains the optimization path.
+- KTX2/Basis is introduced only if raster textures justify it.
 
-### Explicitly avoid at the start
-- Spline as the main scene authoring/runtime
-- Framer Motion in addition to GSAP unless a later DOM-only use case clearly needs it
-- smooth-scroll libraries before native scroll + ScrollTrigger has been proven insufficient
-- physics engine for the tennis ball; use authored trajectories for deterministic scroll scrubbing
-- CMS before portfolio content actually becomes hard to maintain
+### Legacy support
+- Existing Blender-generated Phase 04 environment GLBs remain valid during migration.
+- Do not delete or archive Blender sources until the retro replacements are integrated and validated.
 
 ---
 
-## System architecture
+## New phase order
 
-```text
-Browser document
-├── Persistent fixed R3F Canvas
-│   ├── Court / stadium
-│   ├── Player A / Player B
-│   ├── Ball
-│   ├── Umpire
-│   ├── Scoreboard
-│   ├── Props
-│   ├── Camera rig
-│   └── Lighting / atmosphere
-│
-├── Scroll narrative DOM
-│   ├── Hero
-│   ├── About
-│   ├── Experience chapters
-│   ├── Research
-│   ├── Projects
-│   ├── Skills / capabilities
-│   └── Contact
-│
-└── Global UI
-    ├── Navigation
-    ├── Sound toggle
-    ├── Reduced-motion / fallback handling
-    └── Resume / GitHub / LinkedIn links
-```
-
-### State ownership
-- **GSAP timeline:** master scroll choreography and DOM transition timing.
-- **R3F refs/useFrame:** high-frequency mesh transforms, interpolation, camera damping, procedural motion.
-- **AnimationMixer/actions:** character skeletal clips.
-- **Zustand:** coarse state only — active chapter, quality tier, sound setting, navigation intent, loaded state.
-- **React state:** ordinary UI state that does not update every frame.
-
-Never write scroll progress or 60 FPS transforms into React state.
-
----
-
-## Phase order
-
-| Phase | File | Outcome |
+| Phase | File | Primary outcome |
 |---|---|---|
-| 0 | `01_FOUNDATION_ARCHITECTURE.md` | Production-ready app shell and architectural contracts |
-| 1 | `02_INTERACTION_PROTOTYPE.md` | Ugly but convincing court + ball + camera scroll prototype |
-| 2 | `03_CONTENT_AND_INFORMATION_ARCHITECTURE.md` | Real portfolio story mapped to tennis beats |
-| 3 | `04_BLENDER_ASSET_PIPELINE.md` | Optimized production court/environment pipeline |
-| 4 | `05_CHARACTERS_AND_ANIMATION.md` | Players + umpire with clean reusable clips |
-| 5 | `06_SCROLL_CAMERA_CHOREOGRAPHY.md` | Master match timeline, camera, ball, section synchronization |
-| 6 | `07_UI_NAVIGATION_AND_PROJECT_INTERACTIONS.md` | Usable portfolio overlay, scoreboard nav, projects |
-| 7 | `08_LIGHTING_MATERIALS_AUDIO_POLISH.md` | Art direction and premium presentation |
-| 8 | `09_PERFORMANCE_OPTIMIZATION.md` | Stable performance across device classes |
-| 9 | `10_MOBILE_ACCESSIBILITY_FALLBACKS.md` | Mobile composition + reduced-motion + non-WebGL fallback |
-| 10 | `11_TESTING_QA.md` | Cross-browser/device and regression gates |
-| 11 | `12_VERCEL_DEPLOYMENT_AND_ANALYTICS.md` | Preview/prod deployment, monitoring, launch workflow |
-| 12 | `13_POST_LAUNCH_CONTENT_MAINTENANCE.md` | Maintainable content and safe iteration model |
+| 05 | `05_RETRO_ART_DIRECTION_AND_MIGRATION.md` | Lock new art/technical contracts and remove contradictory Blender-first instructions for future work |
+| 06 | `06_RETRO_CHARACTER_PROTOTYPE.md` | Prove the low-poly player style directly in R3F before authoring final assets |
+| 07 | `07_BLOCKBENCH_CHARACTER_PIPELINE.md` | Establish reproducible Blockbench → GLB → optimization workflow |
+| 08 | `08_RETRO_ANIMATION_AND_RALLY_SYNC.md` | Final low-poly players, rackets, clips, stepped animation, deterministic hit synchronization |
+| 09 | `09_RETRO_ENVIRONMENT_RESTYLE.md` | Restyle court/stadium/props without breaking Phase 04 loading contracts |
+| 10 | `10_RETRO_CAMERA_AND_GAME_FEEL.md` | Convert existing choreography into deliberate retro sports-game presentation |
+| 11 | `11_RETRO_UI_SCOREBOARD_AND_PROJECTS.md` | Blend modern portfolio UI with in-world retro scoreboard/project interactions |
+| 12 | `12_RETRO_POLISH_PERFORMANCE_MOBILE_A11Y.md` | Lighting, sound, retro FX, performance, mobile, reduced motion, fallbacks |
+| 13 | `13_QA_DEPLOYMENT_AND_LEGACY_CLEANUP.md` | Regression QA, deployment, docs, and safe retirement of obsolete Blender workflow |
 
 ---
 
-## Milestone gates
+## Migration gates
 
-### Gate A — Interaction proof
-Do not model detailed characters yet. The primitive prototype must already feel good when:
-- scrolling throws a ball over the net,
-- the camera responds smoothly,
-- content becomes readable at intentional pauses,
-- reverse scrolling behaves correctly,
-- resizing does not break the timeline.
+### Gate R1 — Style proof
+Before opening Blockbench for final characters:
+- R3F prototype player clearly no longer looks balloon-like,
+- silhouette reads as a tennis player,
+- faceted shading reads intentionally retro,
+- camera distance still supports the design,
+- existing rally remains synchronized.
 
-If Gate A fails, fix choreography before adding art.
+If the prototype style is wrong, fix Phase 06 before authoring final assets.
 
-### Gate B — Content proof
-Before detailed assets:
-- all real About / Experience / Research / Projects / Contact content exists,
-- every major section has a narrative purpose,
-- a visitor can reach any section directly through navigation,
-- the site remains understandable with Canvas hidden.
+### Gate R2 — Character pipeline proof
+Before replacing prototype players:
+- Blockbench export has stable names,
+- optimized GLB passes validation,
+- skeleton/clip names are deterministic,
+- racket pivot and hand attachment are stable,
+- source file is reproducible and committed according to repository policy.
 
-### Gate C — Asset proof
-Before visual polish:
-- no single hero GLB is unreasonably large,
-- all repeated geometry/materials can be reused,
-- animation clip names and skeletons are stable,
-- texture dimensions and compression plan are documented.
+### Gate R3 — Environment proof
+Before removing legacy Blender assets:
+- retro court overlays the same application-space dimensions,
+- net remains aligned to `z = 0`,
+- scene loading/fallback behavior remains intact,
+- no visual regression in chapter compositions,
+- replacement assets meet or beat current performance budgets.
 
-### Gate D — Launch performance
+### Gate R4 — Launch proof
 Before production:
-- desktop maintains smooth interaction on a representative laptop,
-- mobile remains usable on a representative recent iPhone/Android class device,
-- reduced-motion version is fully functional,
-- no core navigation depends on audio or WebGL,
-- production bundle and asset waterfall have been inspected.
+- desktop interaction remains smooth,
+- mobile composition is intentionally authored,
+- reduced-motion path works without cinematic movement,
+- non-WebGL content remains complete,
+- no critical navigation depends on Canvas,
+- asset waterfall is measured,
+- reverse scroll remains deterministic.
 
 ---
 
-## Suggested Git branching
+## Agent routing
 
-```text
-main                    production
-└── develop             integration
-    ├── feat/foundation
-    ├── feat/scroll-prototype
-    ├── feat/content
-    ├── feat/assets
-    ├── feat/characters
-    ├── feat/choreography
-    ├── feat/ui
-    ├── perf/scene
-    └── fix/mobile-qa
-```
+Use the existing Codex agents rather than asking one agent to do everything.
 
-Prefer small PRs that complete one acceptance criterion. Vercel preview deployments should be used for visual review.
+- `orchestrator` — phase decomposition, cross-cutting migration decisions, integration review.
+- `repo_explorer` — CodeGraph-first ownership/dependency discovery.
+- `scene_engineer` — R3F meshes, materials, GLB integration, scene behavior.
+- `motion_engineer` — GSAP, camera, narrative progress, hit synchronization.
+- `asset_pipeline_engineer` — Blockbench and legacy Blender source contracts, glTF/GLB export, optimization, manifests, and validation.
+- `ui_engineer` — modern DOM UI, navigation, project panels, accessibility.
+- `performance_engineer` — profiling and quality tiers.
+- `qa_reviewer` — milestone validation.
+- `release_engineer` — Vercel/release checks.
+
+Use the fewest agents necessary per task. Do not let multiple agents edit the same high-conflict file simultaneously.
 
 ---
 
-## Codex execution rule
-When handing a phase to Codex, use only that phase file plus the master roadmap. Do not ask Codex to "build the entire site". Each phase defines its own completion gate.
+## Standard implementation rule
 
-Recommended prompt:
+For each phase:
 
-> Implement the next incomplete checklist items in `plans/XX_PHASE.md` while respecting `plans/00_MASTER_ROADMAP.md`. Do not begin later phases. Preserve existing architecture unless the phase explicitly authorizes a refactor. Run the project's validation commands before finishing, summarize changed files, and mark completed checklist items only when their acceptance criteria are met.
+1. Read `AGENTS.md`.
+2. Read `docs/CURRENT_STATE.md`.
+3. Read this revised roadmap.
+4. Read `CODEX_EXECUTION_GUIDE.md`.
+5. Read exactly one current phase file.
+6. Use CodeGraph before broad repository reads.
+7. Implement only that phase.
+8. Run targeted validation plus lint/typecheck/build.
+9. Perform the phase's visual review.
+10. Update `docs/CURRENT_STATE.md` only after acceptance.
+11. Stop; do not begin the next phase without a new explicit request.
 
 ---
 
 ## Definition of done
-The site is complete when it is simultaneously:
-- memorable as an interactive tennis experience,
-- easy to read as a professional portfolio,
-- performant enough not to punish visitors,
-- accessible without motion/audio/WebGL,
-- maintainable without reopening Blender for ordinary résumé edits,
-- safely deployable through Vercel preview → production promotion.
+
+The redesign is complete when the site is simultaneously:
+
+- clearly a professional portfolio,
+- visually identifiable as a deliberate retro 3D tennis experience,
+- free of the current capsule/balloon-character look,
+- deterministic when scrolling forward and backward,
+- performant across reasonable desktop/mobile hardware,
+- accessible without WebGL, audio, or full-motion animation,
+- maintainable without reopening Blender for ordinary future work.

@@ -41,7 +41,7 @@ SCOPE BOUNDARIES
 Do not own:
 - GSAP choreography unless needed to expose scene hooks
 - portfolio copy/layout
-- Blender authoring
+- offline asset authoring/export (Blockbench or legacy Blender)
 - deployment configuration
 
 If those are required, return a concise handoff.

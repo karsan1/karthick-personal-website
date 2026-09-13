@@ -15,9 +15,11 @@ overrides them.
 
 ## 1. Product goal
 
-Build a premium interactive personal portfolio centered on a stylized-realistic
-3D tennis match. The tennis environment is the navigation/storytelling system,
-not a decorative background.
+Build a premium interactive personal portfolio centered on a deliberately
+low-poly early-console/retro 3D tennis match. The 3D world should evoke
+PS1/N64/early-2000s sports-game visual language without copying a particular
+game. The tennis environment is the navigation/storytelling system, not a
+decorative background; the DOM interface remains modern and professional.
 
 Primary stack:
 - Next.js App Router
@@ -27,7 +29,9 @@ Primary stack:
 - Drei
 - GSAP + ScrollTrigger
 - Zustand for coarse UI/application state
-- Blender / glTF / GLB for authored assets
+- Blockbench preferred for new retro character assets; Blender supported for
+  existing Phase 04 assets and optional legacy/specialized work
+- glTF / GLB for runtime delivery
 - Vercel for deployment
 
 ## 2. Context and token discipline
@@ -80,7 +84,7 @@ Use the smallest capable specialist set.
 - R3F / Three.js / Drei / scene graph -> `scene_engineer`
 - GSAP / ScrollTrigger / camera / ball / timeline -> `motion_engineer`
 - Next.js / DOM / portfolio UI / metadata -> `ui_engineer`
-- Blender / GLB / glTF / KTX2 / Meshopt -> `asset_pipeline_engineer`
+- Blockbench + legacy Blender / GLB / glTF / KTX2 / Meshopt -> `asset_pipeline_engineer`
 - Rendering / bundle / memory / loading performance -> `performance_engineer`
 - Current framework/API verification -> `docs_researcher`
 - Milestone review -> `qa_reviewer`
@@ -133,10 +137,13 @@ Avoid:
 
 Prefer:
 - intentional typography;
-- realistic/stylized materials;
+- deliberately low-poly/faceted 3D silhouettes and restrained materials;
 - strong lighting and composition;
 - restrained post-processing;
 - subtle physical ambience.
+
+Keep long-form portfolio and résumé content in clean, readable DOM typography.
+Concentrate retro styling in the 3D world, scoreboard and small accents.
 
 ## 5. React / R3F performance rules
 

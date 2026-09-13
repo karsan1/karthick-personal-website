@@ -57,10 +57,14 @@ ADR is approved.
 
 ## ADR-005 — Stylized realism over photoreal humans
 
-**Status:** Accepted
+**Status:** Superseded by ADR-007
 
 **Decision:** Players/umpire use clean stylized-realistic proportions/materials and
 believable tennis animation without attempting uncanny photoreal faces.
+
+**Historical note:** This governed the pre-retro roadmap and remains useful
+context for the completed Phase 04 environment baseline. It no longer defines
+future character or environment art direction.
 
 ---
 
@@ -76,6 +80,47 @@ compiler/test validation.
 
 **Do not:** Use CodeGraph as a replacement for typecheck, tests, runtime validation
 or profiling.
+
+---
+
+## ADR-007 — Retro low-poly art direction beginning at Phase 05
+
+**Status:** Accepted
+
+**Context:** Phases 01–04 established and validated the application architecture,
+deterministic rally, semantic portfolio, and optimized Blender environment. Before
+Phase 05, the intended stylized-realistic character direction was replaced with a
+more distinctive retro visual target.
+
+**Decision:** Adopt a deliberately low-poly early-console tennis-game visual
+direction beginning at Phase 05. It may evoke PS1/N64/early-2000s sports-game
+visual language but must not copy a particular copyrighted game. Keep the main
+DOM portfolio UI modern, professional, semantic, and readable. Prefer Blockbench
+and `.bbmodel` sources for new low-poly character assets; Blender is optional for
+new work and remains supported for Phase 04 assets and legacy migration. Runtime
+delivery remains glTF/GLB regardless of authoring tool.
+
+**Preserve:**
+- one persistent R3F Canvas and the existing React/Three.js ownership boundaries,
+- GSAP/ScrollTrigger narrative progress and `useFrame`/refs for per-frame mutation,
+- deterministic ball, player, camera, and scroll choreography contracts,
+- semantic DOM content, reduced-motion behavior, and WebGL fallbacks,
+- the functional Phase 04 Blender environment until validated replacements ship,
+- glTF Transform, Meshopt, manifests, validation, and optional KTX2/Basis where appropriate.
+
+**Change:**
+- character visual language from stylized realism/capsules to intentional low-poly forms,
+- character authoring preference from Blender-first to Blockbench-first,
+- later environment geometry, palette, materials, and presentation toward the retro direction.
+
+**Consequences:** Character animation may use intentionally stepped sampling while
+the ball, camera, master scroll, and DOM remain smooth. The existing Phase 04
+environment is a transitional baseline, not obsolete work. Its assets and sources
+may be retired only after later retro replacements are integrated and validated.
+
+**Do not:** Add a physics engine for the deterministic rally, rasterize important
+portfolio content into WebGL, apply retro effects to DOM readability, require
+Blender for new character work, or delete Phase 04 assets during migration setup.
 
 ---
 

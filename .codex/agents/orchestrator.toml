@@ -28,7 +28,7 @@ ROUTING
 - R3F / Three.js / Drei -> scene_engineer
 - GSAP / ScrollTrigger / camera / ball -> motion_engineer
 - Next.js / HTML UI -> ui_engineer
-- Blender / glTF / model optimization -> asset_pipeline_engineer
+- Blockbench + legacy Blender / glTF / model optimization -> asset_pipeline_engineer
 - performance -> performance_engineer
 - framework/API verification -> docs_researcher
 - milestone validation -> qa_reviewer

@@ -1,116 +1,166 @@
-# Codex Execution Guide — 3D Tennis Portfolio
+# Codex Execution Guide — Retro Tennis Portfolio
 
 ## Purpose
-Use this guide when implementing the phase files with Codex or another coding agent. It keeps the agent from over-scoping, rewriting stable systems, or optimizing the wrong things too early.
+
+Use this guide with the revised retro phases after the accepted Phase 04 implementation.
+
+The goal is to keep Codex from:
+
+- redoing completed architecture,
+- deleting working Phase 04 assets too early,
+- reverting to smooth/capsule characters,
+- treating "retro" as permission for unreadable UI,
+- using Blender-first assumptions after the pipeline migration,
+- overusing agents/tokens.
 
 ---
 
-## Recommended workflow
+## Per-phase workflow
+
 For each phase:
-1. give Codex `00_MASTER_ROADMAP.md`, this guide, and **one** phase file,
-2. ask it to inspect the repository before editing,
-3. implement only unchecked requirements from that phase,
-4. require validation commands,
-5. manually review the Vercel preview for animation/art changes,
-6. mark criteria complete only after review,
-7. commit/merge,
-8. move to the next phase.
+
+1. Start with `orchestrator` only when decomposition/integration is genuinely needed.
+2. Read `AGENTS.md`.
+3. Read `docs/CURRENT_STATE.md`.
+4. Read `tennis-portfolio-plans/00_MASTER_ROADMAP.md`.
+5. Read `tennis-portfolio-plans/CODEX_EXECUTION_GUIDE.md`.
+6. Read exactly one current phase file.
+7. Use CodeGraph before broad file reads.
+8. Delegate narrow specialist tasks with exact file/symbol anchors.
+9. Use one implementation owner for overlapping files.
+10. Run validation.
+11. Perform visual review where required.
+12. Update `docs/CURRENT_STATE.md` only after acceptance.
+13. Stop; do not start a subsequent phase without a new explicit request.
 
 ---
 
-## Standard prompt
+## Standard Codex prompt
 
 ```text
-Read plans/00_MASTER_ROADMAP.md, plans/CODEX_EXECUTION_GUIDE.md, and plans/XX_PHASE.md.
+Implement the next incomplete work in the current retro-redesign phase.
 
-Inspect the current repository first. Implement only the next incomplete items from XX_PHASE.md. Do not begin later phases and do not replace established architecture unless the current phase explicitly requires it.
+Read:
+- AGENTS.md
+- docs/CURRENT_STATE.md
+- tennis-portfolio-plans/00_MASTER_ROADMAP.md
+- tennis-portfolio-plans/CODEX_EXECUTION_GUIDE.md
+- the current phase file only
 
-Important constraints:
-- keep one persistent R3F Canvas,
-- keep semantic portfolio content in HTML,
-- never push per-frame transforms/scroll progress through React state,
-- GSAP/ScrollTrigger owns master scroll choreography,
-- R3F refs/useFrame own high-frequency transforms,
-- Zustand is only for coarse application state,
-- preserve reduced-motion and WebGL fallback paths,
-- avoid unnecessary dependencies.
+Use CodeGraph first for repository orientation and change impact.
+
+Preserve these contracts:
+- one persistent R3F Canvas,
+- semantic portfolio content stays in DOM,
+- GSAP/ScrollTrigger owns master narrative progress,
+- useFrame/refs own high-frequency transforms,
+- Zustand is coarse state only,
+- deterministic authored ball trajectories,
+- camera has one owner,
+- reduced-motion and non-WebGL fallbacks stay functional,
+- completed Phase 01–04 architecture is not rewritten without an explicit current-phase requirement.
+
+Retro-specific constraints:
+- do not reintroduce capsule/sphere balloon characters as the target design,
+- Blockbench is preferred for new low-poly authored assets after Phase 05,
+- Phase 04 Blender environment assets remain valid migration fallbacks until explicitly retired,
+- character animation may be stepped, but ball/camera/master scroll must remain smooth,
+- keep main DOM UI modern/readable rather than turning the entire site into pixel art.
 
 Before finishing:
+- run relevant targeted checks,
 - run lint,
 - run typecheck,
-- run tests relevant to the change,
 - run production build,
-- explain any validation you could not perform,
+- run asset validation for asset-related phases,
 - summarize files changed,
-- list remaining unchecked acceptance criteria.
+- state manual visual/Blockbench actions still required,
+- list unchecked acceptance criteria.
 ```
 
 ---
 
-## Prompt for visual bugs
+## Agent routing
 
-```text
-Treat this as a visual/timeline bug, not a reason to redesign the architecture.
-Reproduce it first. Identify whether the owner is:
-1. master GSAP timeline,
-2. camera rig,
-3. ball trajectory,
-4. animation mixer/clip timing,
-5. DOM overlay,
-6. responsive matchMedia configuration,
-7. asset transform/origin.
+### `repo_explorer`
+Use for:
+- CodeGraph ownership discovery,
+- locating timeline/loader/asset references,
+- impact analysis.
 
-Fix the smallest responsible subsystem and regression-check adjacent chapter labels.
-```
+Do not use it to implement broad features.
+
+### `scene_engineer`
+Use for:
+- low-poly R3F prototype,
+- materials,
+- GLB rendering,
+- player fallback,
+- scoreboard/environment scene behavior,
+- lighting.
+
+### `motion_engineer`
+Use for:
+- normalized progress mapping,
+- character clip scrubbing,
+- animation stepping,
+- camera keyframes,
+- hit/bounce synchronization,
+- navigation-to-scroll choreography.
+
+### `asset_pipeline_engineer`
+Use for:
+- Blockbench export contract,
+- stable nodes/bones/clips,
+- optimization,
+- asset manifest,
+- Meshopt/KTX2 decisions,
+- budgets/validation.
+
+### `ui_engineer`
+Use for:
+- DOM navigation,
+- project panels,
+- focus management,
+- modern/retro UI boundary,
+- mobile DOM layout,
+- non-WebGL experience.
+
+### `performance_engineer`
+Use only after a measurable performance question exists.
+
+### `qa_reviewer`
+Use at phase gates and final milestone validation, not after every tiny edit.
+
+### `release_engineer`
+Use for preview/prod/Vercel/build release work.
 
 ---
 
-## Prompt for performance work
+## Token-efficiency rules
 
-```text
-Profile before changing visual quality. Report the likely bottleneck category: network, GLB decode, texture/VRAM, draw calls, GPU frame cost, main-thread JS, React rerenders, raycasting, or GSAP/scroll work.
-
-Do not lower quality until you can explain what cost the change removes. Prefer resource reuse, instancing, compression, right-sized textures, reduced render work, and eliminating per-frame React updates before visibly degrading hero assets.
-```
-
----
-
-## Agent guardrails
-Reject or question changes that introduce:
-- a second full-screen Canvas,
-- React `setState` in `useFrame`,
-- global Zustand scroll progress updated each frame,
-- new animation library without clear justification,
-- physics engine just for deterministic tennis shots,
-- giant monolithic GLB with no loading rationale,
-- 4K textures by default,
-- desktop camera coordinates reused unchanged on mobile,
-- critical links implemented only inside WebGL,
-- autoplay audible sound,
-- huge refactors while fixing one scene bug.
+- Do not have multiple agents independently rediscover the same scene architecture.
+- Pass concise handoffs with exact symbols/files.
+- Do not ask the orchestrator and specialist to both fully inspect the repo.
+- Do not preload all future phase files.
+- Do not run broad research for choices already documented in `docs/DECISIONS.md`.
+- Prefer one specialist implementation pass followed by one targeted review.
+- Use visual QA only at meaningful checkpoints.
 
 ---
 
-## What Codex is good for here
-- scaffolding React/R3F components,
-- typed data models,
-- GSAP timeline plumbing,
-- curve helpers,
-- deterministic progress mapping,
-- GLB optimization scripts,
-- responsive configuration structures,
-- tests around timeline math,
-- Vercel/Next.js configuration,
-- accessibility/fallback DOM.
+## Manual-authoring boundary
 
-## What still needs human visual judgment
+Codex can implement loaders, contracts, validation, animation controllers, and fallback logic.
+
+Human visual work is still required for:
+
+- approving character proportions,
+- creating/refining `.bbmodel` assets,
+- judging tennis pose readability,
+- reviewing Blockbench pivots/weights,
+- deciding whether animation stepping feels good,
 - camera composition,
-- tennis swing credibility,
-- lighting quality,
-- exact material feel,
-- whether motion feels nauseating,
-- whether the design looks tacky,
-- timing of reading pauses,
-- whether character style looks uncanny.
+- final color/palette taste.
 
-Do not let an agent's "technically complete" status replace visual review.
+If an agent cannot actually perform a manual Blockbench operation, it must provide exact steps and stop at the verifiable code boundary.
