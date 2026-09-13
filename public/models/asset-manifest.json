@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "sourceKinds": [
     "blender-export",
     "blockbench-calibration-fixture"
@@ -38,10 +38,18 @@
       "file": "player-a.glb",
       "sourceKind": "blockbench-calibration-fixture",
       "assetKind": "character",
-      "sourceBytes": 3152,
-      "optimizedBytes": 4256,
+      "sourceBytes": 4820,
+      "optimizedBytes": 6144,
       "budgetBytes": 80000,
       "texturePolicy": "No raster textures; PBR base-color materials only.",
+      "animationClips": [
+        "idle_ready",
+        "serve",
+        "forehand",
+        "backhand",
+        "recovery"
+      ],
+      "rootMotion": "in-place; CHAR_*_Root and SOCKET_Racket are not animation targets",
       "optimization": [
         "inspect",
         "prune",
@@ -53,10 +61,17 @@
       "file": "player-b.glb",
       "sourceKind": "blockbench-calibration-fixture",
       "assetKind": "character",
-      "sourceBytes": 3152,
-      "optimizedBytes": 4256,
+      "sourceBytes": 4676,
+      "optimizedBytes": 5888,
       "budgetBytes": 80000,
       "texturePolicy": "No raster textures; PBR base-color materials only.",
+      "animationClips": [
+        "idle_ready",
+        "forehand",
+        "backhand",
+        "recovery"
+      ],
+      "rootMotion": "in-place; CHAR_*_Root and SOCKET_Racket are not animation targets",
       "optimization": [
         "inspect",
         "prune",

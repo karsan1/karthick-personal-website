@@ -50,6 +50,12 @@ async function inspectTexturePolicy(path, sourceKind) {
   return "Reviewed palette atlas only: 64/128/256px, nearest-or-linear sampler, base-color/emissive sRGB use.";
 }
 
+async function inspectAnimationClips(path) {
+  const buffer = await readFile(path);
+  const json = JSON.parse(buffer.subarray(20, 20 + buffer.readUInt32LE(12)).toString("utf8").trim());
+  return (json.animations ?? []).map((animation) => animation.name);
+}
+
 await mkdir(destination, { recursive: true });
 const workspace = await mkdtemp(join(tmpdir(), "tennis-assets-"));
 try {
@@ -68,10 +74,10 @@ try {
     await transformAsset(sourcePath, targetPath, workspace, source.assetKind);
     const after = await stat(targetPath);
     if (after.size > budget) throw new Error(`${source.file} exceeds its ${budget} byte budget after optimization.`);
-    assets.push({ file: source.file, sourceKind: source.sourceKind, assetKind: source.assetKind, sourceBytes: before.size, optimizedBytes: after.size, budgetBytes: budget, texturePolicy: await inspectTexturePolicy(targetPath, source.sourceKind), optimization: source.assetKind === "character" ? ["inspect", "prune", "dedup", "meshopt"] : ["inspect", "prune", "dedup", "weld", "meshopt"] });
+    assets.push({ file: source.file, sourceKind: source.sourceKind, assetKind: source.assetKind, sourceBytes: before.size, optimizedBytes: after.size, budgetBytes: budget, texturePolicy: await inspectTexturePolicy(targetPath, source.sourceKind), ...(source.assetKind === "character" ? { animationClips: await inspectAnimationClips(targetPath), rootMotion: "in-place; CHAR_*_Root and SOCKET_Racket are not animation targets" } : {}), optimization: source.assetKind === "character" ? ["inspect", "prune", "dedup", "meshopt"] : ["inspect", "prune", "dedup", "weld", "meshopt"] });
   }
   await writeFile(resolve(destination, "asset-manifest.json"), `${JSON.stringify({
-    schemaVersion: 3,
+    schemaVersion: 4,
     sourceKinds: [...new Set(assets.map((asset) => asset.sourceKind))],
     coordinateSystem: "Y-up glTF; court center [0, 0, 0]; +Z is north baseline; 8.2m x 12.4m outer court.",
     optimization: "Per-asset; character assets never run weld automatically.",

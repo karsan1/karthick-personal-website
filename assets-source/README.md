@@ -65,8 +65,11 @@ changed together: `CHAR_PlayerA_Root`/`CHAR_PlayerB_Root` → `BONE_Hips` →
 `SOCKET_Racket`, `BONE_Arm_R_Upper` → `BONE_Arm_R_Lower`, and the left/right
 upper/lower leg chains under hips. Geometry leaves may use a unique `MESH_`
 prefix; no unnamed, generated (`cube12`/`bone23`), or other semantic node names
-are permitted. Phase 07 permits zero animation clips; Phase 08 clip names must
-be explicit and stable.
+are permitted. Phase 08 requires exact named clips: Player A uses
+`idle_ready`, `serve`, `forehand`, `backhand`, `recovery`; Player B uses
+`idle_ready`, `forehand`, `backhand`, `recovery`. Clips are animation-in-place:
+never animate `CHAR_*_Root` translation or `SOCKET_Racket`. Keep each clip's
+positive, finite duration and at least two readable keys on its animated bone.
 
 For each genuine Blockbench player export:
 
@@ -80,9 +83,11 @@ For each genuine Blockbench player export:
    64/128/256px palette atlas; reserve nearest magnification only for intentional
    pixel maps and visually check minification/mips. Do not add KTX2/Basis without
    a source texture and a visual comparison.
-4. Export static GLBs directly to `assets-source/blockbench-exports/player-a.glb`
-   and `player-b.glb`, preserving node names and omitting cameras/lights. Do not
-   hand-edit that export or its production derivative.
+4. Export animated GLBs directly to `assets-source/blockbench-exports/player-a.glb`
+   and `player-b.glb`, preserving node and exact clip names and omitting
+   cameras/lights. Preview every clip once in Blockbench, checking the root stays
+   in place and the racket remains fixed to its socket. Do not hand-edit that
+   export or its production derivative.
 5. Run `pnpm assets:build:reviewed-characters`, then open `?debug=1` to mount the static calibration
    players at both baselines. Verify feet, scale, +Z/-Z facing, socket/grip, and
    source-versus-optimized appearance at the application camera distance.

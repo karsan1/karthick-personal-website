@@ -1,11 +1,13 @@
-import { Component, Suspense, type MutableRefObject, type ReactNode } from "react";
+import { Component, Suspense, useRef, type MutableRefObject, type ReactNode } from "react";
 import type { Group } from "three";
 import { COURT_DIMENSIONS, type NarrativeProgress } from "@/animations/prototypeMotion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { type CharacterSide } from "./characterAssetContract";
+import { useCharacterAnimationController } from "./CharacterAnimationController";
 import { RetroPlayerPrototype } from "./RetroPlayerPrototype";
 import { useRetroPlayerAsset } from "./useRetroPlayerAsset";
 
-type RetroPlayerProps = { progress: MutableRefObject<NarrativeProgress>; side: CharacterSide };
+type RetroPlayerProps = { progress: MutableRefObject<NarrativeProgress>; side: CharacterSide; smoothReference?: boolean };
 
 class CharacterBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -13,19 +15,35 @@ class CharacterBoundary extends Component<{ fallback: ReactNode; children: React
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function StaticCharacter({ side }: Pick<RetroPlayerProps, "side">) {
-  const { scene } = useRetroPlayerAsset(side);
+function AnimatedCharacter({ progress, side, smoothReference = false }: RetroPlayerProps) {
+  const { scene, animations } = useRetroPlayerAsset(side);
+  const reducedMotion = useReducedMotion();
+  const applicationRoot = useRef<Group>(null);
   const baseline = side === "a" ? -COURT_DIMENSIONS.playerBaselineZ : COURT_DIMENSIONS.playerBaselineZ;
-  const rotation: [number, number, number] = side === "a" ? [0, 0, 0] : [0, Math.PI, 0];
-  return <primitive object={scene as Group} position={[0, 0, baseline]} rotation={rotation} />;
+  const initialPosition: [number, number, number] = [side === "a" ? -0.12 : 0.14, 0, baseline];
+  const initialRotation: [number, number, number] = [0, side === "a" ? 0.12 : Math.PI + 0.12, 0];
+  useCharacterAnimationController({
+    scene,
+    animations,
+    applicationRoot,
+    progress,
+    side,
+    reducedMotion,
+    smoothReference,
+  });
+  return (
+    <group ref={applicationRoot} position={initialPosition} rotation={initialRotation}>
+      <primitive object={scene as Group} />
+    </group>
+  );
 }
 
-/** Phase 07 calibration-only authored GLB mount. Phase 08 owns animated clip use. */
-export function RetroPlayer({ progress, side }: RetroPlayerProps) {
+/** Authored player runtime with a retained Phase 06 fallback while assets stream or fail. */
+export function RetroPlayer({ progress, side, smoothReference }: RetroPlayerProps) {
   return (
     <CharacterBoundary fallback={<RetroPlayerPrototype progress={progress} side={side} />}>
       <Suspense fallback={<RetroPlayerPrototype progress={progress} side={side} />}>
-        <StaticCharacter side={side} />
+        <AnimatedCharacter progress={progress} side={side} smoothReference={smoothReference} />
       </Suspense>
     </CharacterBoundary>
   );

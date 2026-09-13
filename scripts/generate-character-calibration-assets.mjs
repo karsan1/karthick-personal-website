@@ -23,6 +23,11 @@ function box() {
   };
 }
 
+const CLIPS = {
+  PlayerA: ["idle_ready", "serve", "forehand", "backhand", "recovery"],
+  PlayerB: ["idle_ready", "forehand", "backhand", "recovery"],
+};
+
 function makeGlb(playerName, color) {
   const geometry = box();
   const chunks = [];
@@ -41,6 +46,19 @@ function makeGlb(playerName, color) {
   const position = append(geometry.positions, 34962);
   const normal = append(geometry.normals, 34962);
   const indices = append(geometry.indices, 34963);
+  // Every clip is in-place: the application root and racket socket are never
+  // animated. The arm rotations are intentionally small but non-static so the
+  // fixtures exercise the same loader/clip contract as authored Blockbench GLBs.
+  const animationInput = append(new Float32Array([0, 0.4, 0.8]));
+  const clipRotations = {
+    idle_ready: [0, 0.035, 0, 0.999387, 0, -0.035, 0, 0.999387, 0, 0.035, 0, 0.999387],
+    serve: [0, 0, 0, 1, 0, 0, -0.28, 0.96, 0, 0, 0.08, 0.996795],
+    forehand: [0, 0, 0, 1, 0, -0.22, 0, 0.9755, 0, 0.08, 0, 0.996795],
+    backhand: [0, 0, 0, 1, 0, 0.22, 0, 0.9755, 0, -0.08, 0, 0.996795],
+    recovery: [0, 0.07, 0, 0.997547, 0, 0, 0, 1, 0, -0.07, 0, 0.997547],
+  };
+  const animationOutputs = Object.fromEntries(Object.entries(clipRotations)
+    .map(([name, values]) => [name, append(new Float32Array(values))]));
   const root = `CHAR_${playerName}_Root`;
   const boneNodes = [
     { name: root, children: [1] },
@@ -76,10 +94,17 @@ function makeGlb(playerName, color) {
       { bufferView: position, componentType: 5126, count: 24, type: "VEC3", min: [-0.22, -0.22, -0.22], max: [0.22, 0.22, 0.22] },
       { bufferView: normal, componentType: 5126, count: 24, type: "VEC3" },
       { bufferView: indices, componentType: 5123, count: 36, type: "SCALAR" },
+      { bufferView: animationInput, componentType: 5126, count: 3, type: "SCALAR", min: [0], max: [0.8] },
+      ...Object.values(animationOutputs).map((bufferView) => ({ bufferView, componentType: 5126, count: 3, type: "VEC4" })),
     ],
     bufferViews,
     buffers: [{ byteLength: align(byteLength) }],
   };
+  json.animations = CLIPS[playerName].map((name) => ({
+    name,
+    samplers: [{ input: 3, output: 4 + Object.keys(animationOutputs).indexOf(name), interpolation: "LINEAR" }],
+    channels: [{ sampler: 0, target: { node: name === "serve" ? 4 : 6, path: "rotation" } }],
+  }));
   const jsonChunk = Buffer.from(JSON.stringify(json));
   const jsonPadding = Buffer.alloc(align(jsonChunk.byteLength) - jsonChunk.byteLength, 0x20);
   const binary = Buffer.concat([...chunks, Buffer.alloc(align(byteLength) - byteLength)]);
@@ -97,4 +122,4 @@ await Promise.all([
   writeFile(resolve(outputDirectory, "player-a.glb"), makeGlb("PlayerA", [0.78, 0.9, 0.18, 1])),
   writeFile(resolve(outputDirectory, "player-b.glb"), makeGlb("PlayerB", [0.9, 0.94, 0.88, 1])),
 ]);
-console.log("Generated Phase 07 calibration fixtures. Replace these source exports with reviewed Blockbench exports before production-art approval.");
+console.log("Generated Phase 08 animated calibration fixtures. Replace these source exports with reviewed Blockbench exports before production-art approval.");

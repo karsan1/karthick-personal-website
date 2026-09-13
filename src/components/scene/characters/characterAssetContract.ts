@@ -16,5 +16,16 @@ export const REQUIRED_CHARACTER_NODES = [
   "BONE_Leg_L_Lower", "BONE_Leg_R_Upper", "BONE_Leg_R_Lower",
 ] as const;
 
+/** Runtime clip names. The controller falls back to `idle_ready` if an optional clip is absent. */
+export const CHARACTER_CLIP_NAMES = [
+  "idle_ready",
+  "serve",
+  "forehand",
+  "backhand",
+  "recovery",
+] as const;
+
+export type CharacterClipName = (typeof CHARACTER_CLIP_NAMES)[number];
+
 /** Phase 07 authoring-space contract; runtime placement never corrects export scale. */
 export const CHARACTER_COORDINATE_CONTRACT = "Y-up glTF; root at [0, 0, 0] on the ground plane; Player A faces +Z and Player B faces -Z after placement.";

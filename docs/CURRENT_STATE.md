@@ -6,16 +6,16 @@ Phases 01 foundation, 02 interaction prototype, 03 content/information
 architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
 06 retro character prototype are complete and accepted.
 
-Phase 07 establishes the Blockbench character source/export contract, conservative
-character optimization, validation, and a calibration-only static GLB loader while
-preserving the accepted Phase 06 rally and camera. Human visual authoring/export
-approval is still required before the calibration fixtures become final art.
+Phase 08 adds deterministic authored-character clip playback and synchronizes it
+to the accepted rally while preserving smooth ball, camera, scroll, and DOM motion.
+The checked-in animated GLBs remain generated calibration fixtures; human
+Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Replace the documented calibration templates/fixtures with visually reviewed
-  Blockbench Player A and B exports, then verify `?debug=1` at application camera
-  distance. Do not begin Phase 08 animation/choreography until explicitly requested.
+- Replace the generated animated calibration fixtures with visually reviewed
+  Blockbench Player A and B exports, then verify every clip, racket contact, grip,
+  foot placement, and transition in normal and `?debug=1` reference modes.
 
 ## Completed baseline
 
@@ -111,15 +111,31 @@ approval is still required before the calibration fixtures become final art.
   remains on the accepted Phase 06 prototype; each calibration GLB has that
   prototype as its Suspense/error fallback. No final clips or choreography changed.
 
+## Phase 08 implementation status
+
+- Generated Player A/B calibration GLBs contain the required stable named clips.
+  Optimization preserves them and validation enforces exact clip sets, positive
+  durations, in-place root motion, socket stability, Meshopt payloads, and manifest
+  consistency. These fixtures are deterministic contract tests, not final art.
+- Production actors now use cached cloned GLB scenes, resolved node/socket/action
+  references, and an `AnimationMixer` controller scrubbed directly from normalized
+  narrative progress. Normal character sampling is intentionally stepped at 18fps;
+  `?debug=1` provides smooth reference sampling.
+- Shot contacts are centralized with the deterministic ball labels. Contact-anchored
+  stepping preserves the authored hit pose, recovery ranges are reversible, and
+  reduced motion holds a representative `idle_ready` pose.
+- Player root court placement remains application-owned. The ball and camera remain
+  smooth, exactly one ball renders in normal/debug modes, and the Phase 06 prototype
+  remains the Suspense/error fallback.
+
 ## Do not work on yet
 
-- Do not begin Phase 08 or any later phase without an explicit request.
-- Do not connect final character clips to the rally, alter camera behavior,
-  restyle the environment/UI, or delete Phase 04 assets outside the requirements
-  of the explicitly requested current phase.
+- Do not begin Phase 09 or any later phase without an explicit request.
+- Do not restyle the environment/UI, alter the accepted camera/ball choreography,
+  or delete Phase 04 assets outside the requirements of an explicitly requested phase.
 
 ## Next milestone
 
-Complete the remaining Phase 07 human Blockbench authoring/export and application
-camera review documented in `assets-source/README.md`. Phase 08 animation and
-choreography remains out of scope until explicitly requested.
+Complete human Blockbench character and clip authoring/export plus application-camera
+visual approval documented in `assets-source/README.md`. Phase 09 environment work
+remains out of scope until explicitly requested.

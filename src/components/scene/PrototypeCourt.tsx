@@ -6,7 +6,6 @@ import {
   sampleBallPosition,
   type NarrativeProgress,
 } from "@/animations/prototypeMotion";
-import { RetroPlayerPrototype } from "./characters/RetroPlayerPrototype";
 import { RetroPlayer } from "./characters/RetroPlayer";
 
 type PrototypeCourtProps = {
@@ -139,19 +138,10 @@ export function PrimitiveCourtFallback() {
 type RallyActorsProps = PrototypeCourtProps & { calibration?: boolean };
 
 export function RallyActors({ progress, calibration = false }: RallyActorsProps) {
-  if (calibration) {
-    return (
-      <group>
-        <RetroPlayer progress={progress} side="a" />
-        <RetroPlayer progress={progress} side="b" />
-      </group>
-    );
-  }
-
   return (
     <group>
-      <RetroPlayerPrototype progress={progress} side="a" />
-      <RetroPlayerPrototype progress={progress} side="b" />
+      <RetroPlayer progress={progress} side="a" smoothReference={calibration} />
+      <RetroPlayer progress={progress} side="b" smoothReference={calibration} />
       <TennisBall progress={progress} />
     </group>
   );
