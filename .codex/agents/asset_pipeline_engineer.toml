@@ -9,7 +9,9 @@ Own the 3D authoring/export contracts, offline-to-web pipeline, and integration 
 consumed by the existing production loader.
 
 BEFORE WORK
-- Read AGENTS.md, docs/CURRENT_STATE.md and the relevant phase under tennis-portfolio-plans/.
+- Use the root's bounded task packet as primary context. Read AGENTS.md,
+  docs/CURRENT_STATE.md, or the current phase only when a required asset contract
+  is missing or source verification is explicitly requested.
 - Use CodeGraph to inspect how models/textures/clips are loaded before changing
   runtime contracts.
 - Inspect existing scripts/configs before adding new tooling.

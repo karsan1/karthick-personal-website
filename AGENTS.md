@@ -36,13 +36,19 @@ Primary stack:
 
 ## 2. Context and token discipline
 
-Before implementation:
+Before implementation, the root/coordinating agent:
 
 1. Read `docs/CURRENT_STATE.md`.
 2. Read only the current implementation phase under `tennis-portfolio-plans/`.
 3. Check `docs/DECISIONS.md` before revisiting an architecture choice.
 4. Use CodeGraph to find the smallest relevant code surface.
 5. Read only the files needed for the task.
+
+Delegated specialists should use the root's bounded task packet as their primary
+context. They should not reread the master roadmap, execution guide, decision log,
+full conversation, or documents already summarized in that packet unless a named
+contract is missing or the delegated task explicitly requires verification against
+the source document.
 
 Never begin by reading all of:
 - `src/`
@@ -79,6 +85,16 @@ Do not generate exhaustive CodeGraph reports unless the task actually requires t
 
 Use the smallest capable specialist set.
 
+- Default to one specialist implementation agent per phase.
+- Let the root use CodeGraph directly when the change surface is already clear;
+  spawn `repo_explorer` only for a concrete unresolved discovery task.
+- Use `orchestrator` only when work crosses at least three ownership domains or an
+  unresolved architecture decision requires coordination. Skip it for
+  documentation-only and decision-complete single-subsystem phases.
+- Reuse the same specialist for corrections instead of spawning a replacement.
+- Run one independent QA review after root static review, targeted checks, required
+  math/contract validation, and visual inspection are complete.
+
 - Architecture / cross-cutting design -> `orchestrator`
 - File/symbol/dependency discovery -> `repo_explorer`
 - R3F / Three.js / Drei / scene graph -> `scene_engineer`
@@ -99,6 +115,20 @@ Parallelize only independent read-heavy work such as:
 - accessibility audit;
 - documentation verification;
 - final QA.
+
+### Delegation packet
+
+Use `fork_turns: "none"` or the smallest recent-turn window that contains unique
+context. Every delegated packet must state:
+
+- objective and acceptance criteria;
+- exact owned files or symbols;
+- protected architecture and out-of-scope work;
+- current validation status;
+- expected concise output format.
+
+Do not send full logs, source files, roadmaps, or conversation history when a
+bounded packet provides the necessary context.
 
 ## 4. Core architecture rules
 
@@ -176,6 +206,19 @@ After meaningful changes:
 5. Update `docs/CURRENT_STATE.md` if project state materially changed.
 6. Add to `docs/DECISIONS.md` only for durable architecture decisions.
 
+### Validation ownership
+
+- Implementation agents run only the narrow checks needed for their changed
+  surface and report results to the root.
+- The root runs the complete phase-required suite once after all edits: lint,
+  typecheck, asset validation when relevant, then the production build.
+- Once required checks pass, do not repeat them unless subsequent changes can
+  affect their result.
+- After a correction, rerun affected checks only. Repeat the production build only
+  when runtime/build inputs changed after the previous build.
+- Start browser verification after static checks pass and use one server session
+  for desktop, reverse-scroll, reduced-motion, and narrow-viewport checks.
+
 ## 7. Output discipline for subagents
 
 Return concise summaries only.
@@ -190,6 +233,8 @@ Behavior:
 Verification:
 Risks / follow-up:
 ```
+
+Keep handoffs to these six fields and approximately 150–250 words.
 
 Do not return:
 - complete source files;

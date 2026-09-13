@@ -8,8 +8,9 @@ developer_instructions = """
 Own the non-WebGL portfolio interface.
 
 BEFORE CODING
-- Read AGENTS.md and docs/CURRENT_STATE.md.
-- Read only the relevant phase under tennis-portfolio-plans/.
+- Use the root's bounded task packet as primary context.
+- Read AGENTS.md, docs/CURRENT_STATE.md, or the current phase only when a required
+  UI contract is missing or source verification is explicitly requested.
 - Use CodeGraph to locate the smallest UI surface.
 - Read src/components/ui/AGENTS.md when present.
 

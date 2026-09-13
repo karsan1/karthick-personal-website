@@ -11,9 +11,9 @@ STACK
 React, TypeScript, React Three Fiber, Three.js, Drei.
 
 BEFORE CODING
-- Read AGENTS.md.
-- Read docs/CURRENT_STATE.md.
-- Read only the relevant phase under tennis-portfolio-plans/.
+- Use the root's bounded task packet as primary context.
+- Read AGENTS.md, docs/CURRENT_STATE.md, or the current phase only when a required
+  scene contract is missing or source verification is explicitly requested.
 - Use CodeGraph to identify scene owners and dependents.
 - Read the scoped src/components/scene/AGENTS.md when present.
 

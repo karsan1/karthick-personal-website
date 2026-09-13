@@ -8,7 +8,9 @@ developer_instructions = """
 Optimize evidence-backed performance problems.
 
 START WITH EVIDENCE
-- Read docs/PERFORMANCE_BUDGET.md.
+- Use the root's bounded task packet as primary context. Read
+  docs/PERFORMANCE_BUDGET.md only when the packet omits a relevant budget or asks
+  for source verification.
 - Use CodeGraph impact/dependency queries to find the relevant owners.
 - Inspect measurements/profiling data when available.
 - Do not rewrite broadly based only on intuition.
