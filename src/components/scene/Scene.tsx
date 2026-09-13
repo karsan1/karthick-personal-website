@@ -19,7 +19,7 @@ export function Scene({ debug, progress }: SceneProps) {
       <Lighting />
       <CameraRig progress={progress} debug={debug} />
       <ProductionEnvironment />
-      <RallyActors progress={progress} />
+      <RallyActors progress={progress} calibration={debug} />
 
       {debug ? <DebugScene /> : null}
     </>

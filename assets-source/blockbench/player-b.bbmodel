@@ -1,0 +1,20 @@
+{
+  "meta": { "format_version": "4.10", "model_format": "free", "box_uv": false },
+  "name": "player-b-calibration-contract",
+  "resolution": { "width": 16, "height": 16 },
+  "elements": [],
+  "outliner": [
+    { "name": "CHAR_PlayerB_Root", "origin": [0, 0, 0], "children": [
+      { "name": "BONE_Hips", "origin": [0, 13.12, 0], "children": [
+        { "name": "BONE_Spine", "origin": [0, 19.84, 0], "children": [
+          { "name": "BONE_Head", "origin": [0, 29.76, 0], "children": [] },
+          { "name": "BONE_Arm_L_Upper", "origin": [-6.72, 25.28, 0], "children": [{ "name": "BONE_Arm_L_Lower", "origin": [-6.72, 17.6, 0], "children": [{ "name": "SOCKET_Racket", "origin": [-6.72, 10.56, 1.28], "children": [] }] }] },
+          { "name": "BONE_Arm_R_Upper", "origin": [6.72, 25.28, 0], "children": [{ "name": "BONE_Arm_R_Lower", "origin": [6.72, 17.6, 0], "children": [] }] }
+        ] },
+        { "name": "BONE_Leg_L_Upper", "origin": [-3.2, 7.36, 0], "children": [{ "name": "BONE_Leg_L_Lower", "origin": [-3.2, 0.96, 0.64], "children": [] }] },
+        { "name": "BONE_Leg_R_Upper", "origin": [3.2, 7.36, 0], "children": [{ "name": "BONE_Leg_R_Lower", "origin": [3.2, 0.96, 0.64], "children": [] }] }
+      ] }
+    ] }
+  ],
+  "textures": []
+}

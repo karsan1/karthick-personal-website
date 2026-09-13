@@ -1,81 +1,46 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const modelsDirectory = resolve(root, "public/models");
-// Meshopt's 14-bit position quantization can introduce <1mm error at this scale.
 const epsilon = 0.001;
-
-/** Application-space contracts: translation and axis-aligned dimensions in meters. */
-const contracts = {
-  "court.glb": {
-    "ENV_Court_Surface": [[0, -0.13, 0], [8.2, 0.25, 12.4]],
-    "ENV_Net_Mesh": [[0, 0.535, 0], [7.9, 1.07, 0.025]],
-    "ENV_Net_PostEast": [[4, 0.59, 0], [0.09, 1.18, 0.09]], "ENV_Net_PostWest": [[-4, 0.59, 0], [0.09, 1.18, 0.09]],
-    "ENV_Net_TopBand": [[0, 1.07, 0], [8, 0.06, 0.06]],
-    "LINE_BaselineNorth": [[0, 0.015, 5.8], [7.7, 0.025, 0.07]], "LINE_BaselineSouth": [[0, 0.015, -5.8], [7.7, 0.025, 0.07]],
-    "LINE_CenterNorth": [[0, 0.015, 1.05], [0.055, 0.025, 2.1]], "LINE_CenterSouth": [[0, 0.015, -1.05], [0.055, 0.025, 2.1]],
-    "LINE_ServiceNorth": [[0, 0.015, 2.1], [5, 0.025, 0.055]], "LINE_ServiceSouth": [[0, 0.015, -2.1], [5, 0.025, 0.055]],
-    "LINE_SidelineEast": [[3.85, 0.015, 0], [0.07, 0.025, 11.6]], "LINE_SidelineWest": [[-3.85, 0.015, 0], [0.07, 0.025, 11.6]],
-  },
-  "stadium-shell.glb": {
-    "ENV_Stadium_BackdropNorth": [[0, 1.7, 8], [15, 3.4, 0.3]], "ENV_Stadium_BackdropSouth": [[0, 1.7, -8], [15, 3.4, 0.3]],
-    "ENV_Stadium_RiserEast": [[7.1, 0.55, 0], [0.7, 1.1, 16]], "ENV_Stadium_RiserWest": [[-7.1, 0.55, 0], [0.7, 1.1, 16]],
-  },
-  "props.glb": {
-    "ENV_Benches_North": [[-5.15, 0.35, 4.2], [2.3, 0.4, 0.55]], "ENV_Benches_South": [[-5.15, 0.35, -4.2], [2.3, 0.4, 0.55]],
-    "ENV_UmpireChair_Back": [[4.65, 1.55, 0.52], [0.55, 0.7, 0.09]], "ENV_UmpireChair_LegEast": [[4.85, 0.52, 0.35], [0.08, 1.2, 0.08]],
-    "ENV_UmpireChair_LegWest": [[4.45, 0.52, 0.35], [0.08, 1.2, 0.08]], "ENV_UmpireChair_Seat": [[4.65, 1.05, 0.35], [0.55, 0.18, 0.45]],
-  },
-  "scoreboard.glb": {
-    "ENV_Scoreboard_Display": [[0, 2.5, 7.64], [2.35, 1.08, 0.03]], "ENV_Scoreboard_Frame": [[0, 2.5, 7.76], [2.7, 1.45, 0.16]],
-  },
+const budgets = { "court.glb": 100_000, "stadium-shell.glb": 100_000, "props.glb": 100_000, "scoreboard.glb": 60_000, "player-a.glb": 80_000, "player-b.glb": 80_000 };
+const kinds = {
+  "court.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] }, "stadium-shell.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] }, "props.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] }, "scoreboard.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] },
+  "player-a.glb": { assetKind: "character", sourceKinds: ["blockbench-calibration-fixture", "blockbench-export"] }, "player-b.glb": { assetKind: "character", sourceKinds: ["blockbench-calibration-fixture", "blockbench-export"] },
 };
+const contracts = {
+  "court.glb": { "ENV_Court_Surface": [[0, -0.13, 0], [8.2, 0.25, 12.4]], "ENV_Net_Mesh": [[0, 0.535, 0], [7.9, 1.07, 0.025]], "ENV_Net_PostEast": [[4, 0.59, 0], [0.09, 1.18, 0.09]], "ENV_Net_PostWest": [[-4, 0.59, 0], [0.09, 1.18, 0.09]], "ENV_Net_TopBand": [[0, 1.07, 0], [8, 0.06, 0.06]], "LINE_BaselineNorth": [[0, 0.015, 5.8], [7.7, 0.025, 0.07]], "LINE_BaselineSouth": [[0, 0.015, -5.8], [7.7, 0.025, 0.07]], "LINE_CenterNorth": [[0, 0.015, 1.05], [0.055, 0.025, 2.1]], "LINE_CenterSouth": [[0, 0.015, -1.05], [0.055, 0.025, 2.1]], "LINE_ServiceNorth": [[0, 0.015, 2.1], [5, 0.025, 0.055]], "LINE_ServiceSouth": [[0, 0.015, -2.1], [5, 0.025, 0.055]], "LINE_SidelineEast": [[3.85, 0.015, 0], [0.07, 0.025, 11.6]], "LINE_SidelineWest": [[-3.85, 0.015, 0], [0.07, 0.025, 11.6]] },
+  "stadium-shell.glb": { "ENV_Stadium_BackdropNorth": [[0, 1.7, 8], [15, 3.4, 0.3]], "ENV_Stadium_BackdropSouth": [[0, 1.7, -8], [15, 3.4, 0.3]], "ENV_Stadium_RiserEast": [[7.1, 0.55, 0], [0.7, 1.1, 16]], "ENV_Stadium_RiserWest": [[-7.1, 0.55, 0], [0.7, 1.1, 16]] },
+  "props.glb": { "ENV_Benches_North": [[-5.15, 0.35, 4.2], [2.3, 0.4, 0.55]], "ENV_Benches_South": [[-5.15, 0.35, -4.2], [2.3, 0.4, 0.55]], "ENV_UmpireChair_Back": [[4.65, 1.55, 0.52], [0.55, 0.7, 0.09]], "ENV_UmpireChair_LegEast": [[4.85, 0.52, 0.35], [0.08, 1.2, 0.08]], "ENV_UmpireChair_LegWest": [[4.45, 0.52, 0.35], [0.08, 1.2, 0.08]], "ENV_UmpireChair_Seat": [[4.65, 1.05, 0.35], [0.55, 0.18, 0.45]] },
+  "scoreboard.glb": { "ENV_Scoreboard_Display": [[0, 2.5, 7.64], [2.35, 1.08, 0.03]], "ENV_Scoreboard_Frame": [[0, 2.5, 7.76], [2.7, 1.45, 0.16]] },
+};
+const characterRoots = { "player-a.glb": "CHAR_PlayerA_Root", "player-b.glb": "CHAR_PlayerB_Root" };
+const requiredNodes = ["BONE_Hips", "BONE_Spine", "BONE_Head", "BONE_Arm_L_Upper", "BONE_Arm_L_Lower", "BONE_Arm_R_Upper", "BONE_Arm_R_Lower", "SOCKET_Racket", "BONE_Leg_L_Upper", "BONE_Leg_L_Lower", "BONE_Leg_R_Upper", "BONE_Leg_R_Lower"];
+const expectedParents = { BONE_Hips: "ROOT", BONE_Spine: "BONE_Hips", BONE_Head: "BONE_Spine", BONE_Arm_L_Upper: "BONE_Spine", BONE_Arm_L_Lower: "BONE_Arm_L_Upper", SOCKET_Racket: "BONE_Arm_L_Lower", BONE_Arm_R_Upper: "BONE_Spine", BONE_Arm_R_Lower: "BONE_Arm_R_Upper", BONE_Leg_L_Upper: "BONE_Hips", BONE_Leg_L_Lower: "BONE_Leg_L_Upper", BONE_Leg_R_Upper: "BONE_Hips", BONE_Leg_R_Lower: "BONE_Leg_R_Upper" };
 
-function inspectGlb(buffer) {
-  if (buffer.readUInt32LE(0) !== 0x46546c67 || buffer.readUInt32LE(4) !== 2) throw new Error("Not a GLB 2.0 asset.");
-  if (buffer.readUInt32LE(8) !== buffer.byteLength) throw new Error("GLB length header does not match file length.");
-  if (buffer.readUInt32LE(16) !== 0x4e4f534a) throw new Error("GLB has no JSON chunk.");
-  return JSON.parse(buffer.subarray(20, 20 + buffer.readUInt32LE(12)).toString("utf8").trim());
-}
+function inspectGlb(buffer) { if (buffer.readUInt32LE(0) !== 0x46546c67 || buffer.readUInt32LE(4) !== 2 || buffer.readUInt32LE(8) !== buffer.byteLength || buffer.readUInt32LE(16) !== 0x4e4f534a) throw new Error("Not a complete GLB 2.0 asset."); const jsonLength = buffer.readUInt32LE(12); const jsonEnd = 20 + jsonLength; if (jsonEnd + 8 > buffer.byteLength || buffer.readUInt32LE(jsonEnd + 4) !== 0x004e4942) throw new Error("GLB has no BIN chunk."); return { json: JSON.parse(buffer.subarray(20, jsonEnd).toString("utf8").trim()), binaryOffset: jsonEnd + 8, binaryLength: buffer.readUInt32LE(jsonEnd) }; }
+function sameVector(actual, expected) { return actual?.length === expected.length && actual.every((value, index) => Math.abs(value - expected[index]) <= epsilon); }
+function decodedBounds(accessor) { if (!accessor.normalized) return [accessor.min, accessor.max]; const divisor = accessor.componentType === 5122 ? 32767 : accessor.componentType === 5120 ? 127 : 1; return [accessor.min.map((value) => Math.max(-1, value / divisor)), accessor.max.map((value) => value / divisor)]; }
+function imageDimensions(buffer, json, binaryOffset, binaryLength, image) { if (image.uri || image.bufferView === undefined) throw new Error("Textures must be embedded in the GLB."); const view = json.bufferViews[image.bufferView]; if (!view || (view.buffer ?? 0) !== 0 || view.byteLength > 65_536) throw new Error("Palette atlas must be in buffer 0 and no larger than 64KB encoded."); const start = binaryOffset + (view.byteOffset ?? 0); const end = start + view.byteLength; if (end > binaryOffset + binaryLength) throw new Error("Texture buffer view exceeds the GLB BIN chunk."); const bytes = buffer.subarray(start, end); if (bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) return [bytes.readUInt32BE(16), bytes.readUInt32BE(20)]; throw new Error("Only embedded PNG palette atlases are supported in Phase 07."); }
+function primitiveTriangles(json, primitive) { const mode = primitive.mode ?? 4; if (mode !== 4) throw new Error(`Unsupported primitive mode ${mode}; Phase 07 accepts TRIANGLES only.`); const count = primitive.indices === undefined ? json.accessors[primitive.attributes.POSITION]?.count : json.accessors[primitive.indices]?.count; if (!count || count % 3) throw new Error("Triangle primitive has an invalid vertex/index count."); return count / 3; }
+function validateTextures(file, buffer, json, binaryOffset, binaryLength, sourceKind) { if (!json.images?.length) return; if (sourceKind !== "blockbench-export") throw new Error(`${file} calibration fixtures must remain texture-free.`); const allowed = new Set([64, 128, 256]); for (const image of json.images) { const [width, height] = imageDimensions(buffer, json, binaryOffset, binaryLength, image); if (!allowed.has(width) || !allowed.has(height)) throw new Error(`${file} texture must be 64, 128, or 256px.`); } for (const texture of json.textures ?? []) { const sampler = json.samplers?.[texture.sampler] ?? {}; if (sampler.magFilter && ![9728, 9729].includes(sampler.magFilter)) throw new Error(`${file} has an invalid magnification sampler.`); if (sampler.minFilter && ![9728, 9729, 9984, 9985, 9986, 9987].includes(sampler.minFilter)) throw new Error(`${file} has an invalid minification sampler.`); } for (const material of json.materials ?? []) { if (material.normalTexture || material.occlusionTexture || material.pbrMetallicRoughness?.metallicRoughnessTexture) throw new Error(`${file} permits palette maps only for sRGB base-color/emissive use.`); } }
+function validateMeshopt(file, json, binaryLength) { if (!json.extensionsUsed?.includes("EXT_meshopt_compression") || !json.extensionsRequired?.includes("EXT_meshopt_compression")) throw new Error(`${file} must require EXT_meshopt_compression.`); const compressedViews = json.bufferViews.filter((view) => view.extensions?.EXT_meshopt_compression); if (!compressedViews.length) throw new Error(`${file} has no Meshopt buffer-view payload.`); const compressedByView = new Set(json.bufferViews.map((view, index) => view.extensions?.EXT_meshopt_compression ? index : -1)); for (const accessor of json.accessors ?? []) if (accessor.bufferView !== undefined && !compressedByView.has(accessor.bufferView)) throw new Error(`${file} has an uncompressed accessor buffer view.`); for (const view of compressedViews) { const extension = view.extensions.EXT_meshopt_compression; if (extension.buffer !== 0 || !Number.isInteger(extension.byteOffset) || !Number.isInteger(extension.byteLength) || extension.byteOffset < 0 || extension.byteLength <= 0 || extension.byteOffset + extension.byteLength > binaryLength || !Number.isInteger(extension.byteStride) || extension.byteStride < 1 || extension.byteStride > 256 || !Number.isInteger(extension.count) || extension.count < 1 || !["ATTRIBUTES", "TRIANGLES", "INDICES"].includes(extension.mode) || (extension.filter && !["NONE", "OCTAHEDRAL", "QUATERNION", "EXPONENTIAL"].includes(extension.filter))) throw new Error(`${file} has an invalid Meshopt payload.`); } }
 
-function sameVector(actual, expected) {
-  return actual?.length === expected.length && actual.every((value, index) => Math.abs(value - expected[index]) <= epsilon);
+const manifest = JSON.parse(await readFile(resolve(modelsDirectory, "asset-manifest.json"), "utf8"));
+const expectedFiles = Object.keys(budgets).sort(); const actualFiles = (await readdir(modelsDirectory)).filter((file) => file.endsWith(".glb")).sort();
+if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) throw new Error("Production GLBs do not exactly match the validated asset set.");
+const manifestFiles = manifest.assets.map((asset) => asset.file).sort();
+if (manifest.assets.length !== expectedFiles.length || new Set(manifestFiles).size !== manifestFiles.length || JSON.stringify(manifestFiles) !== JSON.stringify(expectedFiles)) throw new Error("Manifest must contain exactly one entry for every expected production GLB.");
+for (const file of expectedFiles) {
+  const path = resolve(modelsDirectory, file); const buffer = await readFile(path); const { json, binaryOffset, binaryLength } = inspectGlb(buffer); const entry = manifest.assets.find((asset) => asset.file === file); const contract = kinds[file];
+  if (entry.assetKind !== contract.assetKind || !contract.sourceKinds.includes(entry.sourceKind)) throw new Error(`${file} has an invalid manifest source kind or asset kind.`);
+  if (entry.budgetBytes !== budgets[file] || entry.optimizedBytes !== (await stat(path)).size || entry.optimizedBytes > budgets[file]) throw new Error(`${file} manifest size/budget does not match the actual output.`);
+  validateMeshopt(file, json, binaryLength); validateTextures(file, buffer, json, binaryOffset, binaryLength, entry.sourceKind);
+  if (contracts[file]) { const nodes = new Map(json.nodes.map((node) => [node.name, node])); const expectedNames = Object.keys(contracts[file]).sort(); const actualNames = [...nodes.keys()].sort(); if (JSON.stringify(actualNames) !== JSON.stringify(expectedNames) || actualNames.some((name) => name.startsWith("Cube"))) throw new Error(`${file} has unexpected or autogenerated environment node names.`); for (const [name, [translation, dimensions]] of Object.entries(contracts[file])) { const node = nodes.get(name); if (!sameVector(node.translation, translation) || node.rotation) throw new Error(`${name} transform does not match the application contract.`); const primitive = json.meshes[node.mesh].primitives[0]; const [min, max] = decodedBounds(json.accessors[primitive.attributes.POSITION]); const scale = node.scale ?? [1, 1, 1]; const actualDimensions = max.map((value, index) => (value - min[index]) * scale[index]); if (!sameVector(actualDimensions, dimensions)) throw new Error(`${name} dimensions do not match the application contract.`); const actualMin = min.map((value, index) => value * scale[index] + node.translation[index]); const actualMax = max.map((value, index) => value * scale[index] + node.translation[index]); const expectedMin = translation.map((value, index) => value - dimensions[index] / 2); const expectedMax = translation.map((value, index) => value + dimensions[index] / 2); if (!sameVector(actualMin, expectedMin) || !sameVector(actualMax, expectedMax)) throw new Error(`${name} world bounds do not match the application contract.`); } continue; }
+  const rootName = characterRoots[file]; if (json.cameras?.length || json.extensionsUsed?.includes("KHR_lights_punctual") || json.nodes.some((node) => node.camera !== undefined || node.extensions?.KHR_lights_punctual)) throw new Error(`${file} must not contain cameras or lights.`); if (json.scenes?.length !== 1 || json.scenes[0].nodes?.length !== 1) throw new Error(`${file} must have exactly one scene root.`);
+  const parentByNode = new Map(); json.nodes.forEach((node, index) => node.children?.forEach((child) => parentByNode.set(child, index))); const rootIndex = json.nodes.findIndex((node) => node.name === rootName); if (rootIndex < 0 || json.scenes[0].nodes[0] !== rootIndex) throw new Error(`${file} root is missing or is not the sole scene root.`); const reachable = new Set(); const visit = (index) => { if (reachable.has(index)) throw new Error(`${file} character hierarchy contains a cycle.`); reachable.add(index); json.nodes[index].children?.forEach(visit); }; visit(rootIndex); if (reachable.size !== json.nodes.length) throw new Error(`${file} contains unreachable nodes outside the contracted hierarchy.`); if (json.nodes[rootIndex].translation && !sameVector(json.nodes[rootIndex].translation, [0, 0, 0])) throw new Error(`${file} root must be at the ground-plane origin.`);
+  const named = json.nodes.filter((node) => node.name).map((node) => node.name); const semanticNames = named.filter((name) => !name.startsWith("MESH_")); if (named.length !== json.nodes.length || new Set(named).size !== named.length || JSON.stringify(semanticNames.filter((name) => name !== rootName).sort()) !== JSON.stringify(requiredNodes.slice().sort()) || named.some((name) => /^(cube|bone)\d+$/i.test(name))) throw new Error(`${file} named character hierarchy is not exact and unique.`); for (const node of json.nodes.filter((candidate) => candidate.name.startsWith("MESH_"))) if (node.mesh === undefined || node.children?.length) throw new Error(`${file} MESH_ nodes must be geometry leaves.`); for (const name of requiredNodes) { const index = json.nodes.findIndex((node) => node.name === name); const expectedParent = expectedParents[name] === "ROOT" ? rootIndex : json.nodes.findIndex((node) => node.name === expectedParents[name]); if (parentByNode.get(index) !== expectedParent) throw new Error(`${file} has invalid parentage for ${name}.`); }
+  if ((json.animations?.length ?? 0) && json.animations.some((animation) => !animation.name)) throw new Error(`${file} contains an unnamed animation clip.`); const slots = new Set(json.meshes.flatMap((mesh) => mesh.primitives.map((primitive) => primitive.material).filter((material) => material !== undefined))); if (slots.size > 3) throw new Error(`${file} exceeds the three material-slot budget.`); const triangles = json.nodes.reduce((total, node) => total + (node.mesh === undefined ? 0 : json.meshes[node.mesh].primitives.reduce((sum, primitive) => sum + primitiveTriangles(json, primitive), 0)), 0); if (triangles > 2500) throw new Error(`${file} exceeds the 2,500-triangle review threshold.`);
 }
-
-function decodedBounds(accessor) {
-  if (!accessor.normalized) return [accessor.min, accessor.max];
-  const divisor = accessor.componentType === 5122 ? 32767 : accessor.componentType === 5120 ? 127 : 1;
-  return [accessor.min.map((value) => Math.max(-1, value / divisor)), accessor.max.map((value) => value / divisor)];
-}
-
-for (const [file, contract] of Object.entries(contracts)) {
-  const json = inspectGlb(await readFile(resolve(modelsDirectory, file)));
-  const nodes = new Map(json.nodes.map((node) => [node.name, node]));
-  const expectedNames = Object.keys(contract).sort();
-  const actualNames = [...nodes.keys()].sort();
-  if (JSON.stringify(actualNames) !== JSON.stringify(expectedNames)) throw new Error(`${file} has unexpected, missing, or autogenerated node names.`);
-  if (actualNames.some((name) => name.startsWith("Cube"))) throw new Error(`${file} contains autogenerated Cube node names.`);
-  for (const [name, [translation, dimensions]] of Object.entries(contract)) {
-    const node = nodes.get(name);
-    if (!sameVector(node.translation, translation)) throw new Error(`${name} does not match its application-space translation.`);
-    if (node.rotation) throw new Error(`${name} has an unexpected rotation.`);
-    const primitive = json.meshes[node.mesh].primitives[0];
-    const accessor = json.accessors[primitive.attributes.POSITION];
-    const [localMin, localMax] = decodedBounds(accessor);
-    const scale = node.scale ?? [1, 1, 1];
-    const actualDimensions = localMax.map((value, index) => (value - localMin[index]) * scale[index]);
-    if (!sameVector(actualDimensions, dimensions)) throw new Error(`${name} mesh dimensions do not match the contract.`);
-    const actualMin = localMin.map((value, index) => value * scale[index] + node.translation[index]);
-    const actualMax = localMax.map((value, index) => value * scale[index] + node.translation[index]);
-    const expectedMin = translation.map((value, index) => value - dimensions[index] / 2);
-    const expectedMax = translation.map((value, index) => value + dimensions[index] / 2);
-    if (!sameVector(actualMin, expectedMin) || !sameVector(actualMax, expectedMax)) throw new Error(`${name} world bounds do not match the contract.`);
-  }
-  if (json.images?.length) throw new Error(`${file} must not contain unbudgeted raster images.`);
-  if (!json.extensionsUsed?.includes("EXT_meshopt_compression")) throw new Error(`${file} is missing required Meshopt compression.`);
-}
-const expected = Object.keys(contracts).length;
-const present = (await readdir(modelsDirectory)).filter((file) => file.endsWith(".glb")).length;
-if (present !== expected) throw new Error(`Expected ${expected} production GLBs; found ${present}.`);
-console.log(`Validated ${expected} production GLBs: exact names, transforms, dimensions, world bounds, Meshopt, and texture policy.`);
+console.log(`Validated ${expectedFiles.length} production GLBs: exact manifest, provenance, sizes, Meshopt, environment contracts, and character hierarchy/texture budgets.`);

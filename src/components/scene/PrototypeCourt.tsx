@@ -7,6 +7,7 @@ import {
   type NarrativeProgress,
 } from "@/animations/prototypeMotion";
 import { RetroPlayerPrototype } from "./characters/RetroPlayerPrototype";
+import { RetroPlayer } from "./characters/RetroPlayer";
 
 type PrototypeCourtProps = {
   progress: MutableRefObject<NarrativeProgress>;
@@ -135,7 +136,18 @@ export function PrimitiveCourtFallback() {
   );
 }
 
-export function RallyActors({ progress }: PrototypeCourtProps) {
+type RallyActorsProps = PrototypeCourtProps & { calibration?: boolean };
+
+export function RallyActors({ progress, calibration = false }: RallyActorsProps) {
+  if (calibration) {
+    return (
+      <group>
+        <RetroPlayer progress={progress} side="a" />
+        <RetroPlayer progress={progress} side="b" />
+      </group>
+    );
+  }
+
   return (
     <group>
       <RetroPlayerPrototype progress={progress} side="a" />

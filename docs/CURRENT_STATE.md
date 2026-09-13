@@ -6,16 +6,16 @@ Phases 01 foundation, 02 interaction prototype, 03 content/information
 architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
 06 retro character prototype are complete and accepted.
 
-Phase 06 replaced the capsule/sphere production players with an articulated,
-faceted direct-R3F style proof while preserving the accepted rally and camera.
-The current next milestone is **Phase 07 — Blockbench Character Pipeline**.
+Phase 07 establishes the Blockbench character source/export contract, conservative
+character optimization, validation, and a calibration-only static GLB loader while
+preserving the accepted Phase 06 rally and camera. Human visual authoring/export
+approval is still required before the calibration fixtures become final art.
 
 ## Current objective
 
-- Implement only `tennis-portfolio-plans/07_BLOCKBENCH_CHARACTER_PIPELINE.md` when
-  explicitly requested.
-- Establish the reproducible Blockbench source/export/optimization contract for
-  final characters without replacing the accepted Phase 06 prototype early.
+- Replace the documented calibration templates/fixtures with visually reviewed
+  Blockbench Player A and B exports, then verify `?debug=1` at application camera
+  distance. Do not begin Phase 08 animation/choreography until explicitly requested.
 
 ## Completed baseline
 
@@ -94,14 +94,32 @@ The current next milestone is **Phase 07 — Blockbench Character Pipeline**.
 - Desktop, reverse-scroll, and narrow-viewport visual review passed without
   weakening portfolio readability. No Blockbench/Phase 07 assets were created.
 
+## Phase 07 implementation status
+
+- `assets-source/blockbench/` contains committed Player A/B hierarchy and pivot
+  calibration templates. `blockbench-exports/` and `/public/models/` contain
+  deterministic generated calibration fixtures, explicitly not claimed as visual
+  Blockbench exports or final player art.
+- The optimizer accepts legacy Blender environment exports plus Blockbench character
+  exports in one reproducible pipeline. Character assets receive 80KB budgets and
+  conservative inspect/prune/dedup/Meshopt processing without weld; the manifest
+  records each asset's source kind and processing path.
+- Validation checks both static character files, source kinds, bytes, Meshopt,
+  root/bone/socket names, material slots, triangle review threshold, zero or named
+  clips, and the no-raster-texture calibration policy.
+- `?debug=1` now mounts Player A/B static GLBs at both baselines. The normal scene
+  remains on the accepted Phase 06 prototype; each calibration GLB has that
+  prototype as its Suspense/error fallback. No final clips or choreography changed.
+
 ## Do not work on yet
 
-- Do not begin Phase 07 or any later phase without an explicit request.
-- Do not replace the accepted prototype with final characters, alter rally or
-  camera behavior, restyle the environment/UI, or delete Phase 04 assets outside
-  the requirements of the explicitly requested current phase.
+- Do not begin Phase 08 or any later phase without an explicit request.
+- Do not connect final character clips to the rally, alter camera behavior,
+  restyle the environment/UI, or delete Phase 04 assets outside the requirements
+  of the explicitly requested current phase.
 
 ## Next milestone
 
-Phase 07 — Blockbench Character Pipeline:
-`tennis-portfolio-plans/07_BLOCKBENCH_CHARACTER_PIPELINE.md`.
+Complete the remaining Phase 07 human Blockbench authoring/export and application
+camera review documented in `assets-source/README.md`. Phase 08 animation and
+choreography remains out of scope until explicitly requested.

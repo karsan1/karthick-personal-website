@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { execFile } from "node:child_process";
@@ -7,14 +7,30 @@ import { promisify } from "node:util";
 const run = promisify(execFile);
 const root = resolve(import.meta.dirname, "..");
 const useFixture = process.argv.includes("--fixture");
-const source = resolve(root, useFixture ? "assets-source/fixtures/calibration-glb" : "assets-source/blender-exports");
+const characterSourceKindArg = process.argv.find((argument) => argument.startsWith("--character-source-kind="));
+const characterSourceKind = characterSourceKindArg?.split("=", 2)[1] ?? "blockbench-calibration-fixture";
+if (!["blockbench-calibration-fixture", "blockbench-export"].includes(characterSourceKind)) {
+  throw new Error("--character-source-kind must be blockbench-calibration-fixture or blockbench-export.");
+}
 const destination = resolve(root, "public/models");
 const transform = resolve(root, "node_modules/.bin/gltf-transform");
-const budgetBytes = { "court.glb": 100_000, "stadium-shell.glb": 100_000, "props.glb": 100_000, "scoreboard.glb": 60_000 };
+const sourceDirectories = useFixture
+  ? [
+    { path: resolve(root, "assets-source/fixtures/calibration-glb"), sourceKind: "calibration-fixture", assetKind: "environment" },
+    { path: resolve(root, "assets-source/blockbench-exports"), sourceKind: "blockbench-calibration-fixture", assetKind: "character" },
+  ]
+  : [
+    { path: resolve(root, "assets-source/blender-exports"), sourceKind: "blender-export", assetKind: "environment" },
+    { path: resolve(root, "assets-source/blockbench-exports"), sourceKind: characterSourceKind, assetKind: "character" },
+  ];
+const budgetBytes = { "court.glb": 100_000, "stadium-shell.glb": 100_000, "props.glb": 100_000, "scoreboard.glb": 60_000, "player-a.glb": 80_000, "player-b.glb": 80_000 };
 
-async function transformAsset(input, output, workspace) {
+async function transformAsset(input, output, workspace, assetKind) {
   await run(transform, ["inspect", input], { cwd: root });
-  const stages = ["prune", "dedup", "weld", "meshopt"];
+  // Weld can alter vertex ordering/weights at a skinned seam. Character assets
+  // intentionally stop at prune + dedup + Meshopt until a reviewed export proves
+  // it safe; static Phase 04 environment partitions retain their established path.
+  const stages = assetKind === "character" ? ["prune", "dedup", "meshopt"] : ["prune", "dedup", "weld", "meshopt"];
   let current = input;
   for (const [index, command] of stages.entries()) {
     const next = index === stages.length - 1 ? output : join(workspace, `${basename(input, ".glb")}-${command}.glb`);
@@ -26,32 +42,46 @@ async function transformAsset(input, output, workspace) {
   }
 }
 
+async function inspectTexturePolicy(path, sourceKind) {
+  const buffer = await readFile(path);
+  const json = JSON.parse(buffer.subarray(20, 20 + buffer.readUInt32LE(12)).toString("utf8").trim());
+  if (!json.images?.length) return "No raster textures; PBR base-color materials only.";
+  if (sourceKind !== "blockbench-export") throw new Error(`${basename(path)} has textures but is not a reviewed blockbench-export.`);
+  return "Reviewed palette atlas only: 64/128/256px, nearest-or-linear sampler, base-color/emissive sRGB use.";
+}
+
 await mkdir(destination, { recursive: true });
 const workspace = await mkdtemp(join(tmpdir(), "tennis-assets-"));
 try {
-  const files = (await readdir(source)).filter((file) => file.endsWith(".glb")).sort();
+  const sources = (await Promise.all(sourceDirectories.map(async (source) => (await readdir(source.path))
+    .filter((file) => file.endsWith(".glb"))
+    .map((file) => ({ ...source, file })))))
+    .flat()
+    .sort((left, right) => left.file.localeCompare(right.file));
   const assets = [];
-  for (const file of files) {
-    const sourcePath = resolve(source, file);
-    const targetPath = resolve(destination, file);
+  for (const source of sources) {
+    const sourcePath = resolve(source.path, source.file);
+    const targetPath = resolve(destination, source.file);
     const before = await stat(sourcePath);
-    const budget = budgetBytes[file];
-    if (!budget) throw new Error(`No byte budget for ${file}.`);
-    await transformAsset(sourcePath, targetPath, workspace);
+    const budget = budgetBytes[source.file];
+    if (!budget) throw new Error(`No byte budget for ${source.file}.`);
+    await transformAsset(sourcePath, targetPath, workspace, source.assetKind);
     const after = await stat(targetPath);
-    if (after.size > budget) throw new Error(`${file} exceeds its ${budget} byte budget after optimization.`);
-    assets.push({ file, sourceBytes: before.size, optimizedBytes: after.size, budgetBytes: budget, texturePolicy: "No raster textures; PBR base-color materials only." });
+    if (after.size > budget) throw new Error(`${source.file} exceeds its ${budget} byte budget after optimization.`);
+    assets.push({ file: source.file, sourceKind: source.sourceKind, assetKind: source.assetKind, sourceBytes: before.size, optimizedBytes: after.size, budgetBytes: budget, texturePolicy: await inspectTexturePolicy(targetPath, source.sourceKind), optimization: source.assetKind === "character" ? ["inspect", "prune", "dedup", "meshopt"] : ["inspect", "prune", "dedup", "weld", "meshopt"] });
   }
   await writeFile(resolve(destination, "asset-manifest.json"), `${JSON.stringify({
-    schemaVersion: 2,
-    sourceKind: useFixture ? "calibration-fixture" : "blender-export",
+    schemaVersion: 3,
+    sourceKinds: [...new Set(assets.map((asset) => asset.sourceKind))],
     coordinateSystem: "Y-up glTF; court center [0, 0, 0]; +Z is north baseline; 8.2m x 12.4m outer court.",
-    optimization: ["inspect", "prune", "dedup", "weld", "meshopt"],
+    optimization: "Per-asset; character assets never run weld automatically.",
     compression: { meshopt: true, encoder: "@gltf-transform/cli 4.5.0", level: "high", runtime: "Drei useGLTF MeshoptDecoder" },
-    textureWorkflow: { ktx2: false, reason: "This phase contains no raster textures. Add KTX2/Basis only with an authored texture and visual comparison." },
+    textureWorkflow: assets.some((asset) => asset.texturePolicy.startsWith("Reviewed palette atlas"))
+      ? { ktx2: false, rasterTextures: "Reviewed 64/128/256px PNG palette atlases on genuine blockbench-export player assets only.", reason: "KTX2/Basis remains disabled pending a visual comparison." }
+      : { ktx2: false, rasterTextures: "None; all current exports are texture-free.", reason: "Add KTX2/Basis only with an authored texture and visual comparison." },
     assets,
   }, null, 2)}\n`);
-  console.log(`Optimized ${assets.length} ${useFixture ? "calibration fixture" : "Blender export"} asset(s) with prune, dedup, weld, and Meshopt.`);
+  console.log(`Optimized ${assets.length} asset(s); character exports use conservative prune, dedup, and Meshopt without weld.`);
 } finally {
   await rm(workspace, { recursive: true, force: true });
 }

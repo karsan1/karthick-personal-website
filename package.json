@@ -10,9 +10,11 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "assets:generate-fixtures": "node scripts/generate-source-assets.mjs",
+    "assets:generate-character-calibration": "node scripts/generate-character-calibration-assets.mjs",
     "assets:optimize": "node scripts/optimize-assets.mjs",
     "assets:validate": "node scripts/validate-assets.mjs",
-    "assets:fixtures": "node scripts/generate-source-assets.mjs && node scripts/optimize-assets.mjs --fixture && node scripts/validate-assets.mjs",
+    "assets:fixtures": "node scripts/generate-source-assets.mjs && node scripts/generate-character-calibration-assets.mjs && node scripts/optimize-assets.mjs --fixture && node scripts/validate-assets.mjs",
+    "assets:build:reviewed-characters": "node scripts/optimize-assets.mjs --character-source-kind=blockbench-export && node scripts/validate-assets.mjs",
     "assets:build": "node scripts/optimize-assets.mjs && node scripts/validate-assets.mjs"
   },
   "dependencies": {
