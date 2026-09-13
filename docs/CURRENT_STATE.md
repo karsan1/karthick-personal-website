@@ -3,18 +3,19 @@
 ## Current phase
 
 Phases 01 foundation, 02 interaction prototype, 03 content/information
-architecture, and 04 Blender/3D asset pipeline are complete and accepted.
+architecture, 04 Blender/3D asset pipeline, and 05 retro art-direction migration
+are complete and accepted.
 
-The retro Phase 05–13 planning system is installed. No redesign implementation
-has started. The current next milestone is **Phase 05 — Retro Art Direction &
-Migration**.
+Phase 05 established the visual, authoring, and migration contracts without
+changing the accepted runtime. The current next milestone is **Phase 06 — Retro
+Character Prototype**.
 
 ## Current objective
 
-- Implement only `tennis-portfolio-plans/05_RETRO_ART_DIRECTION_AND_MIGRATION.md`
-  when explicitly requested.
-- Establish the detailed visual and asset-source migration contracts without
-  destabilizing the accepted Phase 01–04 implementation.
+- Implement only `tennis-portfolio-plans/06_RETRO_CHARACTER_PROTOTYPE.md` when
+  explicitly requested.
+- Prove the low-poly character silhouette directly in R3F while preserving the
+  accepted rally, camera, scroll, content, fallback, and asset-loader contracts.
 
 ## Completed baseline
 
@@ -34,6 +35,9 @@ Migration**.
 
 ## Art-direction transition
 
+- `docs/RETRO_ART_DIRECTION.md` is the persistent visual specification for
+  character silhouette, geometry/texture budgets, shading, motion, and the
+  modern-DOM/retro-WebGL boundary.
 - The previous stylized-realistic character direction was intentionally
   superseded before Phase 05.
 - The target is now a deliberately low-poly early-console/retro tennis game
@@ -64,14 +68,24 @@ Migration**.
   validation, and progressive loading behavior. KTX2/Basis remains optional
   until raster textures justify it.
 
+## Phase 05 completion
+
+- Blockbench is now the preferred source tool for new retro characters and
+  suitable small/medium assets; GLB remains the authoring-tool-independent runtime
+  contract.
+- The asset pipeline agent and source documentation support both Blockbench and
+  the accepted legacy Blender workflow.
+- The original future Phase 05–13 plans are retained only as superseded historical
+  records under `tennis-portfolio-plans/archive/pre-retro-roadmap/`.
+- No runtime code, rally/camera behavior, or production Phase 04 asset was changed.
+
 ## Do not work on yet
 
-- Do not begin Phase 05 or any later phase without an explicit request.
-- Do not replace the temporary players, create Blockbench models, alter rally or
-  camera behavior, restyle the environment/UI, or delete Phase 04 assets as part
-  of planning integration.
+- Do not begin Phase 06 or any later phase without an explicit request.
+- Do not create final Blockbench character assets, alter rally or camera behavior,
+  restyle the environment/UI, or delete Phase 04 assets as part of Phase 05.
 
 ## Next milestone
 
-Phase 05 — Retro Art Direction & Migration:
-`tennis-portfolio-plans/05_RETRO_ART_DIRECTION_AND_MIGRATION.md`.
+Phase 06 — Retro Character Prototype:
+`tennis-portfolio-plans/06_RETRO_CHARACTER_PROTOTYPE.md`.

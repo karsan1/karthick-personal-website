@@ -117,10 +117,13 @@ delivery remains glTF/GLB regardless of authoring tool.
 the ball, camera, master scroll, and DOM remain smooth. The existing Phase 04
 environment is a transitional baseline, not obsolete work. Its assets and sources
 may be retired only after later retro replacements are integrated and validated.
+The runtime consumes the same GLB contract whether an asset was authored in
+Blockbench or Blender; it must not branch on authoring tool.
 
 **Do not:** Add a physics engine for the deterministic rally, rasterize important
-portfolio content into WebGL, apply retro effects to DOM readability, require
-Blender for new character work, or delete Phase 04 assets during migration setup.
+portfolio content into WebGL, apply a global pixel-art postprocess that damages DOM
+readability, require Blender for new character work, or delete Phase 04 assets
+during migration setup.
 
 ---
 
