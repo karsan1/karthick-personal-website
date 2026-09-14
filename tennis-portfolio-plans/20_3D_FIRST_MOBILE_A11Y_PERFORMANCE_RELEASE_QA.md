@@ -2,7 +2,7 @@
 
 ## Objective
 
-Harden the final 3D-first portfolio and release it only after the world-navigation model, pixel-sports court direction, player art, responsive behavior, accessibility, and performance all work across real device/input conditions.
+Harden the final 3D-first portfolio and release it only after the world-navigation model, pixel-sports **grass-court tournament** direction, player art, responsive behavior, accessibility, and performance all work across real device/input conditions.
 
 This phase is the final release target for the redesigned product direction.
 
@@ -59,7 +59,7 @@ Validate at minimum:
 
 ## Pixel-sports visual regression
 
-The final site must not drift back toward the pre-Phase-16 modern green low-poly stadium look.
+The final site must not drift back toward either the pre-Phase-16 modern dark-green low-poly stadium or the superseded clay-court direction.
 
 Capture and review at least:
 
@@ -78,32 +78,52 @@ Capture and review at least:
 
 The opening frame must clearly show:
 
-- warm clay/brown court as the dominant surface,
-- bright readable court lines,
-- dark green perimeter walls,
+- traditional grass court as the dominant surface,
+- lighter grass values with visible mowing/value bands,
+- optional subtle worn baseline/service patches,
+- bright readable white/cream court lines,
+- deep-green perimeter walls/furniture,
 - darker net + light top tape,
 - near and far players,
 - colorful far-side crowd/stands,
 - scoreboard/signage context,
+- restrained cream/purple accents if used,
 - compact portfolio UI that does not hide the match.
 
 Reject release if the Hero primarily reads as:
 
-- modern green tennis court,
-- generic low-poly stadium,
+- clay/brown tennis court,
+- generic flat green flooring,
+- modern dark-green low-poly stadium,
 - photoreal venue,
 - giant foreground website typography with tennis behind it.
 
-### Originality check
+### Grass-court identity assertions
+
+At normal gameplay distance, reviewers should be able to identify the surface as grass without relying on explanatory text.
+
+Verify at least two or more of these cues are visibly working together:
+
+- alternating mowing/value bands,
+- lighter natural grass palette,
+- muted worn areas near heavy-use zones,
+- crisp white line contrast,
+- deep-green surrounding walls/furniture distinct from the playing surface.
+
+If the court and perimeter are visually the same green block, the grass-court direction has failed.
+
+### Originality / branding check
 
 Confirm no final asset reproduces:
 
 - a commercial game character/sprite,
-- real or copied sponsor signs from the supplied reference,
+- Wimbledon logo/wordmark,
+- exact Wimbledon signage or official sponsor treatment,
 - copied court texture,
-- copied UI layout/branding.
+- copied UI layout/branding,
+- recognizable professional player likeness without intentional authorization.
 
-The site should evoke a period/style, not clone a game.
+The site may evoke a classic grass-court tournament atmosphere, but it must remain an original portfolio environment.
 
 ---
 
@@ -113,6 +133,8 @@ If Phase 16–19 uses controlled lower-resolution WebGL rendering, test:
 
 - scene clarity on Retina/high-DPI displays,
 - court-line crawl/shimmer while scrolling,
+- grass stripe/band shimmer,
+- worn-zone flicker,
 - net aliasing,
 - crowd-card shimmer,
 - player/racket readability,
@@ -176,7 +198,7 @@ Confirm:
 - bottom sheets are usable on short mobile viewports,
 - projects remain understandable without the scoreboard,
 - contact and résumé remain easy to find,
-- UI colors remain legible over clay/green/crowd backgrounds.
+- UI colors remain legible over bright grass, deep-green surrounds, crowd, and any purple/cream accents.
 
 ---
 
@@ -211,6 +233,7 @@ Record:
 - initial JS payload impact,
 - GLB/model bytes,
 - texture bytes if any,
+- grass surface/material complexity,
 - crowd/signage sprite bytes if any,
 - draw submissions/material counts by quality tier,
 - DPR/internal resolution/antialias settings,
@@ -230,14 +253,21 @@ If the pixel-sports look uses lower scene resolution, document whether that redu
 
 ### High
 
-May include full crowd/signage density and accepted scene-resolution treatment.
+May include:
+
+- full crowd/signage density,
+- strongest mowing/wear detail,
+- restrained tournament accent details,
+- accepted scene-resolution treatment.
 
 ### Medium
 
 Must retain:
 
-- clay court,
-- green walls,
+- recognizable grass surface,
+- grass-value bands,
+- crisp white lines,
+- deep-green walls,
 - readable net,
 - players,
 - all stations,
@@ -247,9 +277,11 @@ Must retain:
 
 May remove decorative spectators/signs first, but must retain:
 
-- court identity,
+- grass-court identity,
 - both players,
+- white court lines,
 - net,
+- deep-green surround separation,
 - scoreboard/projects destination,
 - required station silhouettes,
 - navigation functionality.
@@ -291,7 +323,7 @@ Before promotion:
 
 ## Legacy cleanup
 
-Only remove old runtime/UI paths when the new 3D-first pixel-sports route has passed regression.
+Only remove old runtime/UI paths when the new 3D-first pixel-sports grass-court route has passed regression.
 
 Candidates may include:
 
@@ -299,7 +331,8 @@ Candidates may include:
 - superseded chapter cue elements,
 - old noninteractive pointer-event assumptions,
 - unused calibration-only environment code,
-- stale green-court palette constants no longer used by primary runtime,
+- stale clay-court palette constants from superseded planning,
+- stale flat/dark-green primary-court constants no longer used by the main runtime,
 - legacy plan references that claim background-first presentation is final.
 
 Do not delete Blender fallback assets while runtime/build tooling still references them.
@@ -309,8 +342,10 @@ Do not delete Blender fallback assets while runtime/build tooling still referenc
 ## Acceptance criteria
 
 - [ ] The 3D world is the primary experience on desktop and remains usable on mobile.
-- [ ] The opening frame unmistakably reads as an original old-console tennis game translated into 3D.
-- [ ] Warm clay court + green walls + colorful crowd remain consistent across quality tiers.
+- [ ] The opening frame unmistakably reads as an original old-console **grass-court** tennis game translated into 3D.
+- [ ] Lighter grass + white lines + deep-green surrounds remain consistent across quality tiers.
+- [ ] Grass mowing/value variation remains visible enough to avoid a generic flat-green court.
+- [ ] Restrained cream/purple accents, if used, support the classic tournament feel without copied branding.
 - [ ] Both final players and rackets read at the elevated gameplay-camera distance.
 - [ ] Any WebGL pixelation/resolution treatment is stable and leaves DOM/pointer behavior intact.
 - [ ] Every in-world hotspot has a complete accessible DOM equivalent.
@@ -321,7 +356,7 @@ Do not delete Blender fallback assets while runtime/build tooling still referenc
 - [ ] Project detail focus behavior is correct.
 - [ ] Performance is measured and acceptable across quality tiers.
 - [ ] Final retro characters are production assets, not calibration fixtures.
-- [ ] No specific commercial-game assets/branding are copied.
+- [ ] No specific commercial-game assets, Wimbledon branding, or copied tournament signage are used.
 - [ ] Preview/release/rollback evidence is recorded.
 - [ ] Current-state and performance documentation reflects the shipped architecture.
 
