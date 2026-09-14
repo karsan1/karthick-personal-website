@@ -2,6 +2,7 @@ import type { ChapterId, Portfolio } from "@/types/portfolio";
 import { Navigation } from "./Navigation";
 import { ChapterIndicator } from "./ChapterIndicator";
 import { ProjectGallery } from "./ProjectGallery";
+import { WorldMenu } from "./WorldMenu";
 
 type PortfolioLayerProps = {
   portfolio: Portfolio;
@@ -42,6 +43,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       <a className="skip-link" href="#about">Skip to portfolio content</a>
       <Navigation items={portfolio.navigation} />
       <ChapterIndicator chapters={portfolio.chapters} />
+      <WorldMenu />
 
       <section className="hero section" {...chapterProps("hero")}>
         <div className="hero-content">

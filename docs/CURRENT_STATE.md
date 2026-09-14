@@ -3,9 +3,9 @@
 ## Current phase
 
 Phases 01–12 are implemented. Phase 14 is accepted as an architecture-only
-product reframe: the retro tennis world is now the intended primary visual and
-navigation surface, with contextual semantic DOM content. No Phase 15 runtime
-interaction code was added during this acceptance milestone.
+product reframe, and Phase 15 now implements its first runtime interaction
+slice: the retro tennis world is the primary visual/navigation surface with
+contextual semantic DOM controls and no independent camera ownership.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
@@ -22,9 +22,9 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Begin Phase 15 only when explicitly requested, implementing one shared
-  destination path for scroll, DOM navigation, hashes/deep links, and world
-  hotspots without giving hotspots independent camera ownership.
+- Begin Phase 16 only when explicitly requested, extending the accepted hotspot
+  infrastructure into authored venue stations without creating another
+  navigation or camera-ownership path.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene becomes visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,
@@ -253,18 +253,35 @@ Blockbench authoring and final visual approval are still required.
   reduced motion, non-WebGL fallback, quality/audio/performance infrastructure,
   and the Phase 04 Blender fallback remain protected contracts.
 
+## Phase 15 implementation status
+
+- The Player A silhouette exposes the About target through one generous root
+  proxy, while the procedural scoreboard exposes Projects through a separate
+  generous proxy. The targets do not bind handlers to animated limbs or mutate
+  camera/animation state.
+- DOM navigation, semantic compact court-select buttons, world clicks, and hash
+  links all request a chapter destination; the existing timeline resolves that
+  request to canonical scroll and remains the only camera/narrative owner.
+- Canvas pointer input is enabled only in uncovered page space. Interactive DOM
+  controls retain pointer priority, and an open project detail surface suppresses
+  world selection. Coarse hover/selection/mode state is stored outside `useFrame`.
+- Desktop browser checks confirmed both WebGL targets, DOM/hash convergence, and
+  reverse chapter navigation. A touch-sized viewport confirmed compact semantic
+  controls with 44px targets; reduced-motion and non-WebGL paths retain those DOM
+  controls without requiring raw Canvas focus.
+
 ## Do not work on yet
 
-- Do not implement Phase 15 hotspot/runtime infrastructure without a new explicit
-  request, or treat Phase 14 documentation acceptance as runtime validation.
+- Do not build Phase 16 venue stations or Phase 17 camera choreography without a
+  new explicit request.
 - Do not introduce independent choreography or delete/archive Phase 04 assets while
   the Phase 09 fallback chain and default asset build retain them.
 
 ## Next milestone
 
-Phase 15 is the next implementation milestone: add the shared interaction/hotspot
-infrastructure against ADR-009 without yet building future station art or camera
-polish. Phase 13 preview, production-browser, and rollback evidence remains a
+Phase 16 is the next implementation milestone: extend the accepted infrastructure
+into the venue information architecture while preserving one shared destination
+path. Phase 13 preview, production-browser, and rollback evidence remains a
 separate outstanding release gate. Human Blockbench character and clip
 authoring/export approval also remains a separate art task documented in
 `assets-source/README.md`; generated fixtures must not be presented as final art.

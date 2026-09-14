@@ -2,6 +2,7 @@
 
 import type { NavigationItem } from "@/types/portfolio";
 import { useExperienceStore } from "@/store/experienceStore";
+import { usePortfolioNavigation } from "@/hooks/usePortfolioNavigation";
 import { ExperienceControls } from "./ExperienceControls";
 
 type NavigationProps = {
@@ -10,7 +11,7 @@ type NavigationProps = {
 
 export function Navigation({ items }: NavigationProps) {
   const activeChapter = useExperienceStore((state) => state.activeChapter);
-  const setNavigationTarget = useExperienceStore((state) => state.setNavigationTarget);
+  const navigateToChapter = usePortfolioNavigation();
 
   return (
     <nav className="site-nav" aria-label="Portfolio sections">
@@ -23,8 +24,11 @@ export function Navigation({ items }: NavigationProps) {
             key={item.id}
             href={item.href}
             aria-current={item.id === activeChapter ? "page" : undefined}
-            onClick={() => {
-              if (!item.external && item.id !== "resume") setNavigationTarget(item.id);
+            onClick={(event) => {
+              if (!item.external && item.id !== "resume") {
+                event.preventDefault();
+                navigateToChapter(item.id);
+              }
             }}
             {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
           >

@@ -9,6 +9,8 @@ import {
   type NarrativeProgress,
 } from "@/animations/prototypeMotion";
 import { RetroPlayer } from "./characters/RetroPlayer";
+import { WorldHotspot } from "./interactions/WorldHotspot";
+import { WORLD_HOTSPOTS } from "./interactions/worldHotspots";
 
 type PrototypeCourtProps = {
   progress: MutableRefObject<NarrativeProgress>;
@@ -176,7 +178,9 @@ type RallyActorsProps = PrototypeCourtProps & { calibration?: boolean; reducedMo
 export function RallyActors({ progress, calibration = false, reducedMotion = false }: RallyActorsProps) {
   return (
     <group>
-      <RetroPlayer progress={progress} side="a" smoothReference={calibration} />
+      <WorldHotspot {...WORLD_HOTSPOTS.aboutPlayer} hitArea={[2.2, 3.4, 2.2]} hitPosition={[-0.12, 1.55, -COURT_DIMENSIONS.playerBaselineZ]}>
+        <RetroPlayer progress={progress} side="a" smoothReference={calibration} />
+      </WorldHotspot>
       <RetroPlayer progress={progress} side="b" smoothReference={calibration} />
       <TennisBall progress={progress} reducedMotion={reducedMotion} />
     </group>

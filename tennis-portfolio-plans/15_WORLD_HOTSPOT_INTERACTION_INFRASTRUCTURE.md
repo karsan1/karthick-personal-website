@@ -225,14 +225,14 @@ Test at minimum:
 
 ## Acceptance criteria
 
-- [ ] Canvas can receive intentional pointer interactions.
-- [ ] DOM controls are not blocked by Canvas interaction.
-- [ ] One shared navigation path handles DOM and 3D selections.
-- [ ] At least two representative hotspots work end to end, including the About player target and one environment target.
-- [ ] Hotspot clicks move narrative state through scroll/progress rather than direct camera mutation.
-- [ ] Touch interaction is usable.
-- [ ] Equivalent semantic DOM controls exist.
-- [ ] No per-frame Zustand/React interaction writes are introduced.
-- [ ] Existing deterministic rally and reverse-scroll behavior remain intact.
+- [x] Canvas can receive intentional pointer interactions.
+- [x] DOM controls are not blocked by Canvas interaction.
+- [x] One shared navigation path handles DOM and 3D selections.
+- [x] At least two representative hotspots work end to end, including the About player target and one environment target.
+- [x] Hotspot clicks move narrative state through scroll/progress rather than direct camera mutation.
+- [x] Touch interaction is usable.
+- [x] Equivalent semantic DOM controls exist.
+- [x] No per-frame Zustand/React interaction writes are introduced.
+- [x] Existing deterministic rally and reverse-scroll behavior remain intact.
 
 Stop after infrastructure acceptance. Do not yet build all venue stations.

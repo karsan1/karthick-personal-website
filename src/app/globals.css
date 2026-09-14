@@ -45,9 +45,7 @@ a {
 }
 
 .experience-shell,
-.experience-canvas {
-  pointer-events: none !important;
-}
+.experience-canvas { pointer-events: auto; }
 
 .experience-shell {
   transition: opacity 180ms ease;
@@ -86,7 +84,39 @@ body[data-project-dialog-open="true"] .experience-shell {
 .portfolio-layer {
   position: relative;
   z-index: 1;
+  pointer-events: none;
 }
+
+/* The world receives incidental pointer space; real DOM controls keep priority. */
+.portfolio-layer :is(a, button, input, label, summary, select, textarea, [role="dialog"]) { pointer-events: auto; }
+
+.world-menu {
+  position: fixed;
+  left: var(--page-gutter);
+  bottom: 1.25rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--line);
+  background: rgba(7, 18, 15, 0.84);
+  font-family: var(--font-geist-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.world-menu-label { color: var(--muted); }
+.world-menu button {
+  border: 0;
+  min-height: 2.25rem;
+  padding: 0.28rem 0.38rem;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+.world-menu button:hover, .world-menu button:focus-visible { background: rgba(216, 255, 57, 0.12); }
 
 .skip-link {
   position: fixed;
@@ -807,7 +837,30 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
     border-radius: 1.25rem 1.25rem 0 0;
   }
 
-  .chapter-indicator { right: var(--page-gutter); bottom: 0.75rem; }
+  .chapter-indicator { right: var(--page-gutter); bottom: 4.75rem; }
+
+  .world-menu {
+    right: var(--page-gutter);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem;
+    padding: 0.35rem;
+  }
+
+  .world-menu-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .world-menu button {
+    min-height: 2.75rem;
+    padding: 0.45rem;
+    white-space: normal;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

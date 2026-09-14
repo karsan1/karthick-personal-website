@@ -4,6 +4,8 @@ import { useEffect, type MutableRefObject, type RefObject } from "react";
 import { getGSAP } from "@/lib/gsap";
 import { PROTOTYPE_LABELS, sampleMatchState, type NarrativeProgress } from "./prototypeMotion";
 import { useExperienceStore } from "@/store/experienceStore";
+import { PORTFOLIO_NAVIGATION_EVENT, requestPortfolioNavigation } from "@/hooks/usePortfolioNavigation";
+import type { ChapterId } from "@/types/portfolio";
 
 type UsePrototypeTimelineOptions = {
   scope: RefObject<HTMLElement | null>;
@@ -79,6 +81,23 @@ export function usePrototypeTimeline({
     };
 
     const onHashNavigation = () => requestHashAlignment();
+    const navigateToChapter = (chapterId: ChapterId) => {
+      const href = `#${chapterId}`;
+      const top = chapterScrollTop(href);
+      if (top === undefined) return;
+      if (window.location.hash !== href) window.history.pushState(null, "", href);
+      window.scrollTo({ top, behavior: "auto" });
+      // A same-chapter request does not guarantee a ScrollTrigger update. This
+      // request has been resolved once the canonical scroll position is set.
+      const state = useExperienceStore.getState();
+      if (state.navigationTarget === chapterId) state.setNavigationTarget(null);
+      if (reducedMotion) {
+        const chapterProgress = Number(document.getElementById(chapterId)?.dataset.chapterStart ?? 0);
+        progress.current.value = chapterProgress;
+        commitActiveChapter(chapterProgress);
+      }
+    };
+    const onPortfolioNavigation = (event: Event) => navigateToChapter((event as CustomEvent<ChapterId>).detail);
     const onResize = () => requestLayoutRealignment();
     const onPageReady = () => requestLayoutRealignment();
     const onReducedScroll = () => {
@@ -95,20 +114,12 @@ export function usePrototypeTimeline({
       const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
       const href = link?.getAttribute("href");
       if (!href || href === "#") return;
-      const top = chapterScrollTop(href);
-      if (top === undefined) return;
-
       event.preventDefault();
-      if (window.location.hash !== href) window.history.pushState(null, "", href);
-      window.scrollTo({ top, behavior: "auto" });
-      if (reducedMotion) {
-        const chapterProgress = Number(document.getElementById(href.slice(1))?.dataset.chapterStart ?? 0);
-        progress.current.value = chapterProgress;
-        commitActiveChapter(chapterProgress);
-      }
+      requestPortfolioNavigation(href.slice(1) as ChapterId);
     };
 
     document.addEventListener("click", onDocumentClick);
+    window.addEventListener(PORTFOLIO_NAVIGATION_EVENT, onPortfolioNavigation);
     window.addEventListener("hashchange", onHashNavigation);
     window.addEventListener("popstate", onHashNavigation);
     window.addEventListener("resize", onResize);
@@ -207,6 +218,7 @@ export function usePrototypeTimeline({
       window.cancelAnimationFrame(alignmentFrame);
       window.cancelAnimationFrame(reducedScrollFrame);
       document.removeEventListener("click", onDocumentClick);
+      window.removeEventListener(PORTFOLIO_NAVIGATION_EVENT, onPortfolioNavigation);
       window.removeEventListener("hashchange", onHashNavigation);
       window.removeEventListener("popstate", onHashNavigation);
       window.removeEventListener("resize", onResize);

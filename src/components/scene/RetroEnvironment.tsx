@@ -6,6 +6,8 @@ import { COURT_DIMENSIONS, NARRATIVE_CHAPTERS, sampleScoreboardEmphasis, type Na
 import { useExperienceStore } from "@/store/experienceStore";
 import type { QualityTier } from "@/store/experienceStore";
 import { SCENE_QUALITY } from "./sceneQuality";
+import { WorldHotspot } from "./interactions/WorldHotspot";
+import { WORLD_HOTSPOTS } from "./interactions/worldHotspots";
 
 /**
  * Phase 09 environment contract: every position retains the accepted Phase 04
@@ -306,7 +308,11 @@ export function RetroEnvironment({ progress, qualityTier, reducedMotion }: {
     <group name="retro-environment">
       <RetroCourt palette={palette} />
       {stage >= 1 && SCENE_QUALITY[qualityTier].environmentDetail >= 1 ? <CourtsideProps palette={palette} /> : null}
-      {stage >= 2 && SCENE_QUALITY[qualityTier].environmentDetail >= 2 ? <RetroScoreboard palette={palette} progress={progress} reducedMotion={reducedMotion} /> : null}
+      {stage >= 2 && SCENE_QUALITY[qualityTier].environmentDetail >= 2 ? (
+        <WorldHotspot {...WORLD_HOTSPOTS.projectsScoreboard} hitArea={[4.8, 2.4, 1.15]} hitPosition={[0, 3.6, 7.55]}>
+          <RetroScoreboard palette={palette} progress={progress} reducedMotion={reducedMotion} />
+        </WorldHotspot>
+      ) : null}
       {stage >= 3 && SCENE_QUALITY[qualityTier].environmentDetail >= 3 ? <StadiumShell palette={palette} /> : null}
     </group>
   );
