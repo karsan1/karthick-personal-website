@@ -2,7 +2,7 @@
 
 ## Objective
 
-Re-author the deterministic scroll/camera experience around the Phase 16 pixel-sports venue so the site feels like moving through an old console tennis game rather than orbiting around a generic 3D stadium.
+Re-author the deterministic scroll/camera experience around the Phase 16 pixel-sports grass-court venue so the site feels like moving through an old console tennis game rather than orbiting around a generic 3D stadium.
 
 The visual source of truth is:
 
@@ -22,15 +22,15 @@ The Phase 16 court/station layout is assumed accepted before this phase begins.
 
 ## Core camera principle
 
-The default visual identity should come from a **stable elevated baseline gameplay camera**, not from constant cinematic movement.
+The default visual identity should come from a **stable elevated baseline gameplay camera**, not constant cinematic movement.
 
-The supplied visual direction is strongest because the court geometry, players, net, walls, stands, and crowd all read at once from one recognizable game-screen angle.
+The supplied retro reference still defines the composition language, while the Phase 16 art direction changes the venue itself to a traditional grass-court tournament palette.
 
 Therefore:
 
-> Use one strong gameplay camera family as the visual anchor, then derive chapter views as restrained crops/shifts from that family.
+> Use one strong elevated grass-court gameplay camera family as the visual anchor, then derive chapter views as restrained crops/shifts from that family.
 
-Avoid turning each portfolio section into a completely unrelated cinematic shot.
+Avoid turning each portfolio section into an unrelated cinematic shot.
 
 ---
 
@@ -38,7 +38,7 @@ Avoid turning each portfolio section into a completely unrelated cinematic shot.
 
 First implementation attempt must keep the existing PerspectiveCamera architecture.
 
-Approximate the classic 16-bit gameplay view with:
+Approximate the classic old-console gameplay view with:
 
 - elevated camera height,
 - position close to the near baseline centerline,
@@ -49,11 +49,11 @@ Approximate the classic 16-bit gameplay view with:
 - both baselines visible in Hero,
 - near player in the lower portion of the frame,
 - far player in the upper portion,
-- crowd/signage visible above the far wall.
+- crowd/signage visible above the far deep-green wall.
 
 Do not switch the entire application to orthographic projection by default.
 
-If PerspectiveCamera cannot achieve the desired compressed-depth game-screen look, create a **single bounded visual prototype** comparing perspective vs orthographic for the same Hero composition. Only adopt orthographic if it preserves:
+If PerspectiveCamera cannot achieve the desired compressed-depth game-screen look, create a single bounded visual prototype comparing perspective vs orthographic for the same Hero composition. Only adopt orthographic if it preserves:
 
 - one camera owner,
 - hotspot projection/hit accuracy,
@@ -75,7 +75,7 @@ Suggested chapter flow:
 
 ```text
 00 HERO / MATCH INTRO
-   iconic full-court gameplay view
+   iconic full-court grass gameplay view
 
 01 ABOUT
    restrained crop toward Karthick player
@@ -110,11 +110,14 @@ Required visual contents:
 - service boxes,
 - net,
 - both players,
-- warm clay surface dominating the frame,
-- dark green perimeter walls,
+- striped/lightly varied grass surface dominating the frame,
+- crisp white lines,
+- deep-green perimeter walls/court furniture,
 - far-side stands/crowd,
 - scoreboard/signage in venue context,
 - compact identity UI that does not obscure gameplay.
+
+A restrained cream/purple accent may appear in the venue, but green remains visually dominant.
 
 The court should feel centered and slightly compressed in depth.
 
@@ -126,35 +129,35 @@ Avoid:
 - huge empty foreground,
 - camera positioned so close that only half the court is visible.
 
-A reviewer should immediately read “retro tennis game” before reading the portfolio copy.
+A reviewer should immediately read “retro grass-court tennis game” before reading the portfolio copy.
 
 ---
 
 ## Camera language for later chapters
 
-Use restrained variations of the gameplay view:
+Use restrained variations of the gameplay view.
 
 ### About
 
 - move slightly closer/lower toward the Karthick-side player,
-- preserve enough court/net context to keep the tennis-game identity,
+- preserve enough grass/net/deep-green surround context to keep the tennis-game identity,
 - avoid face-level portrait cinematography.
 
 ### Experience
 
 - shift toward the bench/kit area,
-- keep part of the court visible,
+- keep part of the grass court visible,
 - treat it like a game between-point camera cut.
 
 ### Research
 
 - frame umpire/strategy station from a clear sideline angle,
-- retain wall/court geometry as context.
+- retain green wall/court geometry as context.
 
 ### Projects
 
 - elevate/shift gaze toward the far-side scoreboard,
-- preserve enough of the court below it to show that Projects lives inside the stadium.
+- preserve enough of the grass court below it to show that Projects lives inside the venue.
 
 ### Capabilities
 
@@ -216,9 +219,7 @@ Suggested pacing:
 - Contact: match-point/end state.
 
 Ball and camera remain smooth.
-
 Character animation remains stepped.
-
 Do not introduce physics.
 
 ---
@@ -230,7 +231,8 @@ The scene may use lower-resolution WebGL presentation from Phase 16.
 Camera motion must be reviewed for:
 
 - pixel shimmer,
-- line crawling on court markings,
+- line crawling on white court markings,
+- instability in grass mowing bands/worn patches,
 - unstable sprite/card crowd edges,
 - net aliasing,
 - hotspot label jitter.
@@ -291,7 +293,7 @@ Author separate composition sets for:
 
 ### Desktop
 
-Preserve the iconic baseline game-screen view as much as possible.
+Preserve the iconic elevated baseline grass-court game-screen view as much as possible.
 
 ### Mobile portrait
 
@@ -301,11 +303,12 @@ Instead:
 
 - show a wider vertical court slice,
 - keep both players readable when possible,
+- preserve obvious grass-vs-surround color separation,
 - reduce crowd density rather than shrinking the court too far,
 - use fewer camera destinations,
 - let contextual UI use a bottom sheet.
 
-The mobile Hero must still communicate retro tennis immediately.
+The mobile Hero must still communicate retro grass-court tennis immediately.
 
 ---
 
@@ -336,15 +339,17 @@ Capture at minimum:
 9. reduced-motion Hero,
 10. one reverse-scroll transition sequence.
 
-The desktop Hero should be compared against the Phase 16 pixel-sports art-direction checklist, not against the old green low-poly scene.
+The desktop Hero should be compared against the Phase 16 grass-court pixel-sports checklist, not against the old generic green low-poly scene.
 
 ---
 
 ## Acceptance criteria
 
 - [ ] Hero uses an elevated baseline gameplay composition with restrained perspective.
-- [ ] Warm clay court remains the dominant visual in the opening frame.
-- [ ] Green walls, crowd, scoreboard/signage, net, and both players remain readable together.
+- [ ] Traditional grass court remains the dominant visual in the opening frame.
+- [ ] Grass bands/value variation make the surface read clearly as grass rather than generic green flooring.
+- [ ] White lines, deep-green surrounds, crowd, scoreboard/signage, dark net, and both players remain readable together.
+- [ ] Restrained cream/purple accents support the tournament atmosphere without copied branding.
 - [ ] Chapter views feel like variations/cuts from one game-camera language.
 - [ ] No chapter becomes an unrelated cinematic orbit shot.
 - [ ] Scroll and hotspot selection converge on the same narrative progress.
