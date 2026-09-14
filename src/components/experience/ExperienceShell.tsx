@@ -6,6 +6,8 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { usePrototypeTimeline } from "@/animations/usePrototypeTimeline";
 import type { NarrativeProgress } from "@/animations/prototypeMotion";
 import { LoadingOverlay } from "@/components/ui/LoadingOverlay";
+import { useRallyAudio } from "@/audio/useRallyAudio";
+import { useExperienceStore } from "@/store/experienceStore";
 import { WebGLGuard } from "./WebGLGuard";
 
 const ExperienceCanvas = dynamic(
@@ -22,6 +24,7 @@ export function ExperienceShell() {
   const reducedMotion = useReducedMotion();
 
   usePrototypeTimeline({ scope, progress, debug, reducedMotion });
+  useRallyAudio(progress, reducedMotion);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -30,6 +33,13 @@ export function ExperienceShell() {
       // Explicit QA escape hatch: ?environment=legacy exercises the accepted
       // Phase 04 GLB loader and its primitive fallback without touching assets.
       setLegacyEnvironment(params.get("environment") === "legacy");
+      // Start narrow/mobile layouts at the balanced tier so their separately
+      // authored camera composition is paired with simpler venue detail. The
+      // visible preference control can still override this coarse default.
+      const state = useExperienceStore.getState();
+      if (window.matchMedia("(max-width: 44rem)").matches && state.qualityTier === "high") {
+        state.setQualityTier("medium");
+      }
     });
 
     return () => window.cancelAnimationFrame(frame);

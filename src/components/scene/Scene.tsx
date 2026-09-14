@@ -7,24 +7,26 @@ import { RallyActors } from "./PrototypeCourt";
 import { CameraRig } from "@/components/camera/CameraRig";
 import type { MutableRefObject } from "react";
 import type { NarrativeProgress } from "@/animations/prototypeMotion";
+import type { QualityTier } from "@/store/experienceStore";
 
 type SceneProps = {
   debug: boolean;
   legacyEnvironment?: boolean;
   progress: MutableRefObject<NarrativeProgress>;
+  qualityTier: QualityTier;
   reducedMotion: boolean;
 };
 
-export function Scene({ debug, legacyEnvironment = false, progress, reducedMotion }: SceneProps) {
+export function Scene({ debug, legacyEnvironment = false, progress, qualityTier, reducedMotion }: SceneProps) {
   return (
     <>
       <color attach="background" args={["#07120f"]} />
       <fog attach="fog" args={["#07120f", 12, 26]} />
-      <Lighting />
+      <Lighting qualityTier={qualityTier} />
       <CameraRig progress={progress} debug={debug} reducedMotion={reducedMotion} />
       {legacyEnvironment ? <ProductionEnvironment /> : (
         <AssetBoundary fallback={<ProductionEnvironment />}>
-          <RetroEnvironment progress={progress} reducedMotion={reducedMotion} />
+          <RetroEnvironment progress={progress} qualityTier={qualityTier} reducedMotion={reducedMotion} />
         </AssetBoundary>
       )}
       <RallyActors progress={progress} calibration={debug} reducedMotion={reducedMotion} />

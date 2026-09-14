@@ -4,6 +4,8 @@ import type { InstancedMesh } from "three";
 import { Matrix4, MeshStandardMaterial } from "three";
 import { COURT_DIMENSIONS, NARRATIVE_CHAPTERS, sampleScoreboardEmphasis, type NarrativeChapter, type NarrativeProgress } from "@/animations/prototypeMotion";
 import { useExperienceStore } from "@/store/experienceStore";
+import type { QualityTier } from "@/store/experienceStore";
+import { SCENE_QUALITY } from "./sceneQuality";
 
 /**
  * Phase 09 environment contract: every position retains the accepted Phase 04
@@ -270,8 +272,9 @@ function RetroCourt({ palette }: { palette: RetroPalette }) {
 }
 
 /** Court is immediate; noncritical details mount over successive frames. */
-export function RetroEnvironment({ progress, reducedMotion }: {
+export function RetroEnvironment({ progress, qualityTier, reducedMotion }: {
   progress: MutableRefObject<NarrativeProgress>;
+  qualityTier: QualityTier;
   reducedMotion: boolean;
 }) {
   const [stage, setStage] = useState(0);
@@ -302,9 +305,9 @@ export function RetroEnvironment({ progress, reducedMotion }: {
   return (
     <group name="retro-environment">
       <RetroCourt palette={palette} />
-      {stage >= 1 ? <CourtsideProps palette={palette} /> : null}
-      {stage >= 2 ? <RetroScoreboard palette={palette} progress={progress} reducedMotion={reducedMotion} /> : null}
-      {stage >= 3 ? <StadiumShell palette={palette} /> : null}
+      {stage >= 1 && SCENE_QUALITY[qualityTier].environmentDetail >= 1 ? <CourtsideProps palette={palette} /> : null}
+      {stage >= 2 && SCENE_QUALITY[qualityTier].environmentDetail >= 2 ? <RetroScoreboard palette={palette} progress={progress} reducedMotion={reducedMotion} /> : null}
+      {stage >= 3 && SCENE_QUALITY[qualityTier].environmentDetail >= 3 ? <StadiumShell palette={palette} /> : null}
     </group>
   );
 }

@@ -137,6 +137,9 @@ body[data-project-dialog-open="true"] .experience-shell {
 
 .nav-links {
   display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  justify-content: flex-end;
   gap: clamp(1rem, 2.6vw, 2.5rem);
   overflow-x: auto;
   scrollbar-width: none;
@@ -160,6 +163,41 @@ body[data-project-dialog-open="true"] .experience-shell {
 }
 
 .nav-links a[aria-current="page"] { color: var(--accent); }
+
+.experience-controls {
+  position: relative;
+  flex: 0 0 auto;
+  font-family: var(--font-geist-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.experience-controls summary { padding: 0.55rem 0; color: var(--muted); cursor: pointer; list-style: none; }
+.experience-controls summary::-webkit-details-marker { display: none; }
+.experience-controls summary::after { content: " +"; color: var(--accent); }
+.experience-controls[open] summary::after { content: " ×"; }
+.experience-controls summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 0.35rem; }
+.experience-controls-panel {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  width: min(19rem, calc(100vw - 2 * var(--page-gutter)));
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: var(--night-soft);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.28);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.experience-controls fieldset { margin: 0; padding: 0; border: 0; }
+.experience-controls legend { margin-bottom: 0.65rem; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.quality-options { display: grid; gap: 0.35rem; }
+.quality-options label, .sound-option { display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem; color: var(--ink); cursor: pointer; }
+.quality-options label:has(input:checked), .sound-option:has(input:checked) { background: rgba(216, 255, 57, 0.08); }
+.experience-controls input { accent-color: var(--accent); }
+.experience-controls strong, .experience-controls small { display: block; }
+.experience-controls small { margin-top: 0.2rem; color: var(--muted); font-size: 0.75rem; }
+.sound-option { margin-top: 0.85rem; border-top: 1px solid var(--line); padding-top: 1rem; }
 
 .chapter-indicator {
   position: fixed;
@@ -713,6 +751,14 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
     padding-right: var(--page-gutter);
   }
 
+  .experience-controls-panel {
+    position: fixed;
+    top: auto;
+    right: var(--page-gutter);
+    bottom: 1rem;
+    z-index: 12;
+  }
+
   .section-right {
     align-items: flex-start;
   }
@@ -743,6 +789,22 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
     grid-column: 2 / -1;
     justify-self: start;
     margin-top: 0.35rem;
+  }
+
+  .project-dialog-backdrop {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
+  .project-dialog {
+    width: 100%;
+    max-height: min(88svh, 42rem);
+    padding: 4rem var(--page-gutter) 2rem;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 1.25rem 1.25rem 0 0;
   }
 
   .chapter-indicator { right: var(--page-gutter); bottom: 0.75rem; }

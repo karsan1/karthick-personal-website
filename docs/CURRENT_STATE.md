@@ -6,8 +6,9 @@ Phases 01 foundation, 02 interaction prototype, 03 content/information
 architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
 06 retro character prototype are complete and accepted.
 
-Phase 11 adds the professional portfolio UI, accessible project-detail interaction,
-and chapter-synchronized retro scoreboard over the accepted Phase 10 choreography.
+Phase 12 adds restrained scene lighting, user-selectable rendering tiers,
+deterministic opt-in rally audio, hidden-tab work suspension, mobile project sheets,
+and a documented performance profile over the accepted Phase 11 interface.
 Phase 08 adds deterministic authored-character clip playback
 and synchronizes it to the accepted rally while preserving smooth ball, camera,
 scroll, and DOM motion.
@@ -16,7 +17,8 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Complete Phase 11 UI and accessibility acceptance across desktop and mobile.
+- Complete Phase 12 production-browser acceptance across quality tiers, desktop,
+  mobile/orientation changes, reduced motion, audio scrubbing, and WebGL fallback.
 
 ## Completed baseline
 
@@ -138,7 +140,7 @@ Blockbench authoring and final visual approval are still required.
 - Court lines, props, stands, seats, crowd, scoreboard digits, and fixtures use six
   shared material instances and instanced geometry. The fully mounted environment
   uses 14 structural draw submissions against a 15-call ceiling, six material instances,
-  eight instanced groups, and 91 instances; there are no
+  eight instanced groups, and 97 instances; there are no
   per-frame transforms, large textures, extra canvases, or postprocessing.
 - Critical court geometry mounts first; props, scoreboard, then venue decoration
   mount over subsequent frames. A retro render failure resolves to the accepted
@@ -180,13 +182,34 @@ Blockbench authoring and final visual approval are still required.
   close, scroll locking, external links, and a coarse shared project state. The
   backdrop and Canvas attenuation reduce 3D distraction while details are open.
 
+## Phase 12 implementation status
+
+- The scene remains postprocess-free and uses a restrained hemisphere fill, warm
+  shadowed key, and cool fill to preserve faceted character/material readability.
+- High, medium, and low quality controls independently cap DPR at 2, 1.5, and 1;
+  reduce the single shadow map from 1024 to 512 to disabled; and progressively omit
+  stadium and scoreboard detail. Narrow layouts start at the balanced medium tier.
+- Sound remains off by default. Enabling it creates short local Web Audio hit/bounce
+  cues at the existing deterministic rally crossings, with per-cue/global cooldowns
+  to prevent rapid scrub spam. Reduced motion and hidden pages do no audio sampling.
+- Hidden pages pause the R3F frame loop and suspend audio work, with lifecycle cleanup
+  on unmount. Existing ref/useFrame ownership and coarse Zustand state are preserved.
+- Native semantic preference controls expose quality and sound. Narrow viewports use
+  a bottom-sheet project detail while preserving Phase 11 focus trap/restoration,
+  Escape/backdrop close, and scroll locking.
+- `docs/PERFORMANCE_PROFILE.md` records verified asset, texture, instancing, quality,
+  lifecycle, and animation-ownership results plus the production-browser measurement
+  matrix. Current GLBs total 31,920 bytes, use Meshopt/quantization, and contain no
+  raster textures; the procedural environment retains its 14-call ceiling.
+
 ## Do not work on yet
 
-- Do not begin Phase 12 or later without an explicit request.
+- Do not begin Phase 13 or later without an explicit request.
 - Do not introduce independent choreography,
   or delete Phase 04 assets while the Phase 09 fallback chain remains available.
 
 ## Next milestone
 
-Complete Phase 10 browser visual approval, then complete human Blockbench character
-and clip authoring/export approval documented in `assets-source/README.md`.
+Complete the Phase 12 production-browser measurement/acceptance matrix, then retain
+human Blockbench character and clip authoring/export approval as a separate art task
+documented in `assets-source/README.md`. Do not begin Phase 13 without a new request.

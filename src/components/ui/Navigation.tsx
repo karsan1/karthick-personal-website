@@ -2,6 +2,7 @@
 
 import type { NavigationItem } from "@/types/portfolio";
 import { useExperienceStore } from "@/store/experienceStore";
+import { ExperienceControls } from "./ExperienceControls";
 
 type NavigationProps = {
   items: NavigationItem[];
@@ -31,6 +32,7 @@ export function Navigation({ items }: NavigationProps) {
           </a>
         ))}
       </div>
+      <ExperienceControls />
     </nav>
   );
 }

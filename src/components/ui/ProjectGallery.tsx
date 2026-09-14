@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { ProjectItem } from "@/types/portfolio";
 import { useExperienceStore } from "@/store/experienceStore";
 
@@ -87,7 +88,7 @@ export function ProjectGallery({ projects }: { projects: ProjectItem[] }) {
           </article>
         ))}
       </div>
-      {selected ? (
+      {selected ? createPortal(
         <div ref={backdropRef} className="project-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
           <section ref={dialogRef} className="project-dialog" role="dialog" aria-modal="true" aria-labelledby="project-dialog-title">
             <button ref={closeRef} className="dialog-close" type="button" onClick={close} aria-label="Close project details">Close <span aria-hidden="true">×</span></button>
@@ -103,7 +104,8 @@ export function ProjectGallery({ projects }: { projects: ProjectItem[] }) {
               {selected.repoHref ? <a href={selected.repoHref} target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a> : null}
             </div>
           </section>
-        </div>
+        </div>,
+        document.body,
       ) : null}
     </>
   );
