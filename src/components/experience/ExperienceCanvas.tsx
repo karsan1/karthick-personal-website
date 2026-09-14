@@ -10,9 +10,10 @@ type ExperienceCanvasProps = {
   debug: boolean;
   legacyEnvironment?: boolean;
   progress: MutableRefObject<NarrativeProgress>;
+  reducedMotion: boolean;
 };
 
-export function ExperienceCanvas({ debug, legacyEnvironment = false, progress }: ExperienceCanvasProps) {
+export function ExperienceCanvas({ debug, legacyEnvironment = false, progress, reducedMotion }: ExperienceCanvasProps) {
   useEffect(
     () => () => useExperienceStore.getState().setSceneReady(false),
     [],
@@ -27,7 +28,7 @@ export function ExperienceCanvas({ debug, legacyEnvironment = false, progress }:
       onCreated={() => useExperienceStore.getState().setSceneReady(true)}
     >
       <Suspense fallback={null}>
-        <Scene debug={debug} legacyEnvironment={legacyEnvironment} progress={progress} />
+        <Scene debug={debug} legacyEnvironment={legacyEnvironment} progress={progress} reducedMotion={reducedMotion} />
       </Suspense>
     </Canvas>
   );

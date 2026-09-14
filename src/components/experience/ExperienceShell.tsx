@@ -38,7 +38,12 @@ export function ExperienceShell() {
   return (
     <div ref={scope} className="experience-shell" aria-hidden="true">
       <WebGLGuard>
-        <ExperienceCanvas debug={debug} legacyEnvironment={legacyEnvironment} progress={progress} />
+        <ExperienceCanvas
+          debug={debug}
+          legacyEnvironment={legacyEnvironment}
+          progress={progress}
+          reducedMotion={reducedMotion}
+        />
         <LoadingOverlay />
       </WebGLGuard>
     </div>

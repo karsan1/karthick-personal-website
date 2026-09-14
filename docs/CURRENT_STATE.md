@@ -6,16 +6,18 @@ Phases 01 foundation, 02 interaction prototype, 03 content/information
 architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
 06 retro character prototype are complete and accepted.
 
-Phase 09 restyles the visible environment as a procedural retro court and venue
-while retaining the accepted Phase 04 GLB loader as a progressive fallback. Phase 08 adds deterministic authored-character clip playback and synchronizes it
-to the accepted rally while preserving smooth ball, camera, scroll, and DOM motion.
+Phase 10 retunes the accepted normalized rally into responsive retro sports-game
+camera compositions while retaining the accepted Phase 04 GLB loader as a
+progressive fallback. Phase 08 adds deterministic authored-character clip playback
+and synchronizes it to the accepted rally while preserving smooth ball, camera,
+scroll, and DOM motion.
 The checked-in animated GLBs remain generated calibration fixtures; human
 Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Visually approve the procedural retro environment across the application camera
-  path, including court legibility behind DOM content and legacy fallback behavior.
+- Complete browser visual approval of Phase 10 camera compositions, navigation
+  jumps, reverse scrub, and reduced-motion behavior.
 
 ## Completed baseline
 
@@ -144,13 +146,33 @@ Blockbench authoring and final visual approval are still required.
   Phase 04 staged GLB loader, which retains its primitive court fallback. Use
   `?environment=legacy` to exercise that accepted loader directly during review.
 
+## Phase 10 implementation status
+
+- The original GSAP/ScrollTrigger master progress remains the only narrative
+  clock. Camera, ball, characters, scoreboard acknowledgement, DOM cues, and
+  debug readouts all sample it directly and reverse without retained elapsed
+  state or secondary triggers.
+- Camera compositions are explicitly authored for desktop, tablet, mobile, and
+  reduced-motion modes. Desktop/tablet use restrained gameplay interpolation and
+  short reversible soft-cut windows; portrait uses fewer stable full-court views;
+  reduced motion holds one calm composition.
+- The final live rally, player recovery, and angle change now resolve by the
+  Research boundary at normalized progress `0.50`; Research and Projects hold
+  settled ball/player states and stable reading compositions.
+- Chapter-aligned match states centralize score, player, and ball labels. The
+  ball now has a deterministic projected shadow plus subtle contact/bounce squash;
+  the procedural scoreboard gives a brief scrubbed acknowledgement at chapter
+  crossings but deliberately does not change its rendered numeric segments (that
+  remains Phase 11 UI/scoreboard work). These effects do not introduce timers,
+  physics, or React state updates.
+
 ## Do not work on yet
 
-- Do not begin Phase 10 or any later phase without an explicit request.
-- Do not alter accepted camera/ball choreography, DOM/UI content, or delete Phase 04
-  assets while the Phase 09 fallback chain remains under review.
+- Do not begin Phase 11 or later without an explicit request.
+- Do not redesign DOM/UI scoreboard content, introduce independent choreography,
+  or delete Phase 04 assets while the Phase 09 fallback chain remains available.
 
 ## Next milestone
 
-Complete Phase 09 browser visual/performance approval, then complete human Blockbench
-character and clip authoring/export approval documented in `assets-source/README.md`.
+Complete Phase 10 browser visual approval, then complete human Blockbench character
+and clip authoring/export approval documented in `assets-source/README.md`.

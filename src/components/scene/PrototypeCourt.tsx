@@ -1,9 +1,11 @@
 import { useRef, type MutableRefObject } from "react";
 import { useFrame } from "@react-three/fiber";
-import { type Mesh, Vector3 } from "three";
+import { MeshBasicMaterial, type Mesh, Vector3 } from "three";
 import {
   COURT_DIMENSIONS,
+  sampleBallPresentation,
   sampleBallPosition,
+  sampleReducedMotionBallPosition,
   type NarrativeProgress,
 } from "@/animations/prototypeMotion";
 import { RetroPlayer } from "./characters/RetroPlayer";
@@ -97,27 +99,61 @@ function UmpireChair() {
   );
 }
 
-function TennisBall({ progress }: PrototypeCourtProps) {
+type TennisBallProps = PrototypeCourtProps & { reducedMotion: boolean };
+
+function TennisBall({ progress, reducedMotion }: TennisBallProps) {
   const ball = useRef<Mesh>(null);
+  const shadow = useRef<Mesh>(null);
+  const shadowMaterial = useRef<MeshBasicMaterial>(null);
+  const presentation = useRef({
+    shadowScale: 1,
+    shadowOpacity: 0.3,
+    ballScaleX: 1,
+    ballScaleY: 1,
+    ballScaleZ: 1,
+    impact: 0,
+  });
 
   useFrame(() => {
     const mesh = ball.current;
-    if (!mesh) {
+    const shadowMesh = shadow.current;
+    if (!mesh || !shadowMesh) {
       return;
     }
 
     const value = progress.current.value;
-    sampleBallPosition(value, ballPosition);
+    if (reducedMotion) sampleReducedMotionBallPosition(ballPosition);
+    else sampleBallPosition(value, ballPosition);
     mesh.position.copy(ballPosition);
+    if (reducedMotion) {
+      mesh.rotation.set(0, 0, 0);
+      mesh.scale.setScalar(1);
+      shadowMesh.position.set(ballPosition.x, 0.012, ballPosition.z);
+      shadowMesh.scale.setScalar(0.65);
+      if (shadowMaterial.current) shadowMaterial.current.opacity = 0.32;
+      return;
+    }
+
+    const sampled = sampleBallPresentation(value, ballPosition, presentation.current);
     mesh.rotation.x = value * Math.PI * 32;
     mesh.rotation.z = value * Math.PI * 20;
+    mesh.scale.set(sampled.ballScaleX, sampled.ballScaleY, sampled.ballScaleZ);
+    shadowMesh.position.set(ballPosition.x, 0.012, ballPosition.z);
+    shadowMesh.scale.set(sampled.shadowScale, sampled.shadowScale, 1);
+    if (shadowMaterial.current) shadowMaterial.current.opacity = sampled.shadowOpacity;
   });
 
   return (
-    <mesh ref={ball} castShadow>
-      <sphereGeometry args={[0.13, 20, 20]} />
-      <meshStandardMaterial color="#d8ff39" roughness={0.5} />
-    </mesh>
+    <>
+      <mesh ref={shadow} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.24, 12]} />
+        <meshBasicMaterial ref={shadowMaterial} color="#0b1712" transparent opacity={0.3} depthWrite={false} />
+      </mesh>
+      <mesh ref={ball} castShadow>
+        <sphereGeometry args={[0.13, 20, 20]} />
+        <meshStandardMaterial color="#d8ff39" roughness={0.5} />
+      </mesh>
+    </>
   );
 }
 
@@ -135,14 +171,14 @@ export function PrimitiveCourtFallback() {
   );
 }
 
-type RallyActorsProps = PrototypeCourtProps & { calibration?: boolean };
+type RallyActorsProps = PrototypeCourtProps & { calibration?: boolean; reducedMotion?: boolean };
 
-export function RallyActors({ progress, calibration = false }: RallyActorsProps) {
+export function RallyActors({ progress, calibration = false, reducedMotion = false }: RallyActorsProps) {
   return (
     <group>
       <RetroPlayer progress={progress} side="a" smoothReference={calibration} />
       <RetroPlayer progress={progress} side="b" smoothReference={calibration} />
-      <TennisBall progress={progress} />
+      <TennisBall progress={progress} reducedMotion={reducedMotion} />
     </group>
   );
 }

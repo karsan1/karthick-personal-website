@@ -20,6 +20,88 @@ export function usePrototypeTimeline({
   useEffect(() => {
     let cancelled = false;
     let context: { revert: () => void } | undefined;
+    let alignmentFrame = 0;
+    let narrativeTrigger: { refresh: () => void; start: number; end: number } | undefined;
+    let layoutRefreshPending = false;
+    let refreshingNarrative = false;
+
+    const chapterScrollTop = (hash = window.location.hash) => {
+      const id = hash.slice(1);
+      if (!id) return undefined;
+      const chapter = document.getElementById(id);
+      const rawStart = chapter?.dataset.chapterStart;
+      if (!chapter || rawStart === undefined) return undefined;
+      const progressStart = Number(rawStart);
+      if (!Number.isFinite(progressStart)) return undefined;
+      // Land just inside non-hero chapters so pixel rounding and scrub damping
+      // cannot retain the previous continuous beat at a shared boundary.
+      const landingProgress = progressStart === 0 ? 0 : Math.min(progressStart + 0.005, 1);
+      const fallbackEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const triggerStart = narrativeTrigger?.start ?? 0;
+      const triggerEnd = narrativeTrigger?.end ?? fallbackEnd;
+      return triggerStart + (triggerEnd - triggerStart) * landingProgress;
+    };
+
+    const alignHashToNarrative = () => {
+      if (layoutRefreshPending && narrativeTrigger && !refreshingNarrative) {
+        layoutRefreshPending = false;
+        refreshingNarrative = true;
+        narrativeTrigger.refresh();
+        refreshingNarrative = false;
+      }
+      const top = chapterScrollTop();
+      if (top === undefined || Math.abs(window.scrollY - top) < 2) return;
+      window.scrollTo({ top, behavior: "auto" });
+    };
+
+    const requestHashAlignment = () => {
+      window.cancelAnimationFrame(alignmentFrame);
+      // The browser's native hash restoration can run after the first layout
+      // frame on an initial deep link. Align on the following frame so the
+      // normalized narrative target is the final scroll position.
+      alignmentFrame = window.requestAnimationFrame(() => {
+        alignmentFrame = window.requestAnimationFrame(alignHashToNarrative);
+      });
+    };
+
+    const requestLayoutRealignment = () => {
+      layoutRefreshPending = true;
+      requestHashAlignment();
+    };
+
+    const onHashNavigation = () => requestHashAlignment();
+    const onResize = () => requestLayoutRealignment();
+    const onPageReady = () => requestLayoutRealignment();
+    const onDocumentClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+      const href = link?.getAttribute("href");
+      if (!href || href === "#") return;
+      const top = chapterScrollTop(href);
+      if (top === undefined) return;
+
+      event.preventDefault();
+      if (window.location.hash !== href) window.history.pushState(null, "", href);
+      window.scrollTo({ top, behavior: "auto" });
+      if (reducedMotion) progress.current.value = Number(document.getElementById(href.slice(1))?.dataset.chapterStart ?? 0);
+    };
+
+    document.addEventListener("click", onDocumentClick);
+    window.addEventListener("hashchange", onHashNavigation);
+    window.addEventListener("popstate", onHashNavigation);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("load", onPageReady);
+    window.addEventListener("pageshow", onPageReady);
+    void document.fonts.ready.then(() => {
+      if (!cancelled) requestLayoutRealignment();
+    });
+    // Window resize can fire before responsive content has changed the document
+    // height. Observe the settled layout too, so a hash remains mapped to its
+    // normalized chapter range after wrapping/reflow. Scrolling itself does not
+    // change element dimensions, so this cannot feed back into an observer loop.
+    const layoutObserver = new ResizeObserver(requestLayoutRealignment);
+    layoutObserver.observe(document.documentElement);
+    layoutObserver.observe(document.body);
 
     void getGSAP().then((gsap) => {
       if (cancelled || !scope.current) {
@@ -42,9 +124,11 @@ export function usePrototypeTimeline({
                   scrub: 0.45,
                   invalidateOnRefresh: true,
                   markers: debug,
+                  onRefresh: requestHashAlignment,
                 },
               }),
         });
+        narrativeTrigger = timeline.scrollTrigger ?? undefined;
 
         timeline
           .addLabel("hero_idle", PROTOTYPE_LABELS.heroIdle)
@@ -62,6 +146,7 @@ export function usePrototypeTimeline({
         if (reducedMotion) {
           progress.current.value = PROTOTYPE_LABELS.contentPause;
           timeline.pause(0);
+          requestHashAlignment();
           return;
         }
 
@@ -85,11 +170,22 @@ export function usePrototypeTimeline({
           );
         }
 
+        requestHashAlignment();
+
       }, scope);
     });
 
     return () => {
       cancelled = true;
+      window.cancelAnimationFrame(alignmentFrame);
+      document.removeEventListener("click", onDocumentClick);
+      window.removeEventListener("hashchange", onHashNavigation);
+      window.removeEventListener("popstate", onHashNavigation);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("load", onPageReady);
+      window.removeEventListener("pageshow", onPageReady);
+      layoutObserver.disconnect();
+      narrativeTrigger = undefined;
       context?.revert();
     };
   }, [debug, progress, reducedMotion, scope]);

@@ -12,21 +12,22 @@ type SceneProps = {
   debug: boolean;
   legacyEnvironment?: boolean;
   progress: MutableRefObject<NarrativeProgress>;
+  reducedMotion: boolean;
 };
 
-export function Scene({ debug, legacyEnvironment = false, progress }: SceneProps) {
+export function Scene({ debug, legacyEnvironment = false, progress, reducedMotion }: SceneProps) {
   return (
     <>
       <color attach="background" args={["#07120f"]} />
       <fog attach="fog" args={["#07120f", 12, 26]} />
       <Lighting />
-      <CameraRig progress={progress} debug={debug} />
+      <CameraRig progress={progress} debug={debug} reducedMotion={reducedMotion} />
       {legacyEnvironment ? <ProductionEnvironment /> : (
         <AssetBoundary fallback={<ProductionEnvironment />}>
-          <RetroEnvironment />
+          <RetroEnvironment progress={progress} reducedMotion={reducedMotion} />
         </AssetBoundary>
       )}
-      <RallyActors progress={progress} calibration={debug} />
+      <RallyActors progress={progress} calibration={debug} reducedMotion={reducedMotion} />
 
       {debug ? <DebugScene /> : null}
     </>

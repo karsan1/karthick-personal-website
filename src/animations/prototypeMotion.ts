@@ -17,6 +17,17 @@ type CameraKeyframe = {
   position: Vector3;
   target: Vector3;
   fov: number;
+  /** A short, still-continuous game-camera angle change. */
+  transition?: "gameplay" | "soft-cut";
+};
+
+export type CameraComposition = "desktop" | "tablet" | "mobile" | "reduced";
+
+export type MatchState = {
+  chapter: "hero" | "about" | "experience" | "research" | "projects" | "capabilities" | "contact";
+  scoreboard: string;
+  playerState: "serve" | "rally" | "ready" | "between-points" | "match-point";
+  ballState: "toss" | "in-play" | "settled" | "final-exchange";
 };
 
 /**
@@ -36,9 +47,10 @@ export const PROTOTYPE_LABELS = {
   serveContact: 0.14,
   firstBounce: 0.24,
   playerBReturn: 0.33,
-  secondBounce: 0.45,
-  playerAReturn: 0.55,
-  contentPause: 0.68,
+  secondBounce: 0.4,
+  playerAReturn: 0.45,
+  // Research begins at 0.50: every live rally/clip beat has resolved by then.
+  contentPause: 0.5,
   finalExchange: 0.82,
   prototypeEnd: 1,
 } as const;
@@ -68,7 +80,7 @@ export type CharacterNarrativeBeat = {
 };
 
 export type CharacterRecoveryBeat = {
-  id: "player-a-serve-recovery" | "player-b-return-recovery" | "player-a-return-recovery";
+  id: "player-a-serve-recovery" | "player-b-return-recovery";
   side: CharacterSide;
   clip: "recovery";
   start: number;
@@ -107,7 +119,7 @@ export const CHARACTER_ANIMATION_FPS = 18;
  * Accepted ball/racket contact contract:
  * - serve: Player A's `serve` reaches local 0.72 at serveContact (0.14);
  * - return B: Player B's `forehand` reaches local 0.50 at playerBReturn (0.33);
- * - return A: Player A's `backhand` reaches local 0.48 at playerAReturn (0.55).
+ * - return A: Player A's `backhand` reaches local 0.48 at playerAReturn (0.45).
  *
  * The sampler maps every shot range from local 0 to 1 in two segments split at
  * its contact. Therefore `PLAYER_CLIP_CONTACTS[beat.clip]` is authoritative;
@@ -153,16 +165,28 @@ export const CHARACTER_NARRATIVE_BEATS: readonly CharacterMotionBeat[] = [
     end: PROTOTYPE_LABELS.contentPause,
     contactProgress: PROTOTYPE_LABELS.playerAReturn,
   },
-  {
-    id: "player-a-return-recovery",
-    side: "a",
-    clip: "recovery",
-    start: PROTOTYPE_LABELS.contentPause,
-    end: PROTOTYPE_LABELS.finalExchange,
-  },
 ] as const;
 
 const ballAtRest = new Vector3(0, 1.25, -COURT_DIMENSIONS.playerBaselineZ);
+
+/**
+ * Discrete game states intentionally share the normalized master range used by
+ * the DOM chapters. They are data, rather than another scrolling timeline.
+ */
+const MATCH_STATES: readonly (MatchState & { start: number })[] = [
+  { start: 0, chapter: "hero", scoreboard: "00 · 00", playerState: "serve", ballState: "toss" },
+  { start: 0.12, chapter: "about", scoreboard: "15 · 00", playerState: "rally", ballState: "in-play" },
+  { start: 0.24, chapter: "experience", scoreboard: "15 · 15", playerState: "rally", ballState: "in-play" },
+  { start: 0.5, chapter: "research", scoreboard: "30 · 15", playerState: "ready", ballState: "settled" },
+  { start: 0.64, chapter: "projects", scoreboard: "30 · 30", playerState: "between-points", ballState: "settled" },
+  { start: 0.82, chapter: "capabilities", scoreboard: "40 · 30", playerState: "ready", ballState: "final-exchange" },
+  { start: 0.91, chapter: "contact", scoreboard: "GAME · 30", playerState: "match-point", ballState: "final-exchange" },
+] as const;
+
+// ScrollTrigger can settle a few floating-point units either side of a shared
+// DOM chapter boundary. This only stabilizes discrete labels/effects; continuous
+// camera, ball, and character samplers retain their exact normalized ranges.
+const DISCRETE_BOUNDARY_EPSILON = 0.001;
 
 export const PROTOTYPE_SHOTS: readonly Shot[] = [
   {
@@ -247,49 +271,91 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
   },
 ];
 
-const CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
+/** Wide broadcast framing: active play moves smoothly; reading ranges hold. */
+const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   {
     progress: 0,
-    position: new Vector3(5.9, 2.6, -8.3),
-    target: new Vector3(0, 1.1, -2.5),
-    fov: 43,
+    position: new Vector3(5.7, 3.15, -9.1),
+    target: new Vector3(0, 1.1, -1.5),
+    fov: 39,
+  },
+  {
+    progress: PROTOTYPE_LABELS.serveToss,
+    position: new Vector3(5.45, 3.3, -8.7),
+    target: new Vector3(0, 2.05, -3.2),
+    fov: 38,
   },
   {
     progress: PROTOTYPE_LABELS.serveContact,
-    position: new Vector3(5.5, 2.8, -7.7),
-    target: new Vector3(0, 1.8, -2.1),
-    fov: 42,
+    position: new Vector3(5.15, 3.5, -8.1),
+    target: new Vector3(0.25, 1.55, -0.4),
+    fov: 38,
   },
   {
     progress: PROTOTYPE_LABELS.firstBounce,
-    position: new Vector3(4.75, 3.35, -6.8),
-    target: new Vector3(0.25, 1.15, 0.7),
-    fov: 40,
+    position: new Vector3(5.25, 4.35, -9.35),
+    target: new Vector3(0, 1.05, 0),
+    fov: 36,
+    transition: "soft-cut",
   },
   {
-    progress: PROTOTYPE_LABELS.secondBounce,
-    position: new Vector3(4.15, 3.1, -5.3),
-    target: new Vector3(-0.35, 1.1, -0.6),
-    fov: 41,
+    progress: 0.43,
+    position: new Vector3(5.25, 4.35, -9.35),
+    target: new Vector3(0, 1.05, 0),
+    fov: 36,
   },
   {
-    progress: PROTOTYPE_LABELS.contentPause,
-    position: new Vector3(4.2, 3.15, -5.15),
-    target: new Vector3(0, 1, 0),
-    fov: 41,
+    progress: 0.49,
+    position: new Vector3(-5.35, 4.7, 8.5),
+    target: new Vector3(0, 1.45, 1.2),
+    fov: 37,
+    transition: "soft-cut",
   },
   {
-    progress: PROTOTYPE_LABELS.finalExchange,
-    position: new Vector3(4.15, 3.1, -5.1),
-    target: new Vector3(0, 1, 0),
-    fov: 41,
+    progress: 0.82,
+    position: new Vector3(-5.35, 4.7, 8.5),
+    target: new Vector3(0, 1.45, 1.2),
+    fov: 37,
+  },
+  {
+    progress: 0.9,
+    position: new Vector3(4.75, 3.7, -8.2),
+    target: new Vector3(0, 1.25, 0),
+    fov: 39,
+    transition: "soft-cut",
   },
   {
     progress: PROTOTYPE_LABELS.prototypeEnd,
-    position: new Vector3(3.8, 3.2, -4.75),
-    target: new Vector3(-0.4, 1.05, -1.25),
-    fov: 42,
+    position: new Vector3(4.75, 3.7, -8.2),
+    target: new Vector3(0, 1.25, 0),
+    fov: 39,
   },
+];
+
+/** Narrow landscape uses its own stable game framing, not a desktop FOV tweak. */
+const TABLET_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
+  { progress: 0, position: new Vector3(4.8, 3.7, -10.1), target: new Vector3(0, 1.15, -1), fov: 43 },
+  { progress: PROTOTYPE_LABELS.serveContact, position: new Vector3(4.55, 3.9, -9.55), target: new Vector3(0, 1.4, -0.4), fov: 42 },
+  { progress: PROTOTYPE_LABELS.firstBounce, position: new Vector3(4.35, 4.65, -10.35), target: new Vector3(0, 1.1, 0), fov: 40, transition: "soft-cut" },
+  { progress: 0.49, position: new Vector3(-4.5, 4.8, 9.5), target: new Vector3(0, 1.3, 0.8), fov: 41, transition: "soft-cut" },
+  { progress: 0.82, position: new Vector3(-4.5, 4.8, 9.5), target: new Vector3(0, 1.3, 0.8), fov: 41 },
+  { progress: 0.9, position: new Vector3(4.25, 4.25, -9.7), target: new Vector3(0, 1.2, 0), fov: 43, transition: "soft-cut" },
+  { progress: 1, position: new Vector3(4.25, 4.25, -9.7), target: new Vector3(0, 1.2, 0), fov: 43 },
+];
+
+/** Portrait reduces angle changes and prioritizes a legible full-court silhouette. */
+const MOBILE_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
+  { progress: 0, position: new Vector3(0, 5.8, -14.2), target: new Vector3(0, 1.2, 0), fov: 51 },
+  { progress: PROTOTYPE_LABELS.firstBounce, position: new Vector3(0, 6.2, -14.7), target: new Vector3(0, 1.25, 0), fov: 52 },
+  { progress: 0.64, position: new Vector3(0, 6.2, -14.7), target: new Vector3(0, 1.25, 0), fov: 52 },
+  { progress: 0.9, position: new Vector3(0, 5.75, -14.3), target: new Vector3(0, 1.2, 0), fov: 51 },
+  { progress: 1, position: new Vector3(0, 5.75, -14.3), target: new Vector3(0, 1.2, 0), fov: 51 },
+];
+
+/** Reduced motion is a single calm composition with no cinematic transition. */
+const REDUCED_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
+  { progress: 0, position: new Vector3(0, 5.9, -14.5), target: new Vector3(0, 1.2, 0), fov: 50 },
+  { progress: 1, position: new Vector3(0, 5.9, -14.5), target: new Vector3(0, 1.2, 0), fov: 50 },
 ];
 
 function clampProgress(progress: number) {
@@ -452,6 +518,69 @@ function findShot(progress: number) {
   return undefined;
 }
 
+export function getActiveShot(progress: number) {
+  return findShot(clampProgress(progress));
+}
+
+export function sampleMatchState(progress: number): MatchState {
+  const clampedProgress = clampProgress(progress);
+  let state = MATCH_STATES[0];
+  for (const candidate of MATCH_STATES) {
+    if (candidate.start > clampedProgress + DISCRETE_BOUNDARY_EPSILON) break;
+    state = candidate;
+  }
+  return state;
+}
+
+/** A brief scrubbed scoreboard acknowledgement, derived from chapter crossings. */
+export function sampleScoreboardEmphasis(progress: number, reducedMotion = false) {
+  if (reducedMotion) return 0.3;
+  const clampedProgress = clampProgress(progress);
+  let chapterStart = 0;
+  for (const candidate of MATCH_STATES) {
+    if (candidate.start > clampedProgress + DISCRETE_BOUNDARY_EPSILON) break;
+    chapterStart = candidate.start;
+  }
+  const elapsed = Math.max(0, clampedProgress - chapterStart);
+  return 0.3 + Math.max(0, 1 - elapsed / 0.025) * 0.42;
+}
+
+export type BallPresentationSample = {
+  shadowScale: number;
+  shadowOpacity: number;
+  ballScaleX: number;
+  ballScaleY: number;
+  ballScaleZ: number;
+  impact: number;
+};
+
+/** Mutates a caller-owned value so impact and bounce emphasis reverse exactly. */
+export function sampleBallPresentation(progress: number, position: Vector3, target: BallPresentationSample) {
+  const clampedProgress = clampProgress(progress);
+  const contactDistance = Math.min(
+    Math.abs(clampedProgress - PROTOTYPE_LABELS.serveContact),
+    Math.abs(clampedProgress - PROTOTYPE_LABELS.playerBReturn),
+    Math.abs(clampedProgress - PROTOTYPE_LABELS.playerAReturn),
+  );
+  const bounceDistance = Math.min(
+    Math.abs(clampedProgress - PROTOTYPE_LABELS.firstBounce),
+    Math.abs(clampedProgress - PROTOTYPE_LABELS.secondBounce),
+    Math.abs(clampedProgress - PROTOTYPE_LABELS.contentPause),
+  );
+  const contactImpact = Math.max(0, 1 - contactDistance / 0.009);
+  const bounceImpact = Math.max(0, 1 - bounceDistance / 0.012);
+  const height = Math.max(position.y, 0);
+  const groundFactor = Math.min(height / 2.8, 1);
+
+  target.impact = Math.max(contactImpact, bounceImpact);
+  target.ballScaleX = 1 + contactImpact * 0.11 + bounceImpact * 0.08;
+  target.ballScaleY = 1 - contactImpact * 0.12 - bounceImpact * 0.14;
+  target.ballScaleZ = 1 + contactImpact * 0.11 + bounceImpact * 0.08;
+  target.shadowScale = 0.42 + groundFactor * 0.7 - bounceImpact * 0.16;
+  target.shadowOpacity = 0.46 - groundFactor * 0.3 + bounceImpact * 0.18;
+  return target;
+}
+
 export function sampleBallPosition(progress: number, target: Vector3) {
   const clampedProgress = clampProgress(progress);
   const activeShot = findShot(clampedProgress);
@@ -477,20 +606,56 @@ export function sampleBallPosition(progress: number, target: Vector3) {
   target.copy(ballAtRest);
 }
 
+export function sampleReducedMotionBallPosition(target: Vector3) {
+  return target.copy(ballAtRest);
+}
+
+function getCameraKeyframes(composition: CameraComposition) {
+  switch (composition) {
+    case "mobile": return MOBILE_CAMERA_KEYFRAMES;
+    case "tablet": return TABLET_CAMERA_KEYFRAMES;
+    case "reduced": return REDUCED_CAMERA_KEYFRAMES;
+    default: return DESKTOP_CAMERA_KEYFRAMES;
+  }
+}
+
+export function getCameraComposition(aspect: number, reducedMotion = false): CameraComposition {
+  if (reducedMotion) return "reduced";
+  if (aspect < 0.82) return "mobile";
+  if (aspect < 1.35) return "tablet";
+  return "desktop";
+}
+
+export function getCameraKeyframePair(progress: number, aspect: number, reducedMotion = false) {
+  const keyframes = getCameraKeyframes(getCameraComposition(aspect, reducedMotion));
+  const clampedProgress = clampProgress(progress);
+  let next = keyframes[keyframes.length - 1];
+  let previous = keyframes[0];
+  for (let index = 1; index < keyframes.length; index += 1) {
+    if (clampedProgress <= keyframes[index].progress) {
+      next = keyframes[index];
+      previous = keyframes[index - 1];
+      break;
+    }
+  }
+  return { previous, next };
+}
+
 export function sampleCamera(
   progress: number,
   positionTarget: Vector3,
   lookAtTarget: Vector3,
   aspect: number,
+  reducedMotion = false,
 ) {
   const clampedProgress = clampProgress(progress);
-  let nextKeyframe = CAMERA_KEYFRAMES[CAMERA_KEYFRAMES.length - 1];
-  let previousKeyframe = CAMERA_KEYFRAMES[0];
-
-  for (let index = 1; index < CAMERA_KEYFRAMES.length; index += 1) {
-    if (clampedProgress <= CAMERA_KEYFRAMES[index].progress) {
-      nextKeyframe = CAMERA_KEYFRAMES[index];
-      previousKeyframe = CAMERA_KEYFRAMES[index - 1];
+  const keyframes = getCameraKeyframes(getCameraComposition(aspect, reducedMotion));
+  let nextKeyframe = keyframes[keyframes.length - 1];
+  let previousKeyframe = keyframes[0];
+  for (let index = 1; index < keyframes.length; index += 1) {
+    if (clampedProgress <= keyframes[index].progress) {
+      nextKeyframe = keyframes[index];
+      previousKeyframe = keyframes[index - 1];
       break;
     }
   }
@@ -503,18 +668,5 @@ export function sampleCamera(
   lookAtTarget.lerpVectors(previousKeyframe.target, nextKeyframe.target, easedProgress);
   const baseFov = previousKeyframe.fov + (nextKeyframe.fov - previousKeyframe.fov) * easedProgress;
 
-  // Portrait viewports need a wider, more centered composition to keep both
-  // players and the ball inside the narrow horizontal field of view.
-  const portraitAmount = Math.min(Math.max((1.15 - aspect) / 0.5, 0), 1);
-  if (portraitAmount === 0) {
-    return baseFov;
-  }
-
-  positionTarget.x += -positionTarget.x * portraitAmount;
-  lookAtTarget.x += -lookAtTarget.x * portraitAmount;
-  positionTarget.y += (lookAtTarget.y + 4.2 - positionTarget.y) * portraitAmount * 0.22;
-  lookAtTarget.y += 0.15 * portraitAmount;
-  positionTarget.sub(lookAtTarget).multiplyScalar(1 + portraitAmount * 2).add(lookAtTarget);
-
-  return baseFov + 32 * portraitAmount;
+  return baseFov;
 }

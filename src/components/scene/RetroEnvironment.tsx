@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
+import { useFrame } from "@react-three/fiber";
 import type { InstancedMesh } from "three";
 import { Matrix4, MeshStandardMaterial } from "three";
-import { COURT_DIMENSIONS } from "@/animations/prototypeMotion";
+import { COURT_DIMENSIONS, sampleScoreboardEmphasis, type NarrativeProgress } from "@/animations/prototypeMotion";
 
 /**
  * Phase 09 environment contract: every position retains the accepted Phase 04
@@ -144,8 +145,19 @@ function CourtsideProps({ palette }: { palette: RetroPalette }) {
   );
 }
 
-function RetroScoreboard({ palette }: { palette: RetroPalette }) {
+function RetroScoreboard({ palette, progress, reducedMotion }: {
+  palette: RetroPalette;
+  progress: MutableRefObject<NarrativeProgress>;
+  reducedMotion: boolean;
+}) {
   const digits = useRef<InstancedMesh>(null);
+  // Keep the Phase 09 six-material palette and its documented draw budget.
+  // This reference lets the scoreboard acknowledgement reuse the shared accent.
+  const accent = useRef<MeshStandardMaterial>(palette.accent);
+
+  useFrame(() => {
+    if (accent.current) accent.current.emissiveIntensity = sampleScoreboardEmphasis(progress.current.value, reducedMotion);
+  });
 
   useLayoutEffect(() => {
     if (digits.current) applyInstances(digits.current, SCOREBOARD_SEGMENTS);
@@ -237,7 +249,10 @@ function RetroCourt({ palette }: { palette: RetroPalette }) {
 }
 
 /** Court is immediate; noncritical details mount over successive frames. */
-export function RetroEnvironment() {
+export function RetroEnvironment({ progress, reducedMotion }: {
+  progress: MutableRefObject<NarrativeProgress>;
+  reducedMotion: boolean;
+}) {
   const [stage, setStage] = useState(0);
   const palette = useMemo<RetroPalette>(() => ({
     court: new MeshStandardMaterial({ color: "#2d6951", flatShading: true, roughness: 0.93 }),
@@ -267,7 +282,7 @@ export function RetroEnvironment() {
     <group name="retro-environment">
       <RetroCourt palette={palette} />
       {stage >= 1 ? <CourtsideProps palette={palette} /> : null}
-      {stage >= 2 ? <RetroScoreboard palette={palette} /> : null}
+      {stage >= 2 ? <RetroScoreboard palette={palette} progress={progress} reducedMotion={reducedMotion} /> : null}
       {stage >= 3 ? <StadiumShell palette={palette} /> : null}
     </group>
   );
