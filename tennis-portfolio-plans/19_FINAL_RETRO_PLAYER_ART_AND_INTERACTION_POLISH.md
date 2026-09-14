@@ -2,7 +2,7 @@
 
 ## Objective
 
-Replace the generated/calibration-feeling players with final human-authored retro tennis characters that visually belong in the Phase 16 clay-court pixel-sports venue, while keeping the Karthick-side player a polished About interaction target.
+Replace the generated/calibration-feeling players with final human-authored retro tennis characters that visually belong in the Phase 16 **grass-court pixel-sports venue**, while keeping the Karthick-side player a polished About interaction target.
 
 The repository still treats the checked-in animated GLBs as calibration fixtures pending human visual approval. The 3D-first redesign is not visually complete until the players read like intentional old-console tennis characters from the actual gameplay camera.
 
@@ -28,7 +28,7 @@ The previous broad PS1/N64 target is narrowed.
 
 Target now:
 
-> **A compact 3D tennis character whose silhouette and color blocking read like a classic 16-bit sports-game sprite from the elevated gameplay camera.**
+> **A compact 3D tennis character whose silhouette and color blocking read like a classic 16-bit sports-game sprite from the elevated grass-court gameplay camera.**
 
 This does **not** mean replacing the runtime with a copied sprite sheet from a commercial game.
 
@@ -94,13 +94,20 @@ If a detail disappears at the gameplay camera, remove/simplify it instead of add
 
 ## Karthick-side visual identity
 
-The portfolio-owner player should be recognizable through simple original styling:
+The portfolio-owner player should be recognizable through simple original styling.
 
-- distinctive shirt/shorts palette,
-- hair silhouette,
+A classic grass-tournament direction works well with **white-dominant tennis clothing**, but the two players still need clear separation at gameplay distance.
+
+Recommended approach:
+
+- Karthick: white/cream dominant kit with a restrained original accent such as burgundy, navy, or purple,
+- opponent: different trim/accent family and slightly different silhouette,
+- distinct hair silhouette,
 - optional wristband/headband/trim,
 - subtle shoe or racket accent,
 - consistent palette across all clips.
+
+Do not copy official Wimbledon uniforms, marks, or player likenesses.
 
 Do not rely on facial likeness.
 
@@ -108,9 +115,11 @@ The visitor only needs to understand that Player 01 represents Karthick.
 
 The palette must contrast clearly against:
 
-- warm clay court,
-- dark green walls,
+- lighter grass court,
+- deep-green walls/furniture,
 - colorful crowd.
+
+Avoid large green clothing areas that disappear into the court/surround.
 
 ---
 
@@ -124,7 +133,7 @@ Requirements:
 - different silhouette/color read,
 - no villain styling,
 - no portfolio destination unless intentionally added later,
-- remains readable against both court and wall backgrounds.
+- remains readable against both grass and deep-green wall backgrounds.
 
 ---
 
@@ -187,7 +196,7 @@ Requirements:
 - touch target remains generous,
 - projected label such as `ABOUT / PLAYER 01` is acceptable on hover/selection.
 
-The interaction cue must not break the old-console sports-game illusion with neon outlines or modern holographic effects.
+The interaction cue must not break the old-console grass-court sports-game illusion with neon outlines or modern holographic effects.
 
 ---
 
@@ -246,10 +255,11 @@ Review at minimum:
 
 For each frame verify:
 
-- player does not disappear into clay court,
+- player does not disappear into the grass or deep-green surround,
 - racket is visible,
 - limbs read clearly,
 - Karthick/opponent are distinguishable,
+- white/cream clothing remains visible against court lines and bright scene values,
 - character feels consistent with crowd/walls/signage palette.
 
 ---
@@ -258,8 +268,9 @@ For each frame verify:
 
 - [ ] Final production player assets are human-authored and visually approved.
 - [ ] Balloon/capsule placeholder feeling is gone.
-- [ ] Players read like compact old-console tennis characters from the elevated gameplay camera.
+- [ ] Players read like compact old-console tennis characters from the elevated grass-court gameplay camera.
 - [ ] Karthick and opponent are immediately distinguishable by silhouette/color.
+- [ ] White-dominant tournament styling, if used, remains original and does not copy branded uniforms.
 - [ ] Racket and tennis pose read at full-court distance.
 - [ ] Stepped animation rate is chosen by visual/contact comparison.
 - [ ] Existing rally contacts remain synchronized.
@@ -267,6 +278,6 @@ For each frame verify:
 - [ ] Final assets pass optimization/validation.
 - [ ] Player materials/textures respect the pixel-sports palette policy.
 - [ ] Performance remains within documented budgets.
-- [ ] No commercial game character/sprite is copied.
+- [ ] No commercial game character/sprite, player likeness, or Wimbledon branding is copied.
 
 Stop after final player art and interaction acceptance. Release hardening belongs to Phase 20.
