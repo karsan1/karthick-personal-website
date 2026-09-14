@@ -153,6 +153,51 @@ remain.
 
 ---
 
+## ADR-009 — Make the tennis world the primary portfolio navigation surface
+
+**Status:** Accepted
+
+**Context:** The accepted Phase 10–13 presentation uses the retro tennis world as
+a persistent visual backdrop while large DOM sections remain the dominant
+experience. Phase 14 intentionally reverses that hierarchy. The existing chapter
+and navigation data remain the canonical destination owners; the reframe does not
+justify a parallel route model or new chapter identifiers by itself.
+
+**Decision:** Treat the court, players, and stadium as the primary visual and
+navigation surface. Exploration uses authored scrolling plus selectable world
+objects; free-roam controls are out of scope. Scroll, semantic navigation, hashes,
+deep links, project selection, and world selections must resolve through the same
+chapter destination behavior. A world selection requests a chapter/scroll target;
+it never controls the camera independently of the GSAP narrative timeline.
+
+Accept five canonical world stations:
+
+- Karthick player -> About
+- courtside bench and kit bag -> Experience
+- umpire chair / strategy station -> Research
+- main scoreboard -> Projects
+- player tunnel / stadium exit -> Contact
+
+Intentionally classify two additional objects as contextual actions, not new
+narrative chapters: the equipment rack opens the capabilities/toolkit content
+within About, and the clipboard / resume placard exposes the semantic resume view
+or download from Experience. They may receive stable hotspot identifiers, but
+Phase 14 does not expand the chapter schema for them.
+
+**Consequences:** The opening identity UI and active content surfaces become
+restrained contextual DOM layers so the court remains visually dominant. Every
+world interaction requires an equivalent semantic DOM control and must remain
+reachable by keyboard, screen reader, reduced-motion mode, and the non-WebGL
+fallback. Important copy and project details remain HTML. The single persistent
+Canvas, coarse Zustand ownership, deterministic motion, quality/audio/performance
+controls, and Phase 04 Blender fallback remain intact.
+
+**Do not:** Add direct camera mutation from hotspots, a second navigation state
+machine, WASD/free-flight controls, WebGL-only content or actions, continuous
+pointer/camera data in Zustand, or Phase 15 runtime code as part of this decision.
+
+---
+
 ## ADR template
 
 ### ADR-XXX — <title>

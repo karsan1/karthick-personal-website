@@ -90,7 +90,10 @@ Long-form content must never be rendered as WebGL text or texture atlases.
 
 ## Canonical world-to-portfolio mapping
 
-Use this mapping unless a later implementation review finds a strong spatial reason to adjust it:
+Phase 14 accepts the five narrative stations below and intentionally classifies the
+equipment rack and resume placard as contextual actions within existing chapters.
+This preserves the current chapter/navigation destination ownership instead of
+adding chapter identifiers solely for object interactions.
 
 | World object / area | Portfolio destination | Interaction |
 |---|---|---|
@@ -98,9 +101,9 @@ Use this mapping unless a later implementation review finds a strong spatial rea
 | **Courtside bench + kit bag** | Experience | Camera settles courtside; work history panel appears |
 | **Umpire chair / strategy station** | Research | Camera shifts to analytical sideline composition |
 | **Main scoreboard** | Projects | Scoreboard becomes the visual project index; project details remain DOM |
-| **Racket / equipment rack** | Capabilities | Skills/toolkit displayed as concise grouped DOM content |
+| **Racket / equipment rack** | About — Capabilities action | Skills/toolkit displayed as concise grouped DOM content; not a separate chapter |
 | **Player tunnel / stadium exit** | Contact | End-of-match contact state |
-| **Clipboard / résumé placard near bench** | Résumé | Direct DOM/download action; never WebGL-only |
+| **Clipboard / résumé placard near bench** | Experience — Résumé action | Direct DOM/download action; never WebGL-only and not a separate chapter |
 
 The opponent remains part of the tennis narrative and should not become a forced portfolio metaphor unless there is a clear content reason.
 
@@ -238,14 +241,17 @@ Do not change all of these in Phase 14; this is the architecture boundary for fo
 
 Phase 14 is complete when the team agrees on the new contract before writing cross-cutting runtime changes.
 
-- [ ] The 3D tennis world is explicitly the primary visual/navigation surface.
-- [ ] The giant foreground hero/section treatment is no longer the desired final hierarchy.
-- [ ] Scroll + world click are the primary exploration inputs.
-- [ ] Free-roam controls are explicitly out of scope.
-- [ ] Every world interaction has a DOM/keyboard/non-WebGL equivalent.
-- [ ] Important text remains semantic HTML.
-- [ ] Camera ownership remains timeline-driven.
-- [ ] Existing performance, fallback, reduced-motion, quality, and audio infrastructure is retained.
-- [ ] The canonical world-to-content mapping is accepted or intentionally revised before Phase 16.
+- [x] The 3D tennis world is explicitly the primary visual/navigation surface.
+- [x] The giant foreground hero/section treatment is no longer the desired final hierarchy.
+- [x] Scroll + world click are the primary exploration inputs.
+- [x] Free-roam controls are explicitly out of scope.
+- [x] Every world interaction has a DOM/keyboard/non-WebGL equivalent.
+- [x] Important text remains semantic HTML.
+- [x] Camera ownership remains timeline-driven.
+- [x] Existing performance, fallback, reduced-motion, quality, and audio infrastructure is retained.
+- [x] The canonical world-to-content mapping is accepted or intentionally revised before Phase 16.
+
+Architecture acceptance was recorded in ADR-009. Phase 14 changes documentation
+contracts only; it does not claim Phase 15 interaction behavior exists.
 
 Stop after architecture acceptance. Do not opportunistically implement Phase 15 interaction code while still changing the product mapping.

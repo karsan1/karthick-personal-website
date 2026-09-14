@@ -2,9 +2,14 @@
 
 ## Current phase
 
-Phases 01–12 are implemented. Phase 13 QA, deployment readiness, and legacy
-pipeline cleanup is now active but is not accepted: its production-browser,
-preview-deployment, and rollback-path evidence is still outstanding.
+Phases 01–12 are implemented. Phase 14 is accepted as an architecture-only
+product reframe: the retro tennis world is now the intended primary visual and
+navigation surface, with contextual semantic DOM content. No Phase 15 runtime
+interaction code was added during this acceptance milestone.
+
+Phase 13 remains an available regression baseline but is not accepted as a release
+milestone: its production-browser, preview-deployment, and rollback-path evidence
+is still outstanding. Those release claims are not implied by Phase 14 acceptance.
 
 Phase 12 adds restrained scene lighting, user-selectable rendering tiers,
 deterministic opt-in rally audio, hidden-tab work suspension, mobile project sheets,
@@ -17,11 +22,13 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Complete the Phase 13 regression and release gates across desktop/mobile,
-  forward/reverse navigation, reduced motion, WebGL fallback, asset failure,
-  quality tiers, and opt-in audio.
-- Record production/preview measurements and verify the preview deployment and
-  rollback path before accepting Phase 13 or promoting production.
+- Begin Phase 15 only when explicitly requested, implementing one shared
+  destination path for scroll, DOM navigation, hashes/deep links, and world
+  hotspots without giving hotspots independent camera ownership.
+- Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
+  every world destination while the 3D scene becomes visually primary.
+- Keep Phase 13 release evidence explicitly outstanding until production-browser,
+  preview-deployment, and rollback-path verification is actually completed.
 - Retain the Phase 04 Blender sources and optimized environment partitions while
   they remain the active legacy fallback; do not mistake retention for unfinished
   migration work.
@@ -225,16 +232,39 @@ Blockbench authoring and final visual approval are still required.
   promotion, and rollback verification must be reported by their owners before this
   phase can be marked accepted.
 
+## Phase 14 architecture acceptance
+
+- The retro court, players, and stadium are the intended primary visual and
+  navigation surface. Large foreground hero/section treatments are no longer the
+  desired final hierarchy; identity and portfolio content become restrained,
+  contextual semantic DOM layers.
+- Authored scroll and selectable world objects are the two primary exploration
+  inputs. Free-roam/WASD navigation is explicitly excluded.
+- Five narrative stations retain the existing chapter destination model: player ->
+  About, bench -> Experience, umpire chair -> Research, scoreboard -> Projects,
+  and tunnel -> Contact.
+- The equipment rack is a contextual capabilities action within About, and the
+  clipboard / resume placard is a semantic resume action within Experience. They
+  do not add chapter identifiers in Phase 14.
+- Scroll, DOM navigation, world selection, project selection, and hashes/deep
+  links must converge on the same destination behavior. Camera response remains
+  authored by the GSAP timeline rather than by hotspots.
+- One persistent Canvas, semantic HTML, coarse Zustand state, deterministic motion,
+  reduced motion, non-WebGL fallback, quality/audio/performance infrastructure,
+  and the Phase 04 Blender fallback remain protected contracts.
+
 ## Do not work on yet
 
-- Do not perform post-launch cleanup or unrelated redesign beyond the Phase 13
-  acceptance criteria without a new explicit request.
+- Do not implement Phase 15 hotspot/runtime infrastructure without a new explicit
+  request, or treat Phase 14 documentation acceptance as runtime validation.
 - Do not introduce independent choreography or delete/archive Phase 04 assets while
   the Phase 09 fallback chain and default asset build retain them.
 
 ## Next milestone
 
-Pass the Phase 13 local validation and regression matrix, then review a Vercel
-preview and record its performance/rollback evidence. Human Blockbench character
-and clip authoring/export approval remains a separate art task documented in
+Phase 15 is the next implementation milestone: add the shared interaction/hotspot
+infrastructure against ADR-009 without yet building future station art or camera
+polish. Phase 13 preview, production-browser, and rollback evidence remains a
+separate outstanding release gate. Human Blockbench character and clip
+authoring/export approval also remains a separate art task documented in
 `assets-source/README.md`; generated fixtures must not be presented as final art.
