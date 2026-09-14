@@ -127,6 +127,32 @@ during migration setup.
 
 ---
 
+## ADR-008 — Retain the Phase 04 Blender fallback in Phase 13
+
+**Status:** Accepted
+
+**Context:** The procedural Phase 09 environment is the primary scene, but the
+runtime can still select or fall back to the staged Phase 04 environment GLBs. The
+default asset build also consumes the corresponding Blender source exports.
+
+**Decision:** Retain `assets-source/blender/`, `assets-source/blender-exports/`,
+their reproduction instructions, and the optimized environment GLBs in their
+current supported locations. Treat them as an intentional legacy fallback rather
+than an unfinished primary authoring workflow. Reconsider archival only after the
+runtime fallback and build dependency have been deliberately replaced and the
+Phase 13 environment regression gate passes without them.
+
+**Consequences:** New character work remains Blockbench-first, while legacy
+environment recovery stays reproducible. Ordinary portfolio content edits require
+neither 3D authoring tool. Phase 13 cleanup removes obsolete claims, not recoverable
+sources that are still live dependencies.
+
+**Do not:** Move or delete the Phase 04 source/export directories, remove their
+optimizer path, or claim the fallback is retired while runtime/build references
+remain.
+
+---
+
 ## ADR template
 
 ### ADR-XXX — <title>

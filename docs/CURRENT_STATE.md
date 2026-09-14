@@ -2,9 +2,9 @@
 
 ## Current phase
 
-Phases 01 foundation, 02 interaction prototype, 03 content/information
-architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
-06 retro character prototype are complete and accepted.
+Phases 01–12 are implemented. Phase 13 QA, deployment readiness, and legacy
+pipeline cleanup is now active but is not accepted: its production-browser,
+preview-deployment, and rollback-path evidence is still outstanding.
 
 Phase 12 adds restrained scene lighting, user-selectable rendering tiers,
 deterministic opt-in rally audio, hidden-tab work suspension, mobile project sheets,
@@ -17,8 +17,14 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Complete Phase 12 production-browser acceptance across quality tiers, desktop,
-  mobile/orientation changes, reduced motion, audio scrubbing, and WebGL fallback.
+- Complete the Phase 13 regression and release gates across desktop/mobile,
+  forward/reverse navigation, reduced motion, WebGL fallback, asset failure,
+  quality tiers, and opt-in audio.
+- Record production/preview measurements and verify the preview deployment and
+  rollback path before accepting Phase 13 or promoting production.
+- Retain the Phase 04 Blender sources and optimized environment partitions while
+  they remain the active legacy fallback; do not mistake retention for unfinished
+  migration work.
 
 ## Completed baseline
 
@@ -202,14 +208,33 @@ Blockbench authoring and final visual approval are still required.
   matrix. Current GLBs total 31,920 bytes, use Meshopt/quantization, and contain no
   raster textures; the procedural environment retains its 14-call ceiling.
 
+## Phase 13 integration status
+
+- Active documentation now treats the procedural Phase 09 environment as primary
+  and the accepted Phase 04 Blender environment as an intentional fallback.
+- The Blender sources, source exports, optimizer branch, runtime GLBs, and manual
+  reproduction procedure are retained because the fallback and default asset build
+  still depend on them. They are not eligible for archive/removal in this phase.
+- Blockbench remains the preferred authoring tool for new characters. The checked-in
+  player GLBs are still generated calibration fixtures pending human-authored visual
+  approval; this art task is not silently converted into a release claim.
+- Ordinary portfolio copy, experience, research, project, link, contact, and
+  navigation edits remain semantic data/DOM work and require neither Blockbench nor
+  Blender.
+- Local static validation, full browser regression, preview review, production
+  promotion, and rollback verification must be reported by their owners before this
+  phase can be marked accepted.
+
 ## Do not work on yet
 
-- Do not begin Phase 13 or later without an explicit request.
-- Do not introduce independent choreography,
-  or delete Phase 04 assets while the Phase 09 fallback chain remains available.
+- Do not perform post-launch cleanup or unrelated redesign beyond the Phase 13
+  acceptance criteria without a new explicit request.
+- Do not introduce independent choreography or delete/archive Phase 04 assets while
+  the Phase 09 fallback chain and default asset build retain them.
 
 ## Next milestone
 
-Complete the Phase 12 production-browser measurement/acceptance matrix, then retain
-human Blockbench character and clip authoring/export approval as a separate art task
-documented in `assets-source/README.md`. Do not begin Phase 13 without a new request.
+Pass the Phase 13 local validation and regression matrix, then review a Vercel
+preview and record its performance/rollback evidence. Human Blockbench character
+and clip authoring/export approval remains a separate art task documented in
+`assets-source/README.md`; generated fixtures must not be presented as final art.
