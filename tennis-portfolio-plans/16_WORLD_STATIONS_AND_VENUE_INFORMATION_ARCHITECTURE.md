@@ -1,25 +1,209 @@
-# Phase 16 — World Stations & Venue Information Architecture
+# Phase 16 — Pixel-Sports Grass Court Reframe + World Stations
 
 ## Objective
 
-Turn the procedural retro venue into a spatial portfolio map. Each major portfolio section gets a recognizable in-world station that reads visually before the user clicks it.
+Phase 15 proved the shared world-hotspot/navigation infrastructure. Phase 16 now has **two ordered responsibilities**:
 
-This phase is about **where information lives in the stadium** and how those places look. Do not yet do the final scroll/camera timing polish.
+1. re-author the visible court/stadium so the opening scene reads like an original 16-bit / early-console **grass-court tournament** game,
+2. place the portfolio world stations inside that venue so they feel native to the tennis environment.
+
+The court visual target is defined in:
+
+- `docs/PIXEL_SPORTS_COURT_ART_DIRECTION.md`
+
+Read that document before implementing this phase.
+
+This phase is not final camera choreography. Phase 17 still owns the finished scroll/camera world tour, but Phase 16 must establish a convincing gameplay-style opening composition so station placement is validated against the correct visual language.
 
 ---
 
 ## Primary agents
 
 - Owner: `scene_engineer`
+- Art/palette + source assets: `asset_pipeline_engineer` only when a unique authored prop is justified
 - Content mapping: `ui_engineer`
-- Asset support: `asset_pipeline_engineer` only if a Blockbench prop is justified
+- Camera composition support: `motion_engineer` only for the minimum opening framing needed to validate the court reframe
 - Review: `qa_reviewer`
+
+Use the fewest agents necessary and avoid overlapping edits to `RetroEnvironment.tsx`.
 
 ---
 
+# Part A — Reframe the court before adding more stations
+
+## Why this is first
+
+The current procedural environment already uses green, but it still reads as a modern dark-green low-poly stadium rather than a classic grass-court tennis game.
+
+The new target is:
+
+- lighter natural grass play surface,
+- alternating mowing bands / subtle grass-striping cues,
+- crisp white lines,
+- deep-green perimeter walls and court furniture,
+- optional restrained purple/cream accent details,
+- darker net with white top tape,
+- colorful packed stands,
+- original sign panels,
+- compact courtside officials/props,
+- elevated baseline gameplay framing,
+- reduced depth exaggeration,
+- strong graphic color blocks.
+
+This means Phase 16 is **not** satisfied by merely keeping the current court green. The court must unmistakably read as a traditional grass surface.
+
+If stations are laid out against the current environment before this reframe, contrast, transforms, silhouettes, and camera-safe regions will need unnecessary rework. Therefore the grass-court restyle is the first Phase 16 gate.
+
+---
+
+## Phase 16A implementation targets
+
+### Grass court surface
+
+Replace the current flat/dark green court read with a brighter traditional grass family.
+
+Starting family from the art-direction spec:
+
+```text
+grass base         #557A3D
+grass light stripe #668A49
+grass dark stripe  #476B35
+worn grass         #8B8A5A
+court line         #F4F1E7
+```
+
+These are starting values, not mandatory exact hex colors. Tune in browser.
+
+Requirements:
+
+- white/cream court markings must be extremely legible,
+- alternating broad mowing bands or stepped grass-value zones should communicate the surface at gameplay distance,
+- optional worn baseline/service-area patches may use muted olive/tan,
+- court should occupy the dominant visual area of the opening frame,
+- surface must remain simple and graphic,
+- no photoreal grass texture or individual blades,
+- avoid artificial-turf neon green.
+
+Prefer material bands, vertex colors, or tiny palette maps over large raster textures.
+
+### Perimeter walls and tournament surround
+
+Use/reshape visible **deep-green** court walls, barriers, and furniture around the brighter grass surface.
+
+Target qualities:
+
+- clearly darker than the playing grass,
+- simple planar/stepped geometry,
+- visually separates court from crowd,
+- supports signage and stations,
+- frames the far player and scoreboard,
+- evokes a traditional grass-tournament venue without copying Wimbledon branding.
+
+A restrained purple or cream accent may appear on small sign trim or selected venue details, but green remains dominant.
+
+### Net
+
+Restyle the net so it reads like a classic game-screen tennis net:
+
+- black/charcoal mesh,
+- white/cream top tape,
+- chunky dark posts,
+- strong silhouette,
+- still aligned to `z = 0` and the existing rally contract.
+
+The net must not disappear against the grass.
+
+### Stands and crowd
+
+The far side of the opening view should feel populated and prestigious without becoming a realistic stadium model.
+
+Use cheap repeated visual forms:
+
+- instanced cards,
+- low-poly silhouettes,
+- sprite-like billboard clusters,
+- stepped seating slabs.
+
+Crowd colors can use controlled retro visual noise: whites/cream, navy, burgundy, muted red, teal, yellow accents, restrained purple, and dark tones.
+
+Do not model detailed individual spectators.
+
+### Signage
+
+Add a band of original sign panels along plausible wall/stand surfaces.
+
+Rules:
+
+- green/cream/purple blocks are acceptable,
+- portfolio labels can appear where appropriate,
+- no Wimbledon logos/wordmarks,
+- no copied sponsor panels or official sign layouts,
+- signs should be geometry, very small textures, or projected DOM labels where practical.
+
+### Courtside life
+
+Add enough recognizable traditional venue context that the stadium reads as a classic tennis game rather than an empty architecture model.
+
+Useful props include:
+
+- umpire chair,
+- courtside bench,
+- equipment stack,
+- ball basket,
+- towel/water prop,
+- simple ball-person or line-official silhouette/card if performance allows.
+
+Several of these become portfolio stations later in this same phase.
+
+---
+
+## Pixel-sports rendering proof
+
+Do not begin with a new post-processing dependency.
+
+Test the visual stack in this order:
+
+1. grass/surround color separation,
+2. mowing-band / worn-grass cues,
+3. flat/faceted shading,
+4. simple crowd cards/silhouettes,
+5. stepped character animation already available,
+6. narrower-FOV elevated gameplay composition,
+7. reduced scene resolution / DPR experiment if needed,
+8. antialiasing reduction if visually beneficial.
+
+The DOM stays crisp.
+
+If a true render-target pixelation pass is proposed, it requires measured before/after performance and interaction review before acceptance.
+
+---
+
+## Opening-frame proof required inside Phase 16
+
+Before placing every station, validate one desktop composition that shows:
+
+- full or near-full court,
+- near player,
+- far player,
+- net,
+- brighter striped grass surface,
+- deep-green wall/surround band,
+- colorful far-side crowd,
+- scoreboard/signage context.
+
+This is not the final Phase 17 camera system. It is a composition proof that the environment itself is being judged from the intended gameplay angle.
+
+The visual should feel **closer to an old-console grass-court tournament game than to the current modern dark-green low-poly stadium**.
+
+---
+
+# Part B — World station information architecture
+
+Once the grass-court restyle passes its visual gate, extend the Phase 15 hotspot infrastructure into the complete venue map.
+
 ## Required station map
 
-Use the Phase 14 canonical mapping as the default:
+Use the accepted Phase 14 mapping:
 
 1. **About — Karthick player**
 2. **Experience — courtside bench + kit bag**
@@ -29,176 +213,171 @@ Use the Phase 14 canonical mapping as the default:
 6. **Contact — player tunnel / stadium exit**
 7. **Résumé — clipboard / placard near the bench**
 
-The visitor should be able to visually infer that these objects are special without the entire stadium becoming a theme park of glowing buttons.
+The visitor should infer that these objects matter without turning the stadium into glowing floating UI.
 
 ---
 
 ## Spatial composition goals
 
-The court must remain a believable tennis environment.
+The court must remain a believable playable grass-court environment.
 
 Stations should:
 
 - sit in plausible venue locations,
-- preserve correct court dimensions and rally clearance,
-- remain readable from authored camera positions,
+- preserve existing court dimensions and rally clearance,
+- remain readable from the new elevated gameplay composition,
 - avoid overlapping each other in screen space,
-- maintain retro low-poly style,
+- use the grass-tournament pixel-sports palette/material language,
 - use shared materials/geometry where practical,
-- respect existing draw-call and quality-tier budgets.
+- respect existing quality-tier budgets.
 
-Do not scatter arbitrary floating UI panels across the court.
+Do not put floating portfolio panels on the playing surface.
 
 ---
 
-## About station — player
+## About station — Karthick player
 
-The Karthick-side player is the most personal interaction in the site.
+The Karthick-side player remains the most important world interaction.
 
-Design requirements:
+Requirements:
 
-- visually distinguish the portfolio-owner player from the opponent through attire/palette/silhouette, not a floating nameplate at all times,
-- make the player readable from opening camera distance,
-- hotspot proxy is generous but invisible,
-- hover/select cue should preserve the character animation silhouette,
-- About activation should eventually produce a close/medium hero composition, not an extreme face zoom.
+- preserve the accepted Phase 15 generous root proxy,
+- distinguish the owner player through simple color blocking/silhouette,
+- make the player readable at the gameplay camera distance,
+- keep hover/select effects graphic and restrained,
+- no permanent floating nameplate,
+- final human-authored character art remains Phase 19.
 
-No photoreal avatar requirement.
+The Phase 16 job is to ensure the current production/fallback character does not disappear against the brighter grass court, deep-green surround, or crowd.
 
 ---
 
 ## Experience station — bench
 
-Build a concise retro courtside work area:
+Build a compact courtside preparation area:
 
 - bench,
-- duffel/kit bag,
-- towel/bottle/racket props only if useful,
+- kit/duffel,
+- optional towel/water/racket details,
 - résumé clipboard/placard nested nearby but visually distinct.
 
-The area should communicate “career / history / preparation” without literal office furniture.
-
-Reuse geometry/materials aggressively.
+Use forms and colors consistent with traditional green courtside furniture rather than office furniture.
 
 ---
 
 ## Research station — umpire / strategy area
 
-Use the umpire chair or adjacent tactical board as the research metaphor.
+Use the umpire chair or an adjacent tactical board as the research metaphor.
 
 Preferred cues:
 
 - elevated chair silhouette,
-- small clipboard/tactics board,
-- restrained chart/diagram motif on a short in-world panel if needed,
-- no long scientific text inside WebGL.
+- small tactics/clipboard surface,
+- optional tiny diagram motif,
+- no long scientific text in WebGL.
 
-Research details remain DOM content.
+The chair should also strengthen the classic tournament composition.
 
 ---
 
 ## Projects station — scoreboard
 
-The scoreboard becomes the strongest environment destination after the player.
+The scoreboard is the strongest environmental destination after the player.
 
 Requirements:
 
-- make it clearly visible from multiple chapter compositions,
-- reserve a project-index visual state,
-- project names may be abbreviated in-world,
-- selecting a project ultimately opens DOM detail,
-- reuse existing segmented display/material structure where possible,
-- no embedded iframe/webpage texture.
+- visually integrate into the far-side wall/stand zone,
+- preserve the accepted Phase 15 hotspot path,
+- make it visible from the gameplay opening frame,
+- support a later project-index state,
+- use short labels only,
+- use original green/cream/purple treatment rather than official tournament branding,
+- no embedded live webpage or iframe texture.
 
-Suggested project mode:
+Suggested later display language:
 
 ```text
 PROJECTS
-01  MARKETDECK
-02  CITYBUS
-03  ...
+01 MARKETDECK
+02 CITYBUS
+03 ...
 ```
 
-Only short labels in-world. Full descriptions remain HTML.
+Full project content remains semantic DOM.
 
 ---
 
 ## Capabilities station — equipment rack
 
-Use a racket/equipment rack to represent tools and capabilities.
+Use an equipment rack/case cluster near a plausible courtside area.
 
-Possible visual grouping:
+The station is a metaphor only. Do not create a physical object for every technology.
 
-- rackets = software/product,
-- balls/cones = data/AI,
-- cases/tools = cloud/infrastructure.
+Possible grouping:
 
-Do not over-literalize every technology into an object. The station is just the entry point to the semantic skills panel.
+- rackets,
+- ball tubes/baskets,
+- equipment cases,
+- cones/markers.
 
 ---
 
 ## Contact station — tunnel / exit
 
-Create a final venue destination that reads as the end of the match:
+Create a compact side-court or far-side exit/tunnel element that reads as the end of the match.
 
-- player tunnel,
-- exit arch,
-- restrained “MATCH POINT” / “CONTACT” cue,
-- room for a clean end-state camera composition.
+Requirements:
 
-No forced cinematic walk-through.
+- deep-green architectural opening,
+- room for an original `MATCH POINT` / `CONTACT` cue later,
+- visually compatible with the grass-tournament venue,
+- no forced first-person walk-through.
 
 ---
 
 ## Résumé station
 
-The résumé must remain immediately available in DOM navigation, but also gets a small world affordance near Experience.
+Résumé remains directly available through DOM navigation.
 
-Recommended prop:
+Add a small courtside world affordance near Experience:
 
 - clipboard,
-- laminated match sheet,
-- courtside credential placard.
+- match sheet,
+- credential placard.
 
-Selection invokes the canonical résumé action. Do not make users enter Experience first.
+Selecting it invokes the canonical résumé action. Do not add a new narrative camera owner.
 
 ---
 
 ## Visual affordance system
 
-Create one consistent station language:
+Use one consistent interaction language across stations.
 
-- subtle accent strip,
-- one small hovering marker or icon when nearby/active,
-- material lift on hover,
-- short label only on hover/selection,
-- selected state stronger than hover.
+Preferred:
 
-Do not use seven unrelated interaction styles.
+- slight value/palette lift,
+- small projected DOM label when hovered/selected,
+- pointer cursor,
+- stronger selected state,
+- subtle cream or purple accent tick/stripe if needed.
 
----
+Avoid:
 
-## Performance constraints
+- neon outlines,
+- holograms,
+- particle halos,
+- large floating labels,
+- seven unrelated hover styles.
 
-Preserve Phase 09/12 discipline.
-
-- prefer instancing for repeated seats/crowd/fixtures,
-- station props should share material families,
-- avoid raster textures unless clearly justified,
-- no new post-processing,
-- do not add a separate Canvas,
-- retain low/medium/high detail tiers,
-- update `docs/PERFORMANCE_PROFILE.md` if draw submissions materially change.
-
-If a station needs a unique authored prop, Blockbench is preferred. Do not reopen Blender for ordinary low-poly prop work.
+The interaction system should feel like an old sports-game menu embedded in a grass-court tournament scene, not a sci-fi HUD.
 
 ---
 
-## Data-driven configuration
+## Data-driven station registry
 
-Create a central station registry rather than hard-coding labels in several components.
+Keep one station registry rather than duplicating destination metadata.
 
-Suggested data:
+Suggested shape:
 
 ```ts
 {
@@ -210,20 +389,73 @@ Suggested data:
 }
 ```
 
-Keep spatial transforms close to the scene owner, but keep semantic destination metadata centralized.
+Semantic metadata should remain centralized; transforms remain close to the scene owner.
+
+---
+
+## Performance constraints
+
+Preserve Phase 09/12 discipline, but do not treat the old 14-call environment measurement as sacred if the new venue needs a small justified increase.
+
+Rules:
+
+- measure before/after draw submissions,
+- prefer instancing for crowd and repeated signage,
+- share materials,
+- implement grass bands/wear cheaply,
+- reduce crowd/decorative props before removing required stations on lower tiers,
+- avoid large raster textures,
+- no second Canvas,
+- no unmeasured post-processing,
+- update `docs/PERFORMANCE_PROFILE.md` if the budget changes.
+
+If a unique prop needs authored geometry, Blockbench is preferred.
+
+---
+
+## Phase gates
+
+### Gate 16A — Grass-court look
+
+Pass before full station placement:
+
+- the court clearly reads as a lighter traditional grass surface rather than generic flat green,
+- alternating grass bands and/or subtle wear cues are visible at gameplay distance,
+- crisp white lines are highly readable,
+- deep-green walls/furniture frame the play area,
+- dark net + white top tape are clearly readable,
+- far-side crowd/signage makes the venue feel populated,
+- two-player full-court screenshot reads as an old-console grass-court tournament game,
+- no Wimbledon branding or copied commercial-game assets are introduced.
+
+### Gate 16B — Station integration
+
+Pass before Phase 17:
+
+- every portfolio destination has a plausible court/stadium station,
+- stations use the same green/cream/purple tournament palette language,
+- station silhouettes are readable from the gameplay composition,
+- all destinations still resolve through the accepted Phase 15 navigation path,
+- no station obstructs rally/player movement.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] All canonical portfolio destinations have a visually identifiable venue station.
-- [ ] Stations look like part of one tennis stadium rather than separate UI widgets.
-- [ ] About maps to the Karthick-side player.
-- [ ] Projects maps to the main scoreboard.
-- [ ] Résumé remains directly available both in DOM and in-world.
-- [ ] No important long-form content is moved into WebGL.
-- [ ] No station obstructs rally/player movement or court readability.
-- [ ] Station visuals respect quality tiers and performance budgets.
-- [ ] Interaction labels are short, consistent, and readable.
+- [ ] `docs/PIXEL_SPORTS_COURT_ART_DIRECTION.md` is treated as the court visual source of truth.
+- [ ] The opening venue now reads as a traditional grass-court tournament rendered like an old console tennis game.
+- [ ] The grass court—not portfolio UI—is the dominant opening visual.
+- [ ] Mowing/value bands, white lines, dark net, near player, and far player are immediately legible.
+- [ ] Deep-green surrounds and restrained cream/purple accents establish the tournament character without copied branding.
+- [ ] About maps to the Karthick player.
+- [ ] Experience maps to a courtside bench/kit area.
+- [ ] Research maps to umpire/strategy area.
+- [ ] Projects maps to the scoreboard.
+- [ ] Capabilities maps to equipment.
+- [ ] Contact maps to a tunnel/exit.
+- [ ] Résumé remains directly available in DOM and gains an in-world affordance.
+- [ ] Important text remains semantic HTML.
+- [ ] No copied commercial-game or Wimbledon signs, logos, sprites, or textures are introduced.
+- [ ] Performance and quality-tier behavior are measured and documented if changed.
 
-Stop after station placement and visual acceptance. Camera sequencing belongs to Phase 17.
+Stop after court/station visual acceptance. Phase 17 owns the full scroll/camera choreography.

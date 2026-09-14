@@ -2,9 +2,13 @@
 
 ## Objective
 
-Re-author the existing deterministic scroll/camera experience so scrolling feels like moving through a retro tennis venue rather than scrolling conventional full-screen website sections over a background scene.
+Re-author the deterministic scroll/camera experience around the Phase 16 pixel-sports grass-court venue so the site feels like moving through an old console tennis game rather than orbiting around a generic 3D stadium.
 
-The world stations created in Phase 16 become the visual anchors for each chapter.
+The visual source of truth is:
+
+- `docs/PIXEL_SPORTS_COURT_ART_DIRECTION.md`
+
+The Phase 16 court/station layout is assumed accepted before this phase begins.
 
 ---
 
@@ -16,184 +20,295 @@ The world stations created in Phase 16 become the visual anchors for each chapte
 
 ---
 
+## Core camera principle
+
+The default visual identity should come from a **stable elevated baseline gameplay camera**, not constant cinematic movement.
+
+The supplied retro reference still defines the composition language, while the Phase 16 art direction changes the venue itself to a traditional grass-court tournament palette.
+
+Therefore:
+
+> Use one strong elevated grass-court gameplay camera family as the visual anchor, then derive chapter views as restrained crops/shifts from that family.
+
+Avoid turning each portfolio section into an unrelated cinematic shot.
+
+---
+
+## Perspective target
+
+First implementation attempt must keep the existing PerspectiveCamera architecture.
+
+Approximate the classic old-console gameplay view with:
+
+- elevated camera height,
+- position close to the near baseline centerline,
+- downward pitch,
+- restrained left/right yaw,
+- longer focal length / narrower FOV than the current dramatic wide-angle feel,
+- minimal visible horizon,
+- both baselines visible in Hero,
+- near player in the lower portion of the frame,
+- far player in the upper portion,
+- crowd/signage visible above the far deep-green wall.
+
+Do not switch the entire application to orthographic projection by default.
+
+If PerspectiveCamera cannot achieve the desired compressed-depth game-screen look, create a single bounded visual prototype comparing perspective vs orthographic for the same Hero composition. Only adopt orthographic if it preserves:
+
+- one camera owner,
+- hotspot projection/hit accuracy,
+- responsive behavior,
+- reverse-scroll determinism,
+- reduced-motion behavior.
+
+No dual-camera narrative system.
+
+---
+
 ## Narrative model
 
 Keep one normalized master progress source.
 
-Do not add a second timeline for world navigation.
+Do not add a second navigation clock.
 
 Suggested chapter flow:
 
 ```text
 00 HERO / MATCH INTRO
-   full court + both players
+   iconic full-court grass gameplay view
 
 01 ABOUT
-   Karthick player medium composition
+   restrained crop toward Karthick player
 
 02 EXPERIENCE
-   courtside bench composition
+   sideline shift toward bench
 
 03 RESEARCH
-   umpire / strategy composition
+   sideline/upper-court shift toward umpire/strategy area
 
 04 PROJECTS
-   scoreboard composition
+   far-wall / scoreboard emphasis
 
 05 CAPABILITIES
-   equipment rack composition
+   equipment-side crop
 
 06 CONTACT
-   player tunnel / match-end composition
+   end-match/tunnel composition
 ```
 
-Résumé is a direct action, not a mandatory scroll chapter.
+Résumé remains a direct action rather than a required narrative chapter.
+
+---
+
+## Hero composition — primary art-direction gate
+
+The Hero camera is the single most important shot in the site.
+
+Required visual contents:
+
+- near and far baselines,
+- service boxes,
+- net,
+- both players,
+- striped/lightly varied grass surface dominating the frame,
+- crisp white lines,
+- deep-green perimeter walls/court furniture,
+- far-side stands/crowd,
+- scoreboard/signage in venue context,
+- compact identity UI that does not obscure gameplay.
+
+A restrained cream/purple accent may appear in the venue, but green remains visually dominant.
+
+The court should feel centered and slightly compressed in depth.
+
+Avoid:
+
+- dramatic diagonal perspective,
+- low court-level camera,
+- exaggerated wide-angle distortion,
+- huge empty foreground,
+- camera positioned so close that only half the court is visible.
+
+A reviewer should immediately read “retro grass-court tennis game” before reading the portfolio copy.
+
+---
+
+## Camera language for later chapters
+
+Use restrained variations of the gameplay view.
+
+### About
+
+- move slightly closer/lower toward the Karthick-side player,
+- preserve enough grass/net/deep-green surround context to keep the tennis-game identity,
+- avoid face-level portrait cinematography.
+
+### Experience
+
+- shift toward the bench/kit area,
+- keep part of the grass court visible,
+- treat it like a game between-point camera cut.
+
+### Research
+
+- frame umpire/strategy station from a clear sideline angle,
+- retain green wall/court geometry as context.
+
+### Projects
+
+- elevate/shift gaze toward the far-side scoreboard,
+- preserve enough of the grass court below it to show that Projects lives inside the venue.
+
+### Capabilities
+
+- use a restrained equipment-side crop,
+- avoid close-up object spins.
+
+### Contact
+
+- use a calm end-of-match composition near tunnel/exit,
+- retain court or scoreboard in the background when possible.
+
+---
+
+## Transition style
+
+Prefer **short reversible sports-broadcast cuts / eased reframes** over long cinematic travel.
+
+Use:
+
+- short soft-cut windows,
+- position/look-target interpolation,
+- minimal roll,
+- restrained FOV changes,
+- no camera orbit for its own sake.
+
+The visitor should feel like the game camera is selecting a new match context, not like a drone is flying around a stadium.
 
 ---
 
 ## Scroll behavior
 
-Scrolling should still feel natural on a normal webpage.
+Scrolling remains normal webpage scrolling.
 
 Requirements:
 
-- each chapter has enough scroll range for reading,
-- camera travel occurs primarily near chapter transitions,
-- camera settles while reading long content,
-- reverse scroll exactly reverses the authored experience,
-- no time-based autoplay is required,
-- no scroll hijacking that prevents normal trackpad/touch behavior,
-- clicking a hotspot scrolls to the same chapter destination.
-
----
-
-## Opening composition
-
-The current large hero text should no longer determine the composition.
-
-Opening view must prioritize:
-
-- entire or near-entire court,
-- both retro players,
-- recognizable stadium architecture,
-- scoreboard in the venue context,
-- compact identity overlay.
-
-The visitor should understand “retro tennis portfolio” within the first second or two.
-
----
-
-## Camera language
-
-Use a retro sports-broadcast / early-console-game vocabulary:
-
-- elevated baseline view,
-- restrained diagonal sideline views,
-- medium courtside cuts,
-- scoreboard-facing composition,
-- player medium shot,
-- tunnel/end-match composition.
-
-Avoid:
-
-- first-person walking,
-- aggressive orbit controls,
-- cinematic spins,
-- repeated extreme dolly moves,
-- camera clipping through stands,
-- constant mouse parallax.
-
----
-
-## Chapter settling
-
-Each destination must have a stable reading frame.
-
-Define explicit values for:
-
-- camera position,
-- look target,
-- field of view if needed,
-- content-safe screen region,
-- world station visibility,
-- player/ball resting state.
-
-The DOM content panel position must be considered during camera framing so content does not cover the station it refers to.
+- enough chapter scroll range for content,
+- major camera motion concentrated near chapter transitions,
+- stable reading frames,
+- deterministic reverse scroll,
+- no autoplay requirement,
+- no scroll hijacking,
+- hotspot click resolves to canonical chapter progress,
+- keyboard/DOM navigation resolves through the same destination path.
 
 ---
 
 ## Rally integration
 
-The tennis match should support the story, not compete with it.
+The tennis action should resemble an authored game sequence rather than continuous ambient chaos.
 
-Suggested behavior:
+Suggested pacing:
 
-- Hero: serve/rally begins or is poised to begin.
-- About: brief player-focused beat.
-- Experience: one readable exchange then settle.
-- Research: calmer between-point state.
-- Projects: scoreboard/project state, ball settled.
-- Capabilities: equipment/between-point state.
+- Hero: poised serve / first rally beat,
+- About: player-focused ready/recovery beat,
+- Experience: one readable exchange or between-point state,
+- Research: calm between-point state,
+- Projects: ball settled and scoreboard active,
+- Capabilities: equipment/between-point state,
 - Contact: match-point/end state.
 
-Do not force a continuous high-motion rally behind every reading section.
+Ball and camera remain smooth.
+Character animation remains stepped.
+Do not introduce physics.
 
-Keep deterministic authored ball behavior and existing contact synchronization contracts.
+---
+
+## Pixel-sports motion considerations
+
+The scene may use lower-resolution WebGL presentation from Phase 16.
+
+Camera motion must be reviewed for:
+
+- pixel shimmer,
+- line crawling on white court markings,
+- instability in grass mowing bands/worn patches,
+- unstable sprite/card crowd edges,
+- net aliasing,
+- hotspot label jitter.
+
+If motion causes excessive shimmer, first reduce camera travel and simplify transitions before adding post-processing.
 
 ---
 
 ## Hotspot jump behavior
 
-When a user clicks an in-world station:
+When a user selects an in-world station:
 
-1. resolve target chapter,
+1. resolve the target chapter,
 2. scroll to the canonical chapter anchor/progress,
-3. camera moves because the master timeline moved,
-4. content contextual layer updates,
-5. reverse scroll remains coherent after the jump.
+3. camera updates because master progress changed,
+4. contextual content updates,
+5. reverse scroll remains coherent afterward.
 
-Do not tween the camera separately and then patch scroll position afterward.
+Never tween the camera independently and then repair scroll state.
 
 ---
 
 ## Deep-link behavior
 
-Hashes such as `#projects` should load into a valid narrative state.
+Hashes such as `#projects` must initialize into coherent station framing.
 
 On initial deep link:
 
-- page content is immediately semantically available,
+- semantic content is immediately available,
 - scroll position resolves to the chapter,
-- camera initializes/settles without a visible journey from Hero where practical,
-- reduced motion avoids cinematic transition.
+- camera initializes directly near the destination rather than visibly touring from Hero when practical,
+- reduced motion uses immediate/near-immediate settling.
 
 ---
 
 ## Reduced motion
 
-Reduced-motion mode should retain spatial meaning without animated travel.
+Reduced-motion mode preserves the same venue geography with minimal travel.
 
-Preferred behavior:
+Preferred:
 
-- snap or near-snap between stable station compositions,
-- no ball squash/rapid camera cuts,
-- player idle pose only,
-- semantic content and all navigation remain complete.
+- direct cuts or near-snaps among stable station compositions,
+- no ball squash,
+- no rapid camera moves,
+- player idle pose,
+- complete semantic content/navigation.
 
 ---
 
 ## Responsive choreography
 
-Do not derive mobile camera by simply changing desktop FOV.
-
-Author at least:
+Author separate composition sets for:
 
 - desktop landscape,
 - tablet / narrow landscape,
 - mobile portrait,
-- reduced-motion composition set.
+- reduced motion.
 
-Mobile should use fewer, wider, steadier compositions.
+### Desktop
+
+Preserve the iconic elevated baseline grass-court game-screen view as much as possible.
+
+### Mobile portrait
+
+Do not merely increase FOV.
+
+Instead:
+
+- show a wider vertical court slice,
+- keep both players readable when possible,
+- preserve obvious grass-vs-surround color separation,
+- reduce crowd density rather than shrinking the court too far,
+- use fewer camera destinations,
+- let contextual UI use a bottom sheet.
+
+The mobile Hero must still communicate retro grass-court tennis immediately.
 
 ---
 
@@ -203,22 +318,46 @@ Mobile should use fewer, wider, steadier compositions.
 - `src/animations/usePrototypeTimeline.ts`
 - `src/components/camera/CameraRig.tsx`
 - chapter metadata in `src/data/portfolio.ts`
-- station target metadata from Phase 16
+- Phase 16 station target metadata
 
-Retain existing ownership rules: GSAP/ScrollTrigger owns normalized progress, `useFrame` owns realtime 3D transforms.
+Retain ownership rules: GSAP/ScrollTrigger owns normalized progress; `useFrame`/refs own per-frame 3D transforms.
+
+---
+
+## Visual review evidence
+
+Capture at minimum:
+
+1. desktop Hero full-court frame,
+2. tablet Hero,
+3. mobile Hero,
+4. About frame,
+5. Experience frame,
+6. Research frame,
+7. Projects/scoreboard frame,
+8. Contact frame,
+9. reduced-motion Hero,
+10. one reverse-scroll transition sequence.
+
+The desktop Hero should be compared against the Phase 16 grass-court pixel-sports checklist, not against the old generic green low-poly scene.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] The opening viewport is court-first, not text-first.
-- [ ] Every portfolio chapter has a stable world-station camera composition.
+- [ ] Hero uses an elevated baseline gameplay composition with restrained perspective.
+- [ ] Traditional grass court remains the dominant visual in the opening frame.
+- [ ] Grass bands/value variation make the surface read clearly as grass rather than generic green flooring.
+- [ ] White lines, deep-green surrounds, crowd, scoreboard/signage, dark net, and both players remain readable together.
+- [ ] Restrained cream/purple accents support the tournament atmosphere without copied branding.
+- [ ] Chapter views feel like variations/cuts from one game-camera language.
+- [ ] No chapter becomes an unrelated cinematic orbit shot.
 - [ ] Scroll and hotspot selection converge on the same narrative progress.
 - [ ] Reverse scroll remains deterministic.
-- [ ] Long-content chapters settle rather than continuously moving the camera.
-- [ ] Rally activity reduces when reading would otherwise be distracting.
-- [ ] Desktop and mobile camera sets are intentionally authored.
-- [ ] Reduced motion retains all spatial/navigation meaning with minimal travel.
-- [ ] Deep links initialize into coherent camera/content states.
+- [ ] Reading frames settle.
+- [ ] Pixel shimmer/aliasing is acceptable at the chosen render settings.
+- [ ] Desktop/tablet/mobile compositions are intentionally authored.
+- [ ] Reduced motion retains all spatial meaning with minimal travel.
+- [ ] Deep links initialize coherently.
 
-Stop after motion/composition acceptance. The DOM visual hierarchy is finalized in Phase 18.
+Stop after camera/motion acceptance. Phase 18 owns contextual DOM presentation.
