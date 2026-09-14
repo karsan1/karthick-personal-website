@@ -2,7 +2,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MutableRefO
 import { useFrame } from "@react-three/fiber";
 import type { InstancedMesh } from "three";
 import { Matrix4, MeshStandardMaterial } from "three";
-import { COURT_DIMENSIONS, sampleScoreboardEmphasis, type NarrativeProgress } from "@/animations/prototypeMotion";
+import { COURT_DIMENSIONS, NARRATIVE_CHAPTERS, sampleScoreboardEmphasis, type NarrativeChapter, type NarrativeProgress } from "@/animations/prototypeMotion";
+import { useExperienceStore } from "@/store/experienceStore";
 
 /**
  * Phase 09 environment contract: every position retains the accepted Phase 04
@@ -51,12 +52,11 @@ const STAND_BLOCKS: readonly InstanceTransform[] = [
   [7.15, 1, 0, 1.1, 2, 16.4],
 ];
 
-const SCOREBOARD_SEGMENTS: readonly InstanceTransform[] = [
-  [-1.25, 3.9, 7.5, 0.34, 0.1, 0.06], [-1.25, 3.3, 7.5, 0.34, 0.1, 0.06],
-  [-1.45, 3.6, 7.5, 0.1, 0.56, 0.06], [-1.05, 3.6, 7.5, 0.1, 0.56, 0.06],
-  [0.55, 3.9, 7.5, 0.34, 0.1, 0.06], [0.55, 3.3, 7.5, 0.34, 0.1, 0.06],
-  [0.35, 3.6, 7.5, 0.1, 0.56, 0.06], [0.75, 3.6, 7.5, 0.1, 0.56, 0.06],
-];
+const SCOREBOARD_SEGMENT_COUNT = 14;
+const DIGIT_SEGMENTS: readonly (readonly number[])[] = [
+  [0, 1, 2, 4, 5, 6], [2, 5], [0, 2, 3, 4, 6], [0, 2, 3, 5, 6],
+  [1, 2, 3, 5], [0, 1, 3, 5, 6], [0, 1, 3, 4, 5, 6], [0, 2, 5],
+] as const;
 
 /** Static, deterministic instrumentation for the Phase 09 performance review. */
 export const RETRO_ENVIRONMENT_METRICS = {
@@ -64,7 +64,7 @@ export const RETRO_ENVIRONMENT_METRICS = {
   drawCallCeiling: 15,
   materialInstances: 6,
   instancedGroups: 8,
-  instances: 8 + 2 + 5 + 8 + 4 + 32 + 24 + 8,
+  instances: 8 + 2 + 5 + SCOREBOARD_SEGMENT_COUNT + 4 + 32 + 24 + 8,
 } as const;
 
 function applyInstances(mesh: InstancedMesh, transforms: readonly InstanceTransform[]) {
@@ -151,6 +151,7 @@ function RetroScoreboard({ palette, progress, reducedMotion }: {
   reducedMotion: boolean;
 }) {
   const digits = useRef<InstancedMesh>(null);
+  const activeChapter = useExperienceStore((state) => state.activeChapter);
   // Keep the Phase 09 six-material palette and its documented draw budget.
   // This reference lets the scoreboard acknowledgement reuse the shared accent.
   const accent = useRef<MeshStandardMaterial>(palette.accent);
@@ -160,8 +161,28 @@ function RetroScoreboard({ palette, progress, reducedMotion }: {
   });
 
   useLayoutEffect(() => {
-    if (digits.current) applyInstances(digits.current, SCOREBOARD_SEGMENTS);
-  }, []);
+    const mesh = digits.current;
+    if (!mesh) return;
+    const chapterNumber = Math.max(1, NARRATIVE_CHAPTERS.indexOf(activeChapter as NarrativeChapter) + 1);
+    const values = [0, chapterNumber];
+    const matrix = new Matrix4();
+    let instance = 0;
+    values.forEach((value, digitIndex) => {
+      const enabled = new Set(DIGIT_SEGMENTS[value] ?? DIGIT_SEGMENTS[0]);
+      const centerX = digitIndex === 0 ? -0.62 : 0.62;
+      for (let segment = 0; segment < 7; segment += 1) {
+        const horizontal = segment === 0 || segment === 3 || segment === 6;
+        const localX = horizontal ? 0 : segment === 1 || segment === 4 ? -0.22 : 0.22;
+        const localY = segment === 0 ? 0.42 : segment === 3 ? 0 : segment === 6 ? -0.42 : segment < 3 ? 0.22 : -0.22;
+        const visible = enabled.has(segment);
+        matrix.makeScale(visible ? (horizontal ? 0.36 : 0.08) : 0, visible ? (horizontal ? 0.08 : 0.36) : 0, 0.06);
+        matrix.setPosition(centerX + localX, 3.6 + localY, 7.5);
+        mesh.setMatrixAt(instance, matrix);
+        instance += 1;
+      }
+    });
+    mesh.instanceMatrix.needsUpdate = true;
+  }, [activeChapter]);
 
   return (
     <group>
@@ -173,7 +194,7 @@ function RetroScoreboard({ palette, progress, reducedMotion }: {
         <boxGeometry args={[3.72, 1.3, 0.08]} />
         <primitive object={palette.mid} attach="material" dispose={null} />
       </mesh>
-      <instancedMesh ref={digits} args={[undefined, undefined, SCOREBOARD_SEGMENTS.length]}>
+      <instancedMesh ref={digits} args={[undefined, undefined, SCOREBOARD_SEGMENT_COUNT]}>
         <boxGeometry args={[1, 1, 1]} />
         <primitive object={palette.accent} attach="material" dispose={null} />
       </instancedMesh>

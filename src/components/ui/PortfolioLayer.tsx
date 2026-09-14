@@ -1,5 +1,7 @@
 import type { ChapterId, Portfolio } from "@/types/portfolio";
 import { Navigation } from "./Navigation";
+import { ChapterIndicator } from "./ChapterIndicator";
+import { ProjectGallery } from "./ProjectGallery";
 
 type PortfolioLayerProps = {
   portfolio: Portfolio;
@@ -39,6 +41,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
     <div className="portfolio-layer">
       <a className="skip-link" href="#about">Skip to portfolio content</a>
       <Navigation items={portfolio.navigation} />
+      <ChapterIndicator chapters={portfolio.chapters} />
 
       <section className="hero section" {...chapterProps("hero")}>
         <div className="hero-content">
@@ -121,30 +124,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
             title="Selected builds"
             introduction="Every board uses the same interaction: open the details, understand the work, then follow a standard web link."
           />
-          <div className="project-list">
-            {portfolio.projects.map((project, index) => (
-              <details className="project-card" key={project.id} open={index === 0}>
-                <summary>
-                  <span className="project-index">{String(index + 1).padStart(2, "0")}</span>
-                  <span>
-                    <span className="project-title">{project.title}</span>
-                    <span className="project-summary">{project.summary}</span>
-                  </span>
-                  <span className="project-toggle" aria-hidden="true">+</span>
-                </summary>
-                <div className="project-details">
-                  <p>{project.details}</p>
-                  <ul className="tag-list" aria-label={`${project.title} technologies`}>
-                    {project.technologies.map((technology) => <li key={technology}>{technology}</li>)}
-                  </ul>
-                  <div className="project-links">
-                    {project.href ? <a href={project.href} target="_blank" rel="noreferrer">Visit project <span aria-hidden="true">↗</span></a> : null}
-                    {project.repoHref ? <a href={project.repoHref} target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a> : null}
-                  </div>
-                </div>
-              </details>
-            ))}
-          </div>
+          <ProjectGallery projects={portfolio.projects} />
         </div>
       </section>
 

@@ -23,8 +23,13 @@ type CameraKeyframe = {
 
 export type CameraComposition = "desktop" | "tablet" | "mobile" | "reduced";
 
+export const NARRATIVE_CHAPTERS = [
+  "hero", "about", "experience", "research", "projects", "capabilities", "contact",
+] as const;
+export type NarrativeChapter = (typeof NARRATIVE_CHAPTERS)[number];
+
 export type MatchState = {
-  chapter: "hero" | "about" | "experience" | "research" | "projects" | "capabilities" | "contact";
+  chapter: NarrativeChapter;
   scoreboard: string;
   playerState: "serve" | "rally" | "ready" | "between-points" | "match-point";
   ballState: "toss" | "in-play" | "settled" | "final-exchange";

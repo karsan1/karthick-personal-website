@@ -6,9 +6,9 @@ Phases 01 foundation, 02 interaction prototype, 03 content/information
 architecture, 04 Blender/3D asset pipeline, 05 retro art-direction migration, and
 06 retro character prototype are complete and accepted.
 
-Phase 10 retunes the accepted normalized rally into responsive retro sports-game
-camera compositions while retaining the accepted Phase 04 GLB loader as a
-progressive fallback. Phase 08 adds deterministic authored-character clip playback
+Phase 11 adds the professional portfolio UI, accessible project-detail interaction,
+and chapter-synchronized retro scoreboard over the accepted Phase 10 choreography.
+Phase 08 adds deterministic authored-character clip playback
 and synchronizes it to the accepted rally while preserving smooth ball, camera,
 scroll, and DOM motion.
 The checked-in animated GLBs remain generated calibration fixtures; human
@@ -16,8 +16,7 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Complete browser visual approval of Phase 10 camera compositions, navigation
-  jumps, reverse scrub, and reduced-motion behavior.
+- Complete Phase 11 UI and accessibility acceptance across desktop and mobile.
 
 ## Completed baseline
 
@@ -166,10 +165,25 @@ Blockbench authoring and final visual approval are still required.
   remains Phase 11 UI/scoreboard work). These effects do not introduce timers,
   physics, or React state updates.
 
+## Phase 11 implementation status
+
+- Global DOM navigation and a restrained chapter/point indicator subscribe to the
+  coarse active chapter written by the existing master narrative timeline. The
+  navigation remains usable independently of WebGL and retains normalized hash,
+  history, resize, and reduced-motion behavior.
+- The procedural in-world scoreboard now renders the active chapter number with
+  its existing instanced segments, shared material, and draw submission. It adds
+  no focus target or required interaction and keeps the Phase 09 material/draw-call
+  budget intact.
+- Project summaries remain semantic DOM content. Each project opens an accessible
+  modal detail surface with focus entry/trapping/restoration, Escape and backdrop
+  close, scroll locking, external links, and a coarse shared project state. The
+  backdrop and Canvas attenuation reduce 3D distraction while details are open.
+
 ## Do not work on yet
 
-- Do not begin Phase 11 or later without an explicit request.
-- Do not redesign DOM/UI scoreboard content, introduce independent choreography,
+- Do not begin Phase 12 or later without an explicit request.
+- Do not introduce independent choreography,
   or delete Phase 04 assets while the Phase 09 fallback chain remains available.
 
 ## Next milestone

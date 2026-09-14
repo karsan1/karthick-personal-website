@@ -2,7 +2,8 @@
 
 import { useEffect, type MutableRefObject, type RefObject } from "react";
 import { getGSAP } from "@/lib/gsap";
-import { PROTOTYPE_LABELS, type NarrativeProgress } from "./prototypeMotion";
+import { PROTOTYPE_LABELS, sampleMatchState, type NarrativeProgress } from "./prototypeMotion";
+import { useExperienceStore } from "@/store/experienceStore";
 
 type UsePrototypeTimelineOptions = {
   scope: RefObject<HTMLElement | null>;
@@ -24,6 +25,14 @@ export function usePrototypeTimeline({
     let narrativeTrigger: { refresh: () => void; start: number; end: number } | undefined;
     let layoutRefreshPending = false;
     let refreshingNarrative = false;
+    let reducedScrollFrame = 0;
+
+    const commitActiveChapter = (value: number) => {
+      const chapter = sampleMatchState(value).chapter;
+      const state = useExperienceStore.getState();
+      if (state.activeChapter !== chapter) state.setActiveChapter(chapter);
+      if (state.navigationTarget === chapter) state.setNavigationTarget(null);
+    };
 
     const chapterScrollTop = (hash = window.location.hash) => {
       const id = hash.slice(1);
@@ -72,6 +81,15 @@ export function usePrototypeTimeline({
     const onHashNavigation = () => requestHashAlignment();
     const onResize = () => requestLayoutRealignment();
     const onPageReady = () => requestLayoutRealignment();
+    const onReducedScroll = () => {
+      window.cancelAnimationFrame(reducedScrollFrame);
+      reducedScrollFrame = window.requestAnimationFrame(() => {
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const value = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+        progress.current.value = value;
+        commitActiveChapter(value);
+      });
+    };
     const onDocumentClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
@@ -83,7 +101,11 @@ export function usePrototypeTimeline({
       event.preventDefault();
       if (window.location.hash !== href) window.history.pushState(null, "", href);
       window.scrollTo({ top, behavior: "auto" });
-      if (reducedMotion) progress.current.value = Number(document.getElementById(href.slice(1))?.dataset.chapterStart ?? 0);
+      if (reducedMotion) {
+        const chapterProgress = Number(document.getElementById(href.slice(1))?.dataset.chapterStart ?? 0);
+        progress.current.value = chapterProgress;
+        commitActiveChapter(chapterProgress);
+      }
     };
 
     document.addEventListener("click", onDocumentClick);
@@ -92,6 +114,7 @@ export function usePrototypeTimeline({
     window.addEventListener("resize", onResize);
     window.addEventListener("load", onPageReady);
     window.addEventListener("pageshow", onPageReady);
+    if (reducedMotion) window.addEventListener("scroll", onReducedScroll, { passive: true });
     void document.fonts.ready.then(() => {
       if (!cancelled) requestLayoutRealignment();
     });
@@ -125,6 +148,7 @@ export function usePrototypeTimeline({
                   invalidateOnRefresh: true,
                   markers: debug,
                   onRefresh: requestHashAlignment,
+                  onUpdate: (self: { progress: number }) => commitActiveChapter(self.progress),
                 },
               }),
         });
@@ -146,6 +170,9 @@ export function usePrototypeTimeline({
         if (reducedMotion) {
           progress.current.value = PROTOTYPE_LABELS.contentPause;
           timeline.pause(0);
+          const hashChapter = document.getElementById(window.location.hash.slice(1));
+          const hashProgress = Number(hashChapter?.dataset.chapterStart);
+          commitActiveChapter(Number.isFinite(hashProgress) ? hashProgress : 0);
           requestHashAlignment();
           return;
         }
@@ -178,12 +205,14 @@ export function usePrototypeTimeline({
     return () => {
       cancelled = true;
       window.cancelAnimationFrame(alignmentFrame);
+      window.cancelAnimationFrame(reducedScrollFrame);
       document.removeEventListener("click", onDocumentClick);
       window.removeEventListener("hashchange", onHashNavigation);
       window.removeEventListener("popstate", onHashNavigation);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("load", onPageReady);
       window.removeEventListener("pageshow", onPageReady);
+      window.removeEventListener("scroll", onReducedScroll);
       layoutObserver.disconnect();
       narrativeTrigger = undefined;
       context?.revert();
