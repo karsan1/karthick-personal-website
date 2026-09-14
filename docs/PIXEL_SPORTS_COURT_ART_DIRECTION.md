@@ -4,13 +4,15 @@
 
 This document is the visual target for the court/stadium work beginning in Phase 16.
 
-The user-provided reference shows the desired **overall court read**: an elevated retro tennis-game view with a warm clay/brown court, bright white markings, dark green perimeter walls, colorful packed stands, courtside officials/props, simple advertising/signage blocks, and clearly readable players.
+The user-provided retro tennis reference still defines the desired **overall game-screen composition**: elevated baseline view, full-court readability, two players, net, packed stands, courtside officials/props, simple signage blocks, and a compact old-console sports-game presentation.
 
-The website must **evoke that era and composition without copying a specific commercial game, court texture, character sprite, brand, sign, logo, or exact layout**.
+The **surface and venue color direction is intentionally different from that reference**. The target is now a **Wimbledon-inspired traditional grass-court look** rather than a clay court.
+
+The website must evoke the atmosphere of a classic grass-court tournament without copying Wimbledon branding, logos, exact signage, fonts, protected marks, or a specific commercial game's assets.
 
 The target is therefore:
 
-> **A real interactive 3D tennis diorama presented with the visual discipline of a 16-bit / early-console sports game.**
+> **A real interactive 3D grass-court tennis diorama presented with the visual discipline of a 16-bit / early-console sports game.**
 
 The court should feel like the primary game screen, not a realistic stadium and not a modern low-poly architecture render.
 
@@ -21,9 +23,9 @@ The court should feel like the primary game screen, not a realistic stadium and 
 On initial load, before the user reads anything substantial, the scene should communicate:
 
 1. retro tennis game,
-2. full court,
+2. traditional grass court,
 3. two players,
-4. stadium/crowd,
+4. tournament venue/crowd,
 5. interactive portfolio world.
 
 The court must dominate the viewport.
@@ -31,10 +33,10 @@ The court must dominate the viewport.
 The visual hierarchy should read approximately:
 
 ```text
-COURT + PLAYERS            strongest
-PERIMETER WALLS / NET      strong
-CROWD / STANDS / SIGNAGE   supporting
-PORTFOLIO IDENTITY UI      restrained
+GRASS COURT + PLAYERS       strongest
+NET + DEEP-GREEN SURROUNDS  strong
+CROWD / STANDS / SIGNAGE    supporting
+PORTFOLIO IDENTITY UI       restrained
 ```
 
 Do not let large typography obscure the baseline, service boxes, players, or scoreboard.
@@ -43,70 +45,126 @@ Do not let large typography obscure the baseline, service boxes, players, or sco
 
 ## Court palette
 
-### Court surface
+### Grass playing surface
 
-Move away from the current green court as the primary target.
+Do not use the clay/brown palette from the supplied reference.
 
-Preferred family:
+The primary court should read as a classic tournament grass surface using a limited family of natural greens.
 
-- burnt sienna,
-- terracotta,
-- warm clay brown,
-- muted orange-brown.
-
-Use a small number of stepped tones rather than smooth realistic shading.
-
-Suggested starting palette family, to be visually tuned in-browser rather than copied literally:
+Suggested starting palette family, to be tuned in-browser rather than copied literally:
 
 ```text
-base clay       #9A5E32
-light clay      #B07143
-shadow clay     #754526
-court line      #F4E7D0
+grass base         #557A3D
+grass light stripe #668A49
+grass dark stripe  #476B35
+worn grass         #8B8A5A
+court line         #F4F1E7
 ```
 
-The exact colors are not contractual. The **warm brown court against green venue walls** is contractual unless visual review proves another nearby palette reads better.
+The exact colors are not contractual. The requirements are:
 
-### Perimeter walls / barriers
+- grass must be visibly lighter and more natural than the current dark-green low-poly court,
+- court lines must be crisp white/cream,
+- alternating mowing bands should help communicate grass without requiring a realistic texture,
+- optional worn baseline/service-area patches may use a muted olive/tan tone,
+- the surface must remain graphic and readable from the gameplay camera.
 
-Use dark saturated greens similar to old sports-game venue walls:
+Prefer geometry/material bands, vertex colors, or a tiny palette texture over a large photoreal grass map.
+
+### Court surround / perimeter walls
+
+Use deeper tournament greens around the brighter grass court so the playing surface remains distinct.
+
+Suggested family:
 
 ```text
-deep green      #0F4D3A
-mid green       #17664B
-shadow green    #09362A
+deep surround green #154734
+mid surround green  #1E5A40
+shadow green        #0B2F23
 ```
 
-The wall should visually frame the court and separate the play surface from the stands.
+Use these for:
+
+- retaining walls,
+- courtside barriers,
+- umpire/bench structures where appropriate,
+- tunnel/exit architecture,
+- selected scoreboard framing.
+
+The surround should visually frame the court rather than blend into the grass.
+
+### Purple accent
+
+A restrained purple accent may be used to evoke a traditional grass-tournament color contrast without reproducing Wimbledon branding.
+
+Suggested use:
+
+- tiny sign trim,
+- selected scoreboard accents,
+- small station markers,
+- subtle UI/world detail.
+
+Suggested starting family:
+
+```text
+purple accent #5E3F77
+purple light  #74558D
+```
+
+Purple is **supporting only**. Do not turn the stadium into a purple theme and do not copy official Wimbledon logo treatments or wordmarks.
 
 ### Net
 
-The net should read much darker than the white court lines.
+The net should read darker than the court lines.
 
 Preferred:
 
-- near-black / charcoal mesh,
-- pale top tape,
-- chunky posts,
+- black/charcoal mesh,
+- crisp white or cream top tape,
+- chunky dark posts,
 - visibly simplified geometry.
 
-Avoid the current light semi-transparent net becoming visually washed out.
+Avoid a pale semi-transparent net disappearing against the court.
 
 ### Crowd
 
-The crowd should provide controlled color noise:
+The crowd should provide controlled color noise while the venue architecture stays green-led.
 
-- red,
-- yellow,
-- blue,
+Use a compact palette such as:
+
+- white/cream,
+- navy,
+- burgundy,
+- muted red,
 - teal,
-- white,
-- orange,
+- yellow accents,
+- restrained purple,
 - dark clothing blocks.
 
-Do not model individual people in detail.
+Do not model individual spectators in detail.
 
-Use repeated sprite/card/instanced silhouettes with a small palette so the stands feel packed from the gameplay camera.
+---
+
+## Grass-court visual cues
+
+The court must read as grass even with retro graphics.
+
+Use several of these cues together:
+
+- alternating longitudinal or broad mowing bands,
+- slightly softer green variation inside the court than the deep surround walls,
+- subtle lighter wear near baselines and service areas,
+- extremely crisp white lines,
+- clean tournament-style court furniture,
+- dark green walls/barriers around the playing area.
+
+Avoid:
+
+- photoreal grass blades,
+- noisy procedural texture,
+- glossy turf,
+- bright artificial-turf neon green,
+- clay dust or orange/brown surface coloring.
 
 ---
 
@@ -123,7 +181,7 @@ The opening composition should show:
 - net,
 - near player below or just inside the near baseline,
 - far player near the upper baseline,
-- a clear band of court surround,
+- a clear grass-court surround,
 - back wall/signage,
 - crowd rising behind the far side.
 
@@ -142,7 +200,7 @@ The first implementation attempt should keep the current PerspectiveCamera archi
 - court centered in frame,
 - minimal horizon.
 
-Only consider switching a chapter composition to orthographic projection if a measured visual prototype proves the perspective camera cannot achieve the target without breaking existing camera ownership or interactions.
+Only consider orthographic projection if a measured visual prototype proves the perspective camera cannot achieve the target without breaking existing camera ownership or interactions.
 
 Do not introduce a second camera owner.
 
@@ -152,17 +210,18 @@ Do not introduce a second camera owner.
 
 The DOM must remain crisp and full-resolution.
 
-The 3D scene may intentionally use a controlled low-resolution presentation to strengthen the 16-bit feel.
+The 3D scene may intentionally use a controlled low-resolution presentation to strengthen the old-console feel.
 
 Preferred order of experiments:
 
 1. flat materials + limited palette + stepped animation,
-2. reduced Canvas DPR / rendering resolution on a dedicated visual mode,
-3. disable or reduce antialiasing if visual review improves the look,
-4. CSS `image-rendering` experiment only if browser behavior is stable,
-5. custom render-target pixelation only if the first four options are insufficient and performance remains acceptable.
+2. strong grass/surround color blocking,
+3. reduced Canvas DPR / rendering resolution on a dedicated visual mode,
+4. disable or reduce antialiasing if visual review improves the look,
+5. CSS `image-rendering` experiment only if browser behavior is stable,
+6. custom render-target pixelation only if simpler methods are insufficient and performance remains acceptable.
 
-Do **not** add a post-processing dependency just to say the scene is pixelated.
+Do **not** add a post-processing dependency just to make the scene pixelated.
 
 Any scene pixelation must:
 
@@ -170,7 +229,7 @@ Any scene pixelation must:
 - preserve pointer hit accuracy,
 - preserve DOM readability,
 - preserve quality tiers,
-- not introduce shimmering severe enough to hurt motion readability.
+- not introduce shimmering severe enough to hurt line/net/player readability.
 
 ---
 
@@ -181,40 +240,40 @@ Use lighting to separate forms, not to create realism.
 Preferred treatment:
 
 - mostly flat/faceted materials,
-- very soft or simplified shadows,
+- bright daylight-like value separation,
+- soft or simplified shadows,
 - restrained specular response,
-- no glossy court,
+- no glossy grass,
 - no cinematic HDR look,
 - no bloom,
 - no atmospheric fog that obscures court markings.
 
-The environment should look intentionally graphic.
-
-If realistic shadow gradients fight the pixel-sports look, prefer simpler baked-looking value separation or reduced shadow quality over adding more lights.
+The environment should feel like an outdoor tournament game screen rather than a dark night stadium.
 
 ---
 
 ## Stadium structure
 
-The venue should be visually dense but geometrically cheap.
+The venue should feel prestigious and traditional while remaining geometrically cheap and distinctly retro.
 
 ### Back wall
 
-The far side should contain a readable green wall/barrier with:
+The far side should contain a readable deep-green wall/barrier with:
 
 - simple original sign panels,
 - scoreboard/project destination integrated into the venue,
-- no copied real-world sponsor names or logos.
+- restrained purple/cream accents where useful,
+- no copied real-world sponsor names, Wimbledon marks, or logos.
 
 ### Side walls
 
-Use green retaining walls/fences that guide the eye toward the court.
+Use deep-green retaining walls/fences that guide the eye toward the grass court.
 
 ### Stands
 
 Prefer stepped seating terraces or low-poly slabs.
 
-The stands should be most visually populated behind the far baseline and along side bands rather than surrounding the camera with large realistic architecture.
+The stands should be visually populated behind the far baseline and along side bands rather than becoming huge realistic architecture around the camera.
 
 ### Crowd
 
@@ -225,13 +284,11 @@ Use one of:
 - small palette billboard clusters,
 - mixed cards + geometry.
 
-Crowd movement should be minimal or absent during Phase 16.
+Crowd motion should be minimal or absent during Phase 16.
 
 ### Officials / courtside props
 
-The reference is effective partly because small recognizable court roles make the scene feel like a game venue.
-
-Useful original props:
+Use recognizable traditional tennis venue props:
 
 - umpire chair,
 - courtside bench,
@@ -241,17 +298,17 @@ Useful original props:
 - rackets,
 - line-official style silhouettes if performance permits.
 
-These should also help support portfolio station metaphors from Phase 16.
+These should also support the portfolio station metaphors from Phase 16.
 
 ---
 
 ## Signage
 
-Use signage as atmosphere and portfolio affordance, not decoration copied from the reference.
+Use signage as atmosphere and portfolio affordance, not as copied tournament branding.
 
 Allowed:
 
-- fictional sponsor-like color blocks,
+- original green/cream/purple color blocks,
 - generic tennis motifs,
 - project names on the project scoreboard,
 - short labels like `PROJECTS`, `MATCH`, `PLAYER 01`, `RESEARCH`,
@@ -259,9 +316,11 @@ Allowed:
 
 Avoid:
 
-- real sponsor logos unless explicitly licensed/desired,
-- copying sign placement one-for-one,
-- copying fonts, brand color combinations, or text from the supplied reference.
+- Wimbledon logos/wordmarks,
+- exact official sign layouts,
+- copied sponsor panels,
+- copying the supplied reference's sign placement one-for-one,
+- using official tournament branding as decoration.
 
 ---
 
@@ -280,17 +339,17 @@ Priorities:
 5. limb readability,
 6. facial detail last.
 
+A classic white-dominant tennis outfit is visually compatible with the grass-court direction, but Player 01 and the opponent still need distinct trim/silhouette so they remain recognizable.
+
 Use stepped animation and limited material colors.
 
 Do not chase realistic anatomy or skin shading.
-
-Phase 19 remains the final human-authored character pass, but Phase 16 visual work must already test the existing players against the new court palette and gameplay camera.
 
 ---
 
 ## Relationship to portfolio stations
 
-The venue stations must look like normal court/stadium elements first and navigation targets second.
+The venue stations must look like normal grass-court tournament elements first and navigation targets second.
 
 Examples:
 
@@ -302,9 +361,7 @@ Examples:
 - tunnel/exit → Contact,
 - clipboard/placard → Résumé.
 
-Do not add floating glowing holograms that break the 16-bit sports-game illusion.
-
-Use small color/value changes, short labels, pointer cursor, or restrained projected DOM labels for interaction feedback.
+Do not add floating glowing holograms that break the sports-game illusion.
 
 ---
 
@@ -314,18 +371,18 @@ Use small color/value changes, short labels, pointer cursor, or restrained proje
 
 - full crowd density,
 - complete venue signs,
+- grass mowing/wear detail,
 - highest allowed court/prop detail,
-- optional scene-resolution experiment if visually accepted.
+- optional accepted scene-resolution treatment.
 
 ### Medium
 
 - slightly reduced crowd density,
-- same court/walls/net readability,
-- preserve all world stations.
+- preserve grass bands, white lines, green surrounds, net, players, and all world stations.
 
 ### Low
 
-- court, walls, net, players, scoreboard, and required station silhouettes remain,
+- preserve grass-court identity, walls, net, players, scoreboard, and required station silhouettes,
 - reduce crowd and decorative props first,
 - never remove a required navigation destination.
 
@@ -347,14 +404,15 @@ The initial full-court view is the primary art-direction gate.
 
 ---
 
-## Acceptance test for the supplied-reference direction
+## Acceptance test for the grass-court direction
 
-A reviewer who has seen the supplied reference should be able to say all of the following without being told:
+A reviewer should be able to say all of the following without being told:
 
 - “This reads like an old console tennis game.”
-- “The warm clay court is the main thing I see.”
-- “The dark green court walls and colorful stands frame it.”
-- “Both players and the net are immediately readable.”
-- “It is clearly an original 3D website, not a screenshot or clone of a specific game.”
+- “This is clearly a traditional grass-court tournament venue.”
+- “The brighter striped grass court is framed by deep green surrounds.”
+- “The white lines, dark net, both players, and crowd are immediately readable.”
+- “There is a subtle classic green/cream/purple tournament feel without copied branding.”
+- “It is clearly an original interactive 3D website, not a screenshot or clone.”
 
-If the scene instead reads as a modern low-poly green tennis stadium, this art-direction goal has not been met.
+If the scene reads as clay, generic flat-green low-poly tennis, or a dark modern stadium, this art-direction goal has not been met.
