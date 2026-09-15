@@ -1,8 +1,12 @@
 import { useCallback, useEffect, type ReactNode } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
+import { BoxGeometry, MeshBasicMaterial } from "three";
 import { requestPortfolioNavigation } from "@/hooks/usePortfolioNavigation";
 import { useExperienceStore } from "@/store/experienceStore";
 import type { WorldHotspotConfig } from "./worldHotspots";
+
+const ACCENT_MARKER_GEOMETRY = new BoxGeometry(0.14, 0.14, 0.14);
+const ACCENT_MARKER_MATERIAL = new MeshBasicMaterial({ color: "#d7bd65" });
 
 type WorldHotspotProps = WorldHotspotConfig & {
   children: ReactNode;
@@ -15,6 +19,10 @@ type WorldHotspotProps = WorldHotspotConfig & {
 export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...config }: WorldHotspotProps) {
   const interactionMode = useExperienceStore((state) => state.interactionMode);
   const projectDetailOpen = useExperienceStore((state) => state.projectDetailOpen);
+  const hoveredHotspot = useExperienceStore((state) => state.hoveredHotspot);
+  const selectedHotspot = useExperienceStore((state) => state.selectedHotspot);
+  const isHovered = hoveredHotspot === config.id;
+  const isSelected = selectedHotspot === config.id;
   const enabled = interactionMode === "explore" && !projectDetailOpen;
 
   const clearHover = useCallback(() => {
@@ -42,12 +50,14 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
     event.stopPropagation();
     const state = useExperienceStore.getState();
     state.setSelectedHotspot(config.id);
-    requestPortfolioNavigation(config.chapterId);
-  }, [config.chapterId, config.id, enabled]);
+    if (config.chapterId) requestPortfolioNavigation(config.chapterId);
+    else if (config.href) window.location.assign(config.href);
+  }, [config.chapterId, config.href, config.id, enabled]);
 
   return (
     <group
       name={`hotspot-${config.id}`}
+      position={isHovered ? [0, 0.04, 0] : [0, 0, 0]}
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
       onClick={onClick}
@@ -58,6 +68,18 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
           <boxGeometry args={hitArea} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
+      ) : null}
+      {(isHovered || isSelected) && hitArea ? (
+        <mesh
+          position={[
+            hitPosition[0],
+            hitPosition[1] + hitArea[1] / 2 + 0.28,
+            hitPosition[2],
+          ]}
+          rotation={[0, 0, Math.PI / 4]}
+          geometry={ACCENT_MARKER_GEOMETRY}
+          material={ACCENT_MARKER_MATERIAL}
+        />
       ) : null}
     </group>
   );

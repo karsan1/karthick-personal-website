@@ -20,8 +20,8 @@ type SceneProps = {
 export function Scene({ debug, legacyEnvironment = false, progress, qualityTier, reducedMotion }: SceneProps) {
   return (
     <>
-      <color attach="background" args={["#07120f"]} />
-      <fog attach="fog" args={["#07120f", 12, 26]} />
+      <color attach="background" args={["#0c1f18"]} />
+      <fog attach="fog" args={["#0c1f18", 17, 34]} />
       <Lighting qualityTier={qualityTier} />
       <CameraRig progress={progress} debug={debug} reducedMotion={reducedMotion} />
       {legacyEnvironment ? <ProductionEnvironment /> : (

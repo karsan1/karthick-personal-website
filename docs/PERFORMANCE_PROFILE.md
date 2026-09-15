@@ -1,5 +1,23 @@
 # Phase 12 Performance Profile
 
+## Phase 16 venue reframe — static budget update
+
+**Evidence:** `RetroEnvironment` now uses procedural grass bands and wear strips,
+deep-green surrounds, seven station silhouettes, and high-tier far-side seating/
+crowd. Static source accounting records 32 environment draw submissions against a
+34-call ceiling, eleven shared material instances, eleven instanced groups, and
+125 high-tier instances. Medium retains 32 crowd instances; low removes seating
+and crowd but keeps every station and the grass/net/surround identity.
+
+**Impact:** the previous 14-call Phase 09 environment figure is superseded for the
+active venue. No raster grass texture, additional Canvas, or post-processing was
+introduced. Runtime-created materials still dispose on unmount.
+
+**Verification:** capture `renderer.info.render.calls`, triangles, geometries,
+textures, and programs after staged mount at high/medium/low. Confirm the opening
+frame keeps players, lines, net, scoreboard, and every station readable before
+accepting the increased structural budget.
+
 **Profile date:** 2026-09-13  
 **Scope:** current shared-worktree Phase 12 scene; source and asset-manifest audit.  
 **Status:** static facts below are verified from source/manifest. No browser performance trace, `renderer.info`, or fresh production-bundle measurement was captured for this profile, so FPS, frame time, final draw calls, triangles, GPU memory, and JS transfer remain pending rather than estimated.

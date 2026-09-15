@@ -2,10 +2,11 @@
 
 ## Current phase
 
-Phases 01–12 are implemented. Phase 14 is accepted as an architecture-only
-product reframe, and Phase 15 now implements its first runtime interaction
-slice: the retro tennis world is the primary visual/navigation surface with
-contextual semantic DOM controls and no independent camera ownership.
+Phases 01–12, 14, and 15 are implemented, and Phase 16 is now implemented: the
+procedural venue is reframed as a grass-court tournament with seven interactive
+station affordances (3D accent diamond cues, subtle value lift, and bidirectional
+DOM Court Select menu synchronization) while preserving existing navigation and
+camera ownership.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
@@ -22,11 +23,9 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Begin Phase 16 only when explicitly requested, extending the accepted hotspot
-  infrastructure into authored venue stations without creating another
-  navigation or camera-ownership path.
+- Prepare for Phase 17 (Scroll camera world tour choreography) when requested.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
-  every world destination while the 3D scene becomes visually primary.
+  every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,
   preview-deployment, and rollback-path verification is actually completed.
 - Retain the Phase 04 Blender sources and optimized environment partitions while
@@ -270,18 +269,38 @@ Blockbench authoring and final visual approval are still required.
   controls with 44px targets; reduced-motion and non-WebGL paths retain those DOM
   controls without requiring raw Canvas focus.
 
+## Phase 16 implementation status
+
+- The procedural court now uses a brighter grass palette, broad alternating
+  mowing bands, muted wear strips, cream lines, dark net mesh/white tape, and
+  deep-green perimeter geometry. The rally court coordinates and Phase 04 legacy
+  fallback remain unchanged.
+- The station registry centralizes all seven semantic destinations: player/About,
+  bench/Experience, chair/Research, scoreboard/Projects, rack/Capabilities,
+  tunnel/Contact, and clipboard/canonical résumé mail action. World clicks and
+  compact DOM controls retain the Phase 15 path; no camera or narrative owner was
+  added.
+- Low preserves every station silhouette and core court identity; medium mounts
+  seats plus a reduced crowd; high mounts the full 48-instance crowd. The restyled
+  procedural venue records a 32-call structural ceiling (34 allowed), eleven
+  shared materials, and eleven instanced groups pending browser renderer capture.
+- Station affordances provide bidirectional feedback: hovering a 3D station renders
+  a subtle retro accent diamond indicator above the target and a slight value/Y
+  lift, while updating the DOM Court Select menu with an active target badge;
+  hovering Court Select buttons reflects back to the 3D target.
+
 ## Do not work on yet
 
-- Do not build Phase 16 venue stations or Phase 17 camera choreography without a
-  new explicit request.
+- Do not build Phase 17 camera choreography without a new explicit request.
 - Do not introduce independent choreography or delete/archive Phase 04 assets while
   the Phase 09 fallback chain and default asset build retain them.
 
 ## Next milestone
 
-Phase 16 is the next implementation milestone: extend the accepted infrastructure
-into the venue information architecture while preserving one shared destination
-path. Phase 13 preview, production-browser, and rollback evidence remains a
+Phase 17 (Scroll camera world tour choreography) is the next implementation
+milestone: authoring the continuous game-camera exploration transitions across the
+seven stations while preserving deterministic scrub, reverse scroll, and reduced-motion
+safety. Phase 13 preview, production-browser, and rollback evidence remains a
 separate outstanding release gate. Human Blockbench character and clip
 authoring/export approval also remains a separate art task documented in
 `assets-source/README.md`; generated fixtures must not be presented as final art.

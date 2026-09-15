@@ -106,8 +106,22 @@ body[data-project-dialog-open="true"] .experience-shell {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+.world-menu-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: 0.2rem;
+}
 .world-menu-label { color: var(--muted); }
-.world-menu button {
+.world-menu-target {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.world-menu :is(button, a) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   min-height: 2.25rem;
   padding: 0.28rem 0.38rem;
@@ -115,8 +129,19 @@ body[data-project-dialog-open="true"] .experience-shell {
   color: var(--accent);
   font: inherit;
   cursor: pointer;
+  text-decoration: none;
+  transition: background 120ms ease, color 120ms ease;
 }
-.world-menu button:hover, .world-menu button:focus-visible { background: rgba(216, 255, 57, 0.12); }
+.world-menu :is(button, a):hover,
+.world-menu :is(button, a)[data-hovered="true"] {
+  background: rgba(216, 255, 57, 0.18);
+  color: #ffffff;
+}
+.world-menu :is(button, a)[data-active="true"] {
+  background: rgba(216, 255, 57, 0.12);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+.world-menu :is(button, a):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; background: rgba(216, 255, 57, 0.12); }
 
 .skip-link {
   position: fixed;
@@ -269,7 +294,7 @@ body[data-project-dialog-open="true"] .experience-shell {
 }
 
 .hero-content {
-  width: min(100%, 70rem);
+  width: min(28rem, 42vw);
 }
 
 .eyebrow {
@@ -291,7 +316,7 @@ h3 {
 
 h1 {
   max-width: 8ch;
-  font-size: clamp(4rem, 12vw, 10rem);
+  font-size: clamp(3.2rem, 6.4vw, 5.5rem);
   font-weight: 520;
   letter-spacing: -0.075em;
   line-height: 0.82;
@@ -322,7 +347,7 @@ h3 {
 }
 
 .hero-copy {
-  margin: 2rem 0 0.75rem;
+  margin: 1.25rem 0 0.6rem;
 }
 
 .availability {
@@ -772,6 +797,8 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
 }
 
 @media (max-width: 44rem) {
+  .hero-content { width: min(100%, 28rem); }
+
   .site-nav {
     gap: 1rem;
     padding-right: 0;
@@ -847,16 +874,24 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
     padding: 0.35rem;
   }
 
-  .world-menu-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
+  .world-menu-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.15rem 0.35rem;
   }
 
-  .world-menu button {
+  .world-menu-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  .world-menu :is(button, a) {
     min-height: 2.75rem;
     padding: 0.45rem;
     white-space: normal;
