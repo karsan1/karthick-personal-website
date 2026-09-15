@@ -2,11 +2,10 @@
 
 ## Current phase
 
-Phases 01–12, 14, and 15 are implemented, and Phase 16 is now implemented: the
-procedural venue is reframed as a grass-court tournament with seven interactive
-station affordances (3D accent diamond cues, subtle value lift, and bidirectional
-DOM Court Select menu synchronization) while preserving existing navigation and
-camera ownership.
+Phases 01–12, 14, 15, and 16 are implemented, and Phase 17 is now implemented: the
+scroll-scrubbed camera choreography now frames the venue as an old-console tennis game.
+An elevated baseline gameplay camera acts as the visual anchor, and each narrative
+chapter uses a restrained station-visit crop/shift rather than a cinematic orbit.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
@@ -23,7 +22,7 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Prepare for Phase 17 (Scroll camera world tour choreography) when requested.
+- Prepare for Phase 18 (Contextual portfolio UI redesign) when requested.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,
@@ -289,18 +288,35 @@ Blockbench authoring and final visual approval are still required.
   lift, while updating the DOM Court Select menu with an active target badge;
   hovering Court Select buttons reflects back to the 3D target.
 
+## Phase 17 implementation status
+
+- The visual anchor is now a stable elevated near-baseline gameplay camera,
+  creating a compressed depth feel reminiscent of old sports games.
+- Each narrative chapter receives a restrained variation—a position/target shift
+  toward its station—rather than a distinct cinematic orbit.
+- Transitions between chapters use short soft-cut windows concentrated at chapter
+  boundaries. Reading frames hold completely stable.
+- Rally-tracking keyframes (serve toss → content pause) overlap into the Hero,
+  About, and Experience chapters, keeping ball and player motion readable during
+  active play. After 0.50 progress, the ball is settled and views are purely
+  station-framing.
+- Tablet compositions use a slightly pulled-back wider FOV structure. Mobile
+  uses an elevated overhead view with fewer transitions to preserve readability.
+- Reduced motion remains a single calm composition with zero camera travel.
+- Infrastructure (CameraRig, timeline, hotspots, portfolio data) was preserved
+  without changes.
+
 ## Do not work on yet
 
-- Do not build Phase 17 camera choreography without a new explicit request.
+- Do not build Phase 18 UI contextual redesign without a new explicit request.
 - Do not introduce independent choreography or delete/archive Phase 04 assets while
   the Phase 09 fallback chain and default asset build retain them.
 
 ## Next milestone
 
-Phase 17 (Scroll camera world tour choreography) is the next implementation
-milestone: authoring the continuous game-camera exploration transitions across the
-seven stations while preserving deterministic scrub, reverse scroll, and reduced-motion
-safety. Phase 13 preview, production-browser, and rollback evidence remains a
-separate outstanding release gate. Human Blockbench character and clip
-authoring/export approval also remains a separate art task documented in
+Phase 18 (Contextual portfolio UI redesign) is the next implementation milestone:
+replacing the placeholder DOM elements with a professional, restrained typographic
+design that complements the retro 3D world. Phase 13 preview, production-browser,
+and rollback evidence remains a separate outstanding release gate. Human Blockbench
+character and clip authoring/export approval also remains a separate art task documented in
 `assets-source/README.md`; generated fixtures must not be presented as final art.
