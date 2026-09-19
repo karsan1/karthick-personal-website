@@ -230,3 +230,27 @@ The redesign is complete when the site is simultaneously:
 - performant across reasonable desktop/mobile hardware,
 - accessible without WebGL, audio, or full-motion animation,
 - maintainable without reopening Blender for ordinary future work.
+
+
+---
+
+## Visual-completion extension — Phases 21–25
+
+The 3D-first architecture is largely implemented, but the latest source audit found that the remaining gap is visual completion rather than navigation architecture. These phases refine the current grass-court direction without reopening settled contracts.
+
+| Phase | File | Primary outcome |
+|---|---|---|
+| 21 | `21_GRASS_COURT_GEOMETRY_AND_SURFACE_POLISH.md` | Expand the grass apron, improve tennis markings, mowing/wear treatment, net readability, and court grounding |
+| 22 | `22_TRADITIONAL_RETRO_STADIUM_AND_CROWD.md` | Replace slab-like stands and balloon-like crowd dots with stepped traditional venue architecture and compact retro spectator bands |
+| 23 | `23_COURTSIDE_PROPS_SCOREBOARD_AND_WORLD_STATION_ART.md` | Turn placeholder station blocks into believable tennis props and redesign the Projects board as a tennis-style retro scoreboard |
+| 24 | `24_RETRO_RENDERING_LIGHTING_AND_UI_COHESION.md` | Remove dark/foggy modern-WebGL cues, test controlled retro resolution, and reconcile world-control colors with the tournament palette |
+| 25 | `25_FINAL_VISUAL_COMPLETION_QA.md` | Run the final visual, responsive, accessibility, interaction, and performance gate after the polish pass |
+
+### Execution note
+
+- The existing Phase 19 final-player plan remains a real prerequisite for final visual acceptance. The current procedural player bridge is not considered final art.
+- Phases 21–24 can be implemented in order while Phase 19 asset authoring is completed.
+- Phase 25 is the final visual-completion gate.
+- Re-run the Phase 20 release checklist after Phase 25 before treating the polished direction as launch-ready.
+
+These phases must preserve the single-Canvas architecture, deterministic rally/camera ownership, semantic DOM content, accessibility equivalents, quality tiers, and Phase 04 fallback.
