@@ -44,6 +44,7 @@ export function RetroPlayerPrototype({ progress, side, reducedMotion }: RetroPla
   const racket = useRef<Group>(null);
 
   const materials = useRetroPlayerMaterials(side);
+  const isPlayerA = side === "a";
   const baseline = side === "a" ? -COURT_DIMENSIONS.playerBaselineZ : COURT_DIMENSIONS.playerBaselineZ;
   const direction = side === "a" ? 1 : -1;
   const returnBeat = side === "a" ? PROTOTYPE_LABELS.playerAReturn : PROTOTYPE_LABELS.playerBReturn;
@@ -139,19 +140,42 @@ export function RetroPlayerPrototype({ progress, side, reducedMotion }: RetroPla
           <primitive object={materials.accent} attach="material" dispose={null} />
         </mesh>
         <group ref={torso} position={[0, 0.14, 0]}>
-          <mesh castShadow position={[0, 0.42, 0]} rotation={[0, Math.PI / 4, 0]}>
+          <mesh castShadow position={[0, 0.42, 0]} rotation={[0, Math.PI / 4, 0]} scale={isPlayerA ? [0.94, 1, 1] : [1.08, 0.94, 1.04]}>
             <cylinderGeometry args={[0.38, 0.29, 0.84, 5]} />
             <primitive object={materials.clothing} attach="material" dispose={null} />
+          </mesh>
+          <mesh castShadow position={[0, 0.1, 0]} scale={isPlayerA ? [0.88, 1, 0.9] : [1.08, 1, 1.04]}>
+            <boxGeometry args={[0.55, 0.1, 0.34]} />
+            <primitive object={materials.accent} attach="material" dispose={null} />
           </mesh>
           <group ref={head} position={[0, 0.96, 0]}>
             <mesh castShadow>
               <dodecahedronGeometry args={[0.25, 0]} />
               <primitive object={materials.skin} attach="material" dispose={null} />
             </mesh>
-            <mesh castShadow position={[0, 0.13, -0.01]} scale={[1.02, 0.46, 1.02]}>
-              <dodecahedronGeometry args={[0.255, 0]} />
-              <primitive object={materials.hair} attach="material" dispose={null} />
-            </mesh>
+            {isPlayerA ? <>
+              <mesh castShadow position={[0, 0.13, -0.01]} scale={[1.04, 0.5, 1.04]}>
+                <dodecahedronGeometry args={[0.255, 0]} />
+                <primitive object={materials.hair} attach="material" dispose={null} />
+              </mesh>
+              <mesh castShadow position={[0, 0.27, 0.02]} rotation={[0, Math.PI / 4, 0]}>
+                <coneGeometry args={[0.14, 0.18, 4]} />
+                <primitive object={materials.hair} attach="material" dispose={null} />
+              </mesh>
+            </> : <>
+              <mesh castShadow position={[0, 0.1, 0.01]} scale={[1.12, 0.62, 1.12]}>
+                <dodecahedronGeometry args={[0.255, 0]} />
+                <primitive object={materials.hair} attach="material" dispose={null} />
+              </mesh>
+              <mesh castShadow position={[0, 0.03, 0.23]} rotation={[Math.PI / 2, 0, 0]}>
+                <coneGeometry args={[0.13, 0.3, 5]} />
+                <primitive object={materials.hair} attach="material" dispose={null} />
+              </mesh>
+              <mesh castShadow position={[0, 0.18, -0.2]}>
+                <boxGeometry args={[0.42, 0.045, 0.1]} />
+                <primitive object={materials.accent} attach="material" dispose={null} />
+              </mesh>
+            </>}
           </group>
           <group ref={leftUpperArm} position={[-0.38, 0.69, 0]}>
             <mesh castShadow position={[0, -0.27, 0]}>

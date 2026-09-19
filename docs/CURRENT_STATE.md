@@ -141,10 +141,10 @@ Blockbench authoring and final visual approval are still required.
   Optimization preserves them and validation enforces exact clip sets, positive
   durations, in-place root motion, socket stability, Meshopt payloads, and manifest
   consistency. These fixtures are deterministic contract tests, not final art.
-- Production actors now use cached cloned GLB scenes, resolved node/socket/action
-  references, and an `AnimationMixer` controller scrubbed directly from normalized
-  narrative progress. Normal character sampling is intentionally stepped at 18fps;
-  `?debug=1` provides smooth reference sampling.
+- Ordinary production view uses the accepted articulated direct-R3F player bridge,
+  with deterministic normalized-progress posing sampled at 18fps. Calibration GLBs
+  remain an explicit debug/review contract surface only; they are not final art and
+  are never loaded as ordinary match actors.
 - Shot contacts are centralized with the deterministic ball labels. Contact-anchored
   stepping preserves the authored hit pose, recovery ranges are reversible, and
   reduced motion holds a representative `idle_ready` pose.

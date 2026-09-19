@@ -10,8 +10,8 @@ export const CHARACTER_POSE_STEPPING: CharacterPoseStepping = 18;
 
 export const CHARACTER_STYLE = {
   playerA: {
-    clothing: "#c7e532",
-    accent: "#253431",
+    clothing: "#f0ead8",
+    accent: "#743746",
     hair: "#2f241e",
   },
   playerB: {
