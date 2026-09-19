@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type MutableRefObject, type RefObject } from "react";
+import { useLayoutEffect, type MutableRefObject, type RefObject } from "react";
 import { getGSAP } from "@/lib/gsap";
 import { PROTOTYPE_LABELS, sampleMatchState, type NarrativeProgress } from "./prototypeMotion";
 import { useExperienceStore } from "@/store/experienceStore";
@@ -14,13 +14,17 @@ type UsePrototypeTimelineOptions = {
   reducedMotion: boolean;
 };
 
+function seedNarrativeProgress(progress: MutableRefObject<NarrativeProgress>, value: number) {
+  progress.current.value = value;
+}
+
 export function usePrototypeTimeline({
   scope,
   progress,
   debug,
   reducedMotion,
 }: UsePrototypeTimelineOptions) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     let cancelled = false;
     let context: { revert: () => void } | undefined;
     let alignmentFrame = 0;
@@ -36,7 +40,7 @@ export function usePrototypeTimeline({
       if (state.navigationTarget === chapter) state.setNavigationTarget(null);
     };
 
-    const chapterScrollTop = (hash = window.location.hash) => {
+    const chapterProgress = (hash = window.location.hash) => {
       const id = hash.slice(1);
       if (!id) return undefined;
       const chapter = document.getElementById(id);
@@ -46,12 +50,26 @@ export function usePrototypeTimeline({
       if (!Number.isFinite(progressStart)) return undefined;
       // Land just inside non-hero chapters so pixel rounding and scrub damping
       // cannot retain the previous continuous beat at a shared boundary.
-      const landingProgress = progressStart === 0 ? 0 : Math.min(progressStart + 0.005, 1);
+      return progressStart === 0 ? 0 : Math.min(progressStart + 0.005, 1);
+    };
+
+    const chapterScrollTop = (hash = window.location.hash) => {
+      const landingProgress = chapterProgress(hash);
+      if (landingProgress === undefined) return undefined;
       const fallbackEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
       const triggerStart = narrativeTrigger?.start ?? 0;
       const triggerEnd = narrativeTrigger?.end ?? fallbackEnd;
       return triggerStart + (triggerEnd - triggerStart) * landingProgress;
     };
+
+    // A hash can mount at an arbitrary browser-restored offset before the
+    // ScrollTrigger has measured the document. Seed the one shared progress
+    // source before paint so a deep link never visibly tours from Hero first.
+    const initialHashProgress = chapterProgress();
+    if (initialHashProgress !== undefined) {
+      seedNarrativeProgress(progress, initialHashProgress);
+      commitActiveChapter(initialHashProgress);
+    }
 
     const alignHashToNarrative = () => {
       if (layoutRefreshPending && narrativeTrigger && !refreshingNarrative) {
@@ -178,9 +196,15 @@ export function usePrototypeTimeline({
           .addLabel("prototype_end", PROTOTYPE_LABELS.prototypeEnd)
           .to(progress.current, { value: 1, duration: 1 }, 0);
 
+        if (initialHashProgress !== undefined) {
+          timeline.progress(initialHashProgress);
+        }
+
         if (reducedMotion) {
-          progress.current.value = PROTOTYPE_LABELS.contentPause;
-          timeline.pause(0);
+          // Render the same shared GSAP target at its calm narrative stop before
+          // pausing. Passing 0 to pause() seeks the timeline back to Hero and
+          // overwrites the explicit contentPause value above.
+          timeline.progress(PROTOTYPE_LABELS.contentPause).pause();
           const hashChapter = document.getElementById(window.location.hash.slice(1));
           const hashProgress = Number(hashChapter?.dataset.chapterStart);
           commitActiveChapter(Number.isFinite(hashProgress) ? hashProgress : 0);

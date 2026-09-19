@@ -42,13 +42,15 @@ and record the change.
 
 ## Accepted static baseline
 
-The Phase 12 profile records 31,920 bytes across the six checked-in GLBs, with
-Meshopt/quantization and no raster textures. The fully mounted procedural
-environment has a 14-draw-submission ceiling, six shared materials, eight instanced
-groups, and 97 instances. High/medium/low quality cap DPR at 2/1.5/1 and reduce the
-single shadow map from 1024 to 512 to disabled.
+The Phase 20 static profile records 31,920 bytes across the six checked-in GLBs,
+with Meshopt/quantization and no raster textures. The active Phase 16 procedural
+environment has a 34-draw-submission ceiling, 11 shared materials, 11 instanced
+groups, and 30/32/32 accounted submissions with 45/109/125 instances at
+low/medium/high. Every tier retains the grass court, scoreboard, station
+silhouettes, and venue structure; low removes seats/crowd and medium reduces the
+crowd. High/medium/low cap DPR at 2/1.5/1 and use 1024/512/disabled shadows.
 
-These static facts do not substitute for Phase 13 production-browser traces. Add
+These static facts do not substitute for Phase 20 production-browser traces. Add
 measured rows below with tested hardware/browser context; do not state a universal
 FPS guarantee.
 

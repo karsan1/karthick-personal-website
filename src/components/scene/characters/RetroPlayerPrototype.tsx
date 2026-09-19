@@ -9,6 +9,7 @@ import { sampleCharacterPoseProgress } from "./characterStyle";
 type RetroPlayerPrototypeProps = {
   progress: MutableRefObject<NarrativeProgress>;
   side: "a" | "b";
+  reducedMotion: boolean;
 };
 
 const CONTACT_WINDOW = 0.024;
@@ -27,7 +28,7 @@ function setRotation(group: Group | null, x: number, y: number, z: number) {
  * Phase 06's direct-R3F style proof. Its transform hierarchy mirrors a future
  * rig, but uses only primitive geometry and direct frame-time pose sampling.
  */
-export function RetroPlayerPrototype({ progress, side }: RetroPlayerPrototypeProps) {
+export function RetroPlayerPrototype({ progress, side, reducedMotion }: RetroPlayerPrototypeProps) {
   const playerRoot = useRef<Group>(null);
   const hips = useRef<Group>(null);
   const torso = useRef<Group>(null);
@@ -54,8 +55,12 @@ export function RetroPlayerPrototype({ progress, side }: RetroPlayerPrototypePro
     }
 
     const rawProgress = progress.current.value;
-    const poseProgress = sampleCharacterPoseProgress(rawProgress);
-    const distanceToReturn = Math.abs(rawProgress - returnBeat);
+    // The prototype fallback has no authored idle clip, so it must explicitly
+    // choose the same calm pose as the authored runtime rather than sampling
+    // whichever scroll beat the semantic document currently occupies.
+    const motionProgress = reducedMotion ? PROTOTYPE_LABELS.contentPause : rawProgress;
+    const poseProgress = sampleCharacterPoseProgress(motionProgress);
+    const distanceToReturn = Math.abs(motionProgress - returnBeat);
     const activeReturn = Math.max(0, 1 - distanceToReturn / 0.08);
     const preparation = clamp01((poseProgress - (returnBeat - PREPARATION_WINDOW)) / PREPARATION_WINDOW)
       * (1 - clamp01((poseProgress - returnBeat) / CONTACT_WINDOW));
@@ -64,7 +69,7 @@ export function RetroPlayerPrototype({ progress, side }: RetroPlayerPrototypePro
       * (1 - clamp01((poseProgress - (returnBeat + FOLLOW_THROUGH_WINDOW)) / FOLLOW_THROUGH_WINDOW));
     const recovering = clamp01((poseProgress - (returnBeat + 0.04)) / 0.08);
     // The timeline intentionally rests at contentPause for reduced motion.
-    const resting = rawProgress >= PROTOTYPE_LABELS.contentPause ? 1 : 0;
+    const resting = (reducedMotion || rawProgress >= PROTOTYPE_LABELS.contentPause) ? 1 : 0;
     const activePose = 1 - resting;
     const prepared = preparation * activePose;
     const contacted = contact * activePose;

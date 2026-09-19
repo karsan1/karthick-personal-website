@@ -58,7 +58,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       </section>
 
       <section className="section content-section" {...chapterProps("about")}>
-        <article className="content-card prose-card">
+        <article className="content-card prose-card" tabIndex={0}>
           <ChapterHeading id="about" eyebrow={portfolio.about.eyebrow} title={portfolio.about.title} />
           <p>{portfolio.about.body}</p>
           <ul className="principle-list" aria-label="Working principles">
@@ -68,7 +68,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       </section>
 
       <section className="section content-section section-right" {...chapterProps("experience")}>
-        <div className="chapter-panel">
+        <div className="chapter-panel" tabIndex={0}>
           <ChapterHeading
             id="experience"
             eyebrow="Experience · Rally"
@@ -95,7 +95,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       </section>
 
       <section className="section content-section" {...chapterProps("research")}>
-        <div className="chapter-panel">
+        <div className="chapter-panel" tabIndex={0}>
           <ChapterHeading
             id="research"
             eyebrow="Research · Change of rhythm"
@@ -119,7 +119,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       </section>
 
       <section className="section content-section section-right" {...chapterProps("projects")}>
-        <div className="chapter-panel project-panel">
+        <div className="chapter-panel project-panel" tabIndex={0}>
           <ChapterHeading
             id="projects"
             eyebrow="Projects · Sideline sequence"
@@ -131,7 +131,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       </section>
 
       <section className="section content-section" {...chapterProps("capabilities")}>
-        <div className="chapter-panel">
+        <div className="chapter-panel" tabIndex={0}>
           <ChapterHeading
             id="capabilities"
             eyebrow="Capabilities · Between points"
@@ -150,7 +150,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
       </section>
 
       <section className="section contact-section" {...chapterProps("contact")}>
-        <div className="contact-card">
+        <div className="contact-card" tabIndex={0}>
           <ChapterHeading id="contact" eyebrow={portfolio.contact.eyebrow} title={portfolio.contact.title} />
           <p>{portfolio.contact.body}</p>
           <ul className="contact-links">

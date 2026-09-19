@@ -1,100 +1,81 @@
-# Phase 12 Performance Profile
+# Performance Profile — Phase 20 static audit
 
-## Phase 16 venue reframe — static budget update
+**Profile date:** 2026-09-19
+**Scope:** active Phase 16–20 shared worktree. This is a static/source and asset-manifest audit, not a production-browser benchmark. No FPS, frame-time, GPU-memory, renderer-info, transfer-waterfall, or React Profiler result is claimed below.
 
-**Evidence:** `RetroEnvironment` now uses procedural grass bands and wear strips,
-deep-green surrounds, seven station silhouettes, and high-tier far-side seating/
-crowd. Static source accounting records 32 environment draw submissions against a
-34-call ceiling, eleven shared material instances, eleven instanced groups, and
-125 high-tier instances. Medium retains 32 crowd instances; low removes seating
-and crowd but keeps every station and the grass/net/surround identity.
+## Finding: active venue source accounting is controlled, but it is not a whole-frame measurement
 
-**Impact:** the previous 14-call Phase 09 environment figure is superseded for the
-active venue. No raster grass texture, additional Canvas, or post-processing was
-introduced. Runtime-created materials still dispose on unmount.
+**Evidence:** `RetroEnvironment` exports `RETRO_ENVIRONMENT_METRICS` with 32 structural draw submissions against a 34-call ceiling, 11 shared `MeshStandardMaterial` instances, 11 instanced groups, and 125 high-detail instances. The source accounts for 45 instances at low detail (court/venue instancing only), 109 at medium (32 seats + 32 crowd), and 125 at high (32 seats + 48 crowd). The draw-submission count is 30/32/32 for low/medium/high: low omits seats and crowd; medium/high retain the same submissions but vary crowd instance count. Court, seven station silhouettes, and stadium structural blocks remain in every tier.
 
-**Verification:** capture `renderer.info.render.calls`, triangles, geometries,
-textures, and programs after staged mount at high/medium/low. Confirm the opening
-frame keeps players, lines, net, scoreboard, and every station readable before
-accepting the increased structural budget.
+**Impact:** instancing and shared materials bound the known repeated-geometry cost. These figures exclude players, ball/shadow, lights, debug content, and browser/driver work, so they must not be reported as final renderer draw calls or triangle counts.
 
-**Profile date:** 2026-09-13  
-**Scope:** current shared-worktree Phase 12 scene; source and asset-manifest audit.  
-**Status:** static facts below are verified from source/manifest. No browser performance trace, `renderer.info`, or fresh production-bundle measurement was captured for this profile, so FPS, frame time, final draw calls, triangles, GPU memory, and JS transfer remain pending rather than estimated.
+**Change:** no runtime change. The previous Phase 09 14-call/six-material baseline is obsolete for the active Phase 16 venue and is not used here.
 
-## Finding: initial 3D asset transfer is small, and the default scene does not request the legacy environment GLBs
+**Expected effect:** deterministic tier changes remove 80 repeated seat/crowd instances on low while retaining navigation landmarks and the court identity.
 
-**Evidence:** `public/models/asset-manifest.json` reports 31,920 bytes across all six optimized GLBs: court 8,544 B, props 5,044 B, scoreboard 3,076 B, stadium 3,224 B, player A 6,144 B, and player B 5,888 B. All are below their 60–100 KB individual budgets. The current `RetroEnvironment` is procedural; the four legacy environment GLBs are requested only by the explicit `legacyEnvironment` fallback path. Authored player GLBs total 12,032 B. All files require `EXT_meshopt_compression` and `KHR_mesh_quantization`; `useGLTF(path, false, true)` explicitly enables Drei's Meshopt decoder.
+**Verification:** after the staged environment mount and after both player GLBs resolve, capture `renderer.info.render.calls`, `triangles`, `points`, `lines`, `memory.geometries`, `memory.textures`, and `programs.length` at the same viewport and chapter for each tier. Record the environment source accounting separately from whole-scene renderer values.
 
-**Impact:** low network and decode pressure for the current default scene. The fully resident manifest is only about 31 KB on disk before HTTP compression, but byte size is not a substitute for measured decode time on low-end mobile devices.
+## Finding: the checked-in GLB set is small and within every declared asset budget
 
-**Change:** no runtime change recommended. `ExperienceCanvas` is dynamically imported with `ssr: false`, and `ScrollTrigger` is dynamically imported on demand, keeping the initial HTML path independent of WebGL and the scroll plugin.
+**Evidence:** `assets:validate` passed on 2026-09-19 for all six production GLBs, including exact manifest/provenance, Meshopt, environment contracts, and in-place character clips. `asset-manifest.json` and on-disk byte counts total 31,920 B: court 8,544 B; props 5,044 B; scoreboard 3,076 B; stadium shell 3,224 B; Player A 6,144 B; Player B 5,888 B. Each environment partition is below its 100 KB budget (scoreboard 60 KB); each player is below 80 KB. The manifest requires Meshopt and declares no raster textures or KTX2 payloads. The player files remain Blockbench calibration fixtures, not final art.
 
-**Expected effect:** the Canvas/Three runtime is deferred from SSR; decorative procedural detail mounts over three animation frames after the court rather than blocking the initial scene mount.
+**Impact:** static asset-transfer and texture-content pressure are low. Disk bytes are not HTTP transfer, decode time, runtime geometry memory, or GPU texture memory; all of those remain unmeasured. The default venue is procedural, so legacy environment GLBs load only through the explicit legacy or error-fallback path; both player GLBs still stream for rally actors.
 
-**Verification:** in a production browser run, record a Network export with cache disabled for first and repeat load, and report Canvas chunk, GSAP/ScrollTrigger chunk, Meshopt decoder, GLB request count, transfer size, response end, and decode completion.
+**Change:** no runtime change. `useGLTF(path, false, true)` keeps Meshopt decoding explicit for legacy environment and player asset paths.
 
-## Finding: texture and shader pressure are intentionally minimal
+**Expected effect:** no raster texture allocation is introduced by current GLBs. KTX2/Basis remains unnecessary until authored raster textures exist and a visual/performance comparison justifies it.
 
-**Evidence:** the manifest declares no raster textures in any current export, so texture GPU allocation from GLBs is 0 bytes. The active procedural environment creates six shared `MeshStandardMaterial` instances and disposes them on unmount. Source search found no `EffectComposer`, post-processing package/API, custom shader material, or texture loader in the active scene. Lighting is two directional lights plus one hemisphere light; only the warm directional light can cast shadows.
+**Verification:** use a cache-disabled production-browser Network export to record actual request count, encoded/decoded transfer, response end, Meshopt decoder cost, and player readiness. Test both normal and `?environment=legacy` paths.
 
-**Impact:** no texture-memory risk is demonstrated. The main GPU-risk proxy is fill/shadow cost: high tier permits DPR 2 (up to 4x DPR-1 pixels), antialiasing, one 1024² shadow map, standard-material lighting, and a transparent wireframe net.
+## Finding: quality controls provide deterministic, documented GPU-cost levers
 
-**Change:** no change recommended without a GPU trace. Keep the current low-poly material palette; replacing standard materials or removing the net would trade away the intended visual language without evidence.
+**Evidence:** `SCENE_QUALITY` caps DPR at high/medium/low = 2/1.5/1; it sets the single shadow-map size to 1024/512/256 and enables shadows at high/medium only. `Lighting` has a hemisphere fill, a single shadow-capable directional key, and a non-shadow directional fill. `ExperienceCanvas` applies the selected DPR and shadow flag directly. No active `EffectComposer`, post-processing API, custom shader material, or texture loader was found in `src`.
 
-**Expected effect:** current quality tiers deterministically reduce this risk: high = DPR cap 2 / 1024² shadow / full detail; medium = 1.5 / 512² / no stadium; low = 1 / shadows off / court plus courtside props. Relative maximum render-target pixel work is 4 : 2.25 : 1, while shadow-map texels are 1,048,576 : 262,144 : 0.
+**Impact:** relative maximum render-target pixel work is 4 : 2.25 : 1 versus DPR 1. Shadow-map texels are 1,048,576 : 262,144 : 0 because the low tier disables shadow casting (the retained 256 setting is inactive). Transparent wireframe net and standard-material lighting remain potential GPU costs that cannot be ranked without a trace.
 
-**Verification:** capture `renderer.info.memory.textures`, renderer program count, and GPU frame time per tier at an identical viewport and chapter. Capture a screenshot with transparent net and cast shadows to ensure tier changes preserve acceptable contrast and composition.
+**Change:** no quality reduction without measured need; it would alter the intended lighting and court readability.
 
-## Finding: environment draw-call control is present, but total renderer draw calls and triangles are not yet measured
+**Expected effect:** the existing tiers are deterministic and testable: high/medium/low map exactly to their DPR, shadow, environment-detail, and seat/crowd deltas above.
 
-**Evidence:** `RETRO_ENVIRONMENT_METRICS` documents 14 environment draw calls against a ceiling of 15, six shared materials, eight instanced groups, and 97 instances at full detail. Court lines, props, scoreboard digits, stadium seats/crowd/lights use `InstancedMesh`; their matrices are initialized in layout effects, not every frame. The live scene also contains two authored players, ball/shadow, camera, and lights, so the environment metric is not the whole-frame draw count. `gltf-transform inspect` confirms the six optimized GLBs have no textures and Meshopt/quantization extensions, but the profile intentionally does not convert static asset table data into a claimed live triangle count.
+**Verification:** at a fixed viewport, capture GPU/frame time, renderer program count, and screenshots per tier. Confirm tier switches do not lose context, leak resources, or compromise net/shadow contrast.
 
-**Impact:** the current source demonstrates a controlled environment-call budget, but actual draw calls, triangles, geometries, materials, and shader programs are browser/driver-dependent and must be captured at runtime.
+## Finding: hot-path transforms remain ref-owned; no demonstrated continuous React/Zustand churn
 
-**Change:** no change recommended. Instancing is already used where repeated geometry materially benefits it.
+**Evidence:** `CameraRig`, `TennisBall`, both character controllers, and scoreboard emphasis mutate refs in `useFrame`. Camera and ball vectors are module-scoped; character mixer/actions/sample/root-transform objects live in refs; `mixer.update(0)` is deterministic scrub evaluation. The current `useFrame` callbacks do not allocate vectors, colors, arrays, or React/Zustand state. Environment `Matrix4` creation occurs in layout effects for static instance setup or chapter changes, not per frame. The animation timeline writes the mutable narrative-progress ref; the scoreboard subscribes only to coarse `activeChapter` changes.
 
-**Expected effect:** low tier omits scoreboard and stadium groups; medium omits stadium; high mounts all three deferred detail stages.
+**Impact:** no code-evidenced render-loop allocation or per-frame React store update calls for remediation. Scroll-time CPU and frame pacing remain browser measurements, especially while GSAP scrubs master progress.
 
-**Verification:** after the third staged frame and after GLB players resolve, log `renderer.info.render.calls`, `triangles`, `points`, `lines`, `renderer.info.memory.geometries`, `textures`, and `renderer.info.programs.length` for all tiers. Compare against the 15-call environment ceiling separately from whole-scene totals.
+**Change:** no runtime change.
 
-## Finding: frame-loop work follows ref ownership and avoids continuous React/Zustand writes
+**Expected effect:** reverse scroll retains deterministic transforms without a React reconciliation path for normal scene motion.
 
-**Evidence:** `CameraRig`, ball presentation, both character controllers, and scoreboard emphasis update Three.js refs in `useFrame`. The hot character controller retains its mixer/actions/sample objects in refs and calls `mixer.update(0)` after setting deterministic scrub time; it allocates no vectors, colors, arrays, or React state in the frame callback. Camera vectors are module-scoped reusable `Vector3`s. The animation master progress is a mutable ref written by GSAP, not React or Zustand. The only scoreboard store subscription is `activeChapter`; timeline code updates it only when a sampled chapter differs. Debug DOM readout is gated by `debug` and a progress/chapter/composition-change threshold.
+**Verification:** use React Profiler and a Performance trace during continuous forward/reverse scroll. Report 50th/95th/99th frame duration, frames above 16.7/33.3 ms, Canvas-subtree commits, and GSAP/`useFrame` self time.
 
-**Impact:** no source-evidenced per-frame React rerender or Zustand store churn is present. CPU cost still needs a Performance-panel trace, particularly during scroll because GSAP drives progress with `scrub: 0.45` and all frame subscribers sample it.
+## Finding: visibility, listener, animation, and material cleanup have static coverage
 
-**Change:** no change recommended. The ref-based deterministic architecture is the protected design and avoids reverse-scroll reconciliation work.
+**Evidence:** `ExperienceCanvas` removes its `visibilitychange` listener and uses `frameloop="never"` while hidden. The GSAP timeline removes document/window listeners, cancels pending frames, disconnects its resize observer, and reverts its GSAP context. Rally audio removes its visibility listener, cancels frames, unsubscribes, and closes its audio context. Character cleanup stops actions and uncaches the scene; `RetroEnvironment` disposes all runtime-created palette materials on unmount.
 
-**Expected effect:** scroll sampling should be bounded to normal animation/frame work; DOM chapter changes should occur only at chapter boundaries.
+**Impact:** no obvious static listener, audio, mixer, or runtime-material leak is demonstrated. GLTF cache ownership, WebGL context release, heap plateaus, and driver-side disposal remain browser-only observations.
 
-**Verification:** use React Profiler while continuously forward/reverse scrolling and confirm Canvas subtree commits are limited to explicit quality, loading-stage, visibility, and chapter changes. Record a Chrome Performance trace, inspect scripting/self time for GSAP and `useFrame` subscribers, and report 50th/95th/99th frame duration plus count of frames above 16.7 ms and 33.3 ms.
+**Change:** no runtime change.
 
-## Finding: lifecycle and hidden-tab behavior are handled; browser confirmation is still required
+**Expected effect:** hidden tabs avoid continuous Canvas frames and rally-audio sampling; remount cleanup releases locally created scene resources.
 
-**Evidence:** `ExperienceCanvas` listens for `visibilitychange`, removes the listener on cleanup, and sets R3F `frameloop="never"` while hidden. `useRallyAudio` cancels its requestAnimationFrame and suspends its `AudioContext` while hidden; it removes the visibility listener, unsubscribes Zustand, cancels frames, and closes audio on cleanup. The GSAP hook removes its document/window listeners, disconnects `ResizeObserver`, cancels pending animation frames, and calls `context.revert()`. Character mixers stop actions and uncache their scene. Procedural palette materials are disposed on unmount.
+**Verification:** hide/show for 30 seconds, then repeatedly mount/unmount the experience. Confirm a single resume, stable listener/context counts, and a stable heap/`renderer.info.memory` plateau.
 
-**Impact:** no obvious listener, audio, mixer, or material lifecycle leak is demonstrated statically. GLTF cache/resource ownership and WebGL-context release require a remount test.
+## Browser-only measurement matrix (pending)
 
-**Change:** no change recommended.
+Run a fresh production build before collecting these results; existing `.next` output must not be used as a bundle or runtime benchmark.
 
-**Expected effect:** background tabs stop Canvas rendering and audio sampling instead of consuming continuous CPU/GPU work.
-
-**Verification:** toggle tab visibility for 30 seconds and confirm `useFrame`/audio activity stops, then resumes once. Repeatedly mount/unmount the experience and verify listener counts, WebGL contexts, heap, and `renderer.info.memory` return to a stable plateau.
-
-## Measurement matrix still required
-
-Run a fresh production build and one browser session per row; do not reuse stale `.next` output as a bundle measurement.
-
-| Scenario | Required capture | Acceptance signal |
+| Scenario | Required capture | Target / acceptance signal |
 | --- | --- | --- |
-| Desktop high, mid-rally | Performance trace + `renderer.info` | stable pacing near the 60 FPS target; no sustained avoidable frames over 16.7 ms |
-| Mobile low, mid-rally | Performance trace + `renderer.info` | stable 30–60 FPS preference; DPR 1, shadows disabled |
-| Tier switch high → medium → low | screenshot + renderer stats | deterministic detail/shadow/DPR deltas above; no context loss or runaway resources |
-| Initial uncached load | Network/Performance export | dynamic Canvas and ScrollTrigger chunks defer correctly; asset/decode waterfall recorded |
-| Hidden then visible | trace/listener inspection | Canvas frameloop and audio pause while hidden, resume once |
-| Forward/reverse scroll | React Profiler + Performance trace | no continuous React commits from scene transforms; GSAP/scroll work has no duplicate triggers |
+| Desktop high, mid-rally | Performance trace + `renderer.info` | pursue 60 FPS; avoid sustained avoidable frames over 16.7 ms |
+| Mobile low, mid-rally | Performance trace + `renderer.info` | prefer stable 30–60 FPS; DPR 1 and shadows off |
+| High → medium → low | screenshots + renderer stats | exact deterministic tier deltas; no context loss/resource growth |
+| Initial uncached load | Network + Performance export | actual Canvas/GSAP/Meshopt/GLB waterfall and usable DOM timing |
+| Hidden → visible | trace + listener inspection | Canvas/audio pause hidden and resume once |
+| Forward/reverse scroll | React Profiler + Performance trace | no continuous React commits from scene transforms |
 
-## Bottlenecks and follow-up priority
+## Audit conclusion
 
-No meaningful regression is demonstrated by the static audit. The only credible unmeasured risks are high-tier DPR/shadow fill cost, device-specific standard-material shader cost, and scroll-time CPU pacing. Measure those first before lowering quality or adding adaptive logic. If a target is missed, prefer the existing deterministic tier controls (DPR, shadow map/off, environment detail) and document the visual tradeoff with the captured delta.
+No meaningful performance regression is demonstrated by the current static evidence, so this phase makes no speculative rendering or quality change. The highest-value next evidence is a fresh production-browser trace at high desktop and low mobile tiers; use the existing deterministic DPR, shadow, and detail controls only if those captures identify a real pacing or GPU-pressure issue.

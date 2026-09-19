@@ -8,6 +8,7 @@ import { RetroPlayerPrototype } from "./RetroPlayerPrototype";
 import { useRetroPlayerAsset } from "./useRetroPlayerAsset";
 
 type RetroPlayerProps = { progress: MutableRefObject<NarrativeProgress>; side: CharacterSide; smoothReference?: boolean };
+type AnimatedCharacterProps = RetroPlayerProps & { reducedMotion: boolean };
 
 class CharacterBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -15,9 +16,8 @@ class CharacterBoundary extends Component<{ fallback: ReactNode; children: React
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function AnimatedCharacter({ progress, side, smoothReference = false }: RetroPlayerProps) {
+function AnimatedCharacter({ progress, side, smoothReference = false, reducedMotion }: AnimatedCharacterProps) {
   const { scene, animations } = useRetroPlayerAsset(side);
-  const reducedMotion = useReducedMotion();
   const applicationRoot = useRef<Group>(null);
   const baseline = side === "a" ? -COURT_DIMENSIONS.playerBaselineZ : COURT_DIMENSIONS.playerBaselineZ;
   const initialPosition: [number, number, number] = [side === "a" ? -0.12 : 0.14, 0, baseline];
@@ -40,10 +40,13 @@ function AnimatedCharacter({ progress, side, smoothReference = false }: RetroPla
 
 /** Authored player runtime with a retained Phase 06 fallback while assets stream or fail. */
 export function RetroPlayer({ progress, side, smoothReference }: RetroPlayerProps) {
+  const reducedMotion = useReducedMotion();
+  const fallback = <RetroPlayerPrototype progress={progress} side={side} reducedMotion={reducedMotion} />;
+
   return (
-    <CharacterBoundary fallback={<RetroPlayerPrototype progress={progress} side={side} />}>
-      <Suspense fallback={<RetroPlayerPrototype progress={progress} side={side} />}>
-        <AnimatedCharacter progress={progress} side={side} smoothReference={smoothReference} />
+    <CharacterBoundary fallback={fallback}>
+      <Suspense fallback={fallback}>
+        <AnimatedCharacter progress={progress} side={side} smoothReference={smoothReference} reducedMotion={reducedMotion} />
       </Suspense>
     </CharacterBoundary>
   );

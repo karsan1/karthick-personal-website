@@ -56,6 +56,35 @@ async function inspectAnimationClips(path) {
   return (json.animations ?? []).map((animation) => animation.name);
 }
 
+/**
+ * `--character-source-kind=blockbench-export` is a provenance assertion, not a
+ * convenient label switch. Keep the deliberately generated calibration pair
+ * from being promoted by accident while still allowing a human-authored source
+ * to use the same deterministic build path.
+ *
+ * This is intentionally a narrow, inspectable gate rather than an attempt to
+ * prove artistic quality in code. Visual approval remains a human review step.
+ */
+async function assertReviewedCharacterSources(sources) {
+  if (characterSourceKind !== "blockbench-export") return;
+
+  for (const source of sources.filter((candidate) => candidate.assetKind === "character")) {
+    const modelPath = resolve(root, "assets-source/blockbench", `${basename(source.file, ".glb")}.bbmodel`);
+    const [modelText, glb] = await Promise.all([readFile(modelPath, "utf8"), readFile(resolve(source.path, source.file))]);
+    const model = JSON.parse(modelText);
+    const json = JSON.parse(glb.subarray(20, 20 + glb.readUInt32LE(12)).toString("utf8").trim());
+    const modelName = String(model.name ?? "");
+    const generator = String(json.asset?.generator ?? "");
+
+    if (/calibration|fixture/i.test(modelName) || !Array.isArray(model.elements) || model.elements.length === 0) {
+      throw new Error(`${source.file} cannot be promoted: ${basename(modelPath)} is still a calibration template. Replace it with the approved authored .bbmodel first.`);
+    }
+    if (/calibration|fixture/i.test(generator)) {
+      throw new Error(`${source.file} cannot be promoted: its GLB generator identifies it as a calibration fixture. Export the approved Blockbench source directly.`);
+    }
+  }
+}
+
 await mkdir(destination, { recursive: true });
 const workspace = await mkdtemp(join(tmpdir(), "tennis-assets-"));
 try {
@@ -64,6 +93,7 @@ try {
     .map((file) => ({ ...source, file })))))
     .flat()
     .sort((left, right) => left.file.localeCompare(right.file));
+  await assertReviewedCharacterSources(sources);
   const assets = [];
   for (const source of sources) {
     const sourcePath = resolve(source.path, source.file);

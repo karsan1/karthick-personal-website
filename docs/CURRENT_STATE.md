@@ -2,10 +2,19 @@
 
 ## Current phase
 
-Phases 01–12, 14, 15, and 16 are implemented, and Phase 17 is now implemented: the
+Phases 01–12, 14, 15, and 16 are implemented, and Phases 17 and 18 are now implemented: the
 scroll-scrubbed camera choreography now frames the venue as an old-console tennis game.
 An elevated baseline gameplay camera acts as the visual anchor, and each narrative
 chapter uses a restrained station-visit crop/shift rather than a cinematic orbit.
+Phase 18 now keeps the 3D world visually primary with compact contextual desktop
+surfaces, an intentionally composed mobile bottom-sheet layout, explicit DOM
+interaction layers, and the existing accessible project detail dialog.
+
+Phase 19 is not accepted. The checked-in player assets remain explicitly labeled
+Blockbench calibration fixtures, not human-authored final art. The asset build now
+prevents those fixture sources from being promoted to `blockbench-export`; final
+acceptance requires original, human-authored Blockbench players plus application-
+camera visual approval and a 12/15/18fps readability comparison.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
@@ -22,7 +31,8 @@ Blockbench authoring and final visual approval are still required.
 
 ## Current objective
 
-- Prepare for Phase 18 (Contextual portfolio UI redesign) when requested.
+- Complete Phase 19 only after original human-authored players are available;
+  continue Phase 20 external release evidence without overstating local checks.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,
@@ -198,8 +208,9 @@ Blockbench authoring and final visual approval are still required.
 - The scene remains postprocess-free and uses a restrained hemisphere fill, warm
   shadowed key, and cool fill to preserve faceted character/material readability.
 - High, medium, and low quality controls independently cap DPR at 2, 1.5, and 1;
-  reduce the single shadow map from 1024 to 512 to disabled; and progressively omit
-  stadium and scoreboard detail. Narrow layouts start at the balanced medium tier.
+  reduce the single shadow map from 1024 to 512 to disabled; and progressively remove
+  seats/crowd detail while retaining the venue, scoreboard, and every station.
+  Narrow layouts start at the balanced medium tier.
 - Sound remains off by default. Enabling it creates short local Web Audio hit/bounce
   cues at the existing deterministic rally crossings, with per-cue/global cooldowns
   to prevent rapid scrub spam. Reduced motion and hidden pages do no audio sampling.
@@ -211,7 +222,8 @@ Blockbench authoring and final visual approval are still required.
 - `docs/PERFORMANCE_PROFILE.md` records verified asset, texture, instancing, quality,
   lifecycle, and animation-ownership results plus the production-browser measurement
   matrix. Current GLBs total 31,920 bytes, use Meshopt/quantization, and contain no
-  raster textures; the procedural environment retains its 14-call ceiling.
+  raster textures; the active procedural environment records 30/32/32 structural
+  submissions by low/medium/high tier against its 34-call ceiling.
 
 ## Phase 13 integration status
 
@@ -306,17 +318,31 @@ Blockbench authoring and final visual approval are still required.
 - Infrastructure (CameraRig, timeline, hotspots, portfolio data) was preserved
   without changes.
 
-## Do not work on yet
+## Phase 18 implementation status
 
-- Do not build Phase 18 UI contextual redesign without a new explicit request.
-- Do not introduce independent choreography or delete/archive Phase 04 assets while
-  the Phase 09 fallback chain and default asset build retain them.
+- Desktop sections now use compact contextual reading surfaces while the persistent
+  grass-court world remains visually primary.
+- Mobile uses bounded bottom-sheet-style surfaces and compact horizontally
+  scrollable destination controls without requiring precise WebGL selection.
+- Project details retain focus entry/trapping/restoration, Escape/backdrop close,
+  semantic links, and Canvas attenuation.
+- Explicit pointer and stacking layers preserve both world interaction and
+  keyboard-accessible internal panel scrolling.
 
-## Next milestone
+## Phase 19 / 20 status
 
-Phase 18 (Contextual portfolio UI redesign) is the next implementation milestone:
-replacing the placeholder DOM elements with a professional, restrained typographic
-design that complements the retro 3D world. Phase 13 preview, production-browser,
-and rollback evidence remains a separate outstanding release gate. Human Blockbench
-character and clip authoring/export approval also remains a separate art task documented in
-`assets-source/README.md`; generated fixtures must not be presented as final art.
+- Phase 19 is blocked on original human-authored, visually approved Blockbench
+  players. Calibration fixtures cannot be promoted as reviewed exports; the
+  pipeline now enforces that provenance boundary before mutating production assets.
+- Phase 20 local static hardening and documentation are in progress. Preview,
+  cross-browser/real-device, production performance, and rollback evidence remain
+  external release gates and are not implied by passing local checks.
+
+## Do not claim yet
+
+- Do not claim final-player art acceptance or launch readiness while the checked-in
+  characters remain calibration fixtures.
+- Do not claim preview, production-browser, physical-device, or rollback evidence
+  until those checks are performed and recorded.
+- Do not delete/archive Phase 04 assets while the fallback chain and default asset
+  build retain them.

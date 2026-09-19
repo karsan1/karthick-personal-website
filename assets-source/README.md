@@ -148,6 +148,37 @@ exports; verify the per-asset `sourceKind` entries after `pnpm assets:build`.
 genuine, manually reviewed Blockbench exports. It records
 `sourceKind: "blockbench-export"`; the default build intentionally records
 `"blockbench-calibration-fixture"` for the checked-in generated player outputs.
+The reviewed build rejects `.bbmodel` files still named as calibration templates,
+empty template geometry, and GLBs whose generator identifies a calibration fixture.
+This guard prevents the checked-in fixtures from being relabeled as final art; it
+does not replace the required human visual-approval review.
+
+## Phase 19 final-player review and export record
+
+The currently committed Player A/B `.bbmodel` files and source GLBs are calibration
+fixtures, so Phase 19 cannot be accepted until an artist supplies and approves
+original final player art. Use this exact handoff when that work is available:
+
+1. Replace each calibration `.bbmodel` with its editable, original Blockbench
+   source. Use a compact faceted silhouette: clear head/hair, torso, shorts/legs,
+   shoes, and visible racket. Player A should use a white/cream-led original kit
+   with a restrained non-branded accent; Player B needs a distinct silhouette and
+   palette that remains visible over grass and deep-green surrounds.
+2. Keep the hierarchy, root origin, facing, socket, exact clip names, in-place
+   animation, material-slot (three maximum), triangle (1,500 preferred; 2,500
+   review threshold), and 80KB production constraints documented above. Do not
+   add cameras, lights, commercial-game art, likenesses, or tournament marks.
+3. In Blockbench, preview every required clip and export directly to the matching
+   `blockbench-exports/player-*.glb` path. Confirm the racket grip stays at
+   `SOCKET_Racket`, no clip targets either root/socket, and Player A faces +Z
+   while Player B faces -Z before application placement.
+4. Run `pnpm assets:build:reviewed-characters`. It must succeed without changing
+   the manifest provenance back to a fixture. Then run `pnpm assets:validate`.
+5. At the actual application camera, record Hero, About, both rally-contact,
+   Experience, Projects, mobile portrait, and reduced-motion views. Compare
+   12, 15, and 18fps with smooth ball/camera; retain the *lowest visually
+   readable* rate. The contact-anchored sampler keeps every accepted shot contact
+   exact at all three rates, but visual readability is a human decision.
 
 ## Budgets and compression
 

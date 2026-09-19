@@ -44,6 +44,9 @@ a {
   z-index: 0;
 }
 
+/* Interaction layers: z0 world, z5 semantic content, z10 navigation/status,
+   z15 contextual controls, z20 diagnostics, z30 focus escape, z40 dialogs. */
+
 .experience-shell,
 .experience-canvas { pointer-events: auto; }
 
@@ -83,18 +86,24 @@ body[data-project-dialog-open="true"] .experience-shell {
 
 .portfolio-layer {
   position: relative;
-  z-index: 1;
+  z-index: 5;
   pointer-events: none;
 }
 
 /* The world receives incidental pointer space; real DOM controls keep priority. */
 .portfolio-layer :is(a, button, input, label, summary, select, textarea, [role="dialog"]) { pointer-events: auto; }
 
+.content-card,
+.chapter-panel,
+.contact-card {
+  pointer-events: auto;
+}
+
 .world-menu {
   position: fixed;
   left: var(--page-gutter);
   bottom: 1.25rem;
-  z-index: 10;
+  z-index: 15;
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -205,6 +214,9 @@ body[data-project-dialog-open="true"] .experience-shell {
 }
 
 .nav-links a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   color: var(--muted);
   font-size: 0.82rem;
   letter-spacing: 0.04em;
@@ -219,6 +231,18 @@ body[data-project-dialog-open="true"] .experience-shell {
 
 .nav-links a[aria-current="page"] { color: var(--accent); }
 
+:where(a, button, summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0.25rem;
+}
+
+.content-card:focus-visible,
+.chapter-panel:focus-visible,
+.contact-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0.25rem;
+}
+
 .experience-controls {
   position: relative;
   flex: 0 0 auto;
@@ -227,7 +251,14 @@ body[data-project-dialog-open="true"] .experience-shell {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.experience-controls summary { padding: 0.55rem 0; color: var(--muted); cursor: pointer; list-style: none; }
+.experience-controls summary {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--muted);
+  cursor: pointer;
+  list-style: none;
+}
 .experience-controls summary::-webkit-details-marker { display: none; }
 .experience-controls summary::after { content: " +"; color: var(--accent); }
 .experience-controls[open] summary::after { content: " ×"; }
@@ -282,7 +313,7 @@ body[data-project-dialog-open="true"] .experience-shell {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 7rem var(--page-gutter) 4rem;
+  padding: 6.5rem var(--page-gutter) 4rem;
 }
 
 .section[id] {
@@ -294,7 +325,8 @@ body[data-project-dialog-open="true"] .experience-shell {
 }
 
 .hero-content {
-  width: min(28rem, 42vw);
+  width: min(30vw, 24rem);
+  max-height: calc(100svh - 10rem);
 }
 
 .eyebrow {
@@ -315,15 +347,15 @@ h3 {
 }
 
 h1 {
-  max-width: 8ch;
-  font-size: clamp(3.2rem, 6.4vw, 5.5rem);
+  max-width: 10ch;
+  font-size: clamp(2.8rem, 4.8vw, 4.6rem);
   font-weight: 520;
   letter-spacing: -0.075em;
   line-height: 0.82;
 }
 
 h2 {
-  font-size: clamp(2.4rem, 5.5vw, 5.5rem);
+  font-size: clamp(2rem, 3.4vw, 3.8rem);
   font-weight: 500;
   letter-spacing: -0.055em;
   line-height: 0.95;
@@ -342,7 +374,7 @@ h3 {
 .contact-card > p {
   max-width: 38rem;
   color: var(--muted);
-  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   line-height: 1.55;
 }
 
@@ -376,8 +408,10 @@ h3 {
 }
 
 .content-card {
-  width: min(100%, 42rem);
-  padding: clamp(1.5rem, 3.5vw, 3.5rem);
+  width: min(36vw, 40rem);
+  max-height: min(70svh, 46rem);
+  overflow: auto;
+  padding: clamp(1.35rem, 2.5vw, 2.75rem);
   border: 1px solid var(--line);
   background: rgba(7, 18, 15, 0.84);
   backdrop-filter: blur(12px);
@@ -388,15 +422,17 @@ h3 {
 }
 
 .chapter-panel {
-  width: min(100%, 74rem);
-  padding: clamp(1.5rem, 4vw, 4rem);
+  width: clamp(20rem, 36vw, 42rem);
+  max-height: min(74svh, 52rem);
+  overflow: auto;
+  padding: clamp(1.35rem, 2.8vw, 2.75rem);
   border: 1px solid var(--line);
   background: rgba(7, 18, 15, 0.88);
   backdrop-filter: blur(12px);
 }
 
 .chapter-heading {
-  max-width: 48rem;
+  max-width: 34rem;
 }
 
 .chapter-introduction {
@@ -468,7 +504,7 @@ h3 {
 
 .research-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
   margin-top: 3rem;
 }
@@ -566,7 +602,10 @@ h3 {
 }
 
 .project-open {
-  padding: 0.35rem 0;
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0 0.25rem;
   font-family: var(--font-geist-mono);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
@@ -609,7 +648,15 @@ h3 {
   box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.38);
 }
 .project-dialog h3 { max-width: 16ch; }
-.dialog-close { position: absolute; top: 1.25rem; right: 1.25rem; font-size: 0.78rem; }
+.dialog-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.25rem;
+  font-size: 0.78rem;
+}
 .project-dialog-summary { margin: 1.25rem 0 0; color: var(--ink); line-height: 1.5; }
 .project-dialog-body { margin: 1.5rem 0 0; color: var(--muted); line-height: 1.7; }
 body[data-project-dialog-open="true"] { overflow: hidden; }
@@ -626,7 +673,7 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
 
 .capability-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 3rem;
   border-top: 1px solid var(--line);
   border-left: 1px solid var(--line);
@@ -658,8 +705,10 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
 }
 
 .contact-card {
-  width: min(100%, 74rem);
-  padding: clamp(1.5rem, 5vw, 5rem);
+  width: clamp(20rem, 38vw, 44rem);
+  max-height: min(74svh, 48rem);
+  overflow: auto;
+  padding: clamp(1.35rem, 2.8vw, 2.75rem);
   border: 1px solid var(--line);
   background: rgba(7, 18, 15, 0.9);
 }
@@ -797,7 +846,36 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
 }
 
 @media (max-width: 44rem) {
-  .hero-content { width: min(100%, 28rem); }
+  .section {
+    justify-content: flex-end;
+    padding-top: 6rem;
+    padding-bottom: 5.5rem;
+  }
+
+  .hero {
+    justify-content: center;
+    padding-bottom: 7rem;
+  }
+
+  .hero-content {
+    width: min(72vw, 18rem);
+    max-height: none;
+  }
+
+  .content-card,
+  .chapter-panel,
+  .contact-card {
+    width: 100%;
+    max-height: min(64svh, 38rem);
+    padding: 1.25rem;
+    border-radius: 1rem 1rem 0.25rem 0.25rem;
+  }
+
+  .content-section,
+  .section-right,
+  .contact-section {
+    align-items: stretch;
+  }
 
   .site-nav {
     gap: 1rem;
@@ -812,7 +890,9 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
     position: fixed;
     top: auto;
     right: var(--page-gutter);
-    bottom: 1rem;
+    bottom: calc(0.75rem + 3.75rem + 0.5rem);
+    max-height: calc(100svh - 6rem);
+    overflow-y: auto;
     z-index: 12;
   }
 
@@ -821,8 +901,20 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
   }
 
   h1 {
-    font-size: clamp(4rem, 22vw, 7rem);
+    max-width: 9ch;
+    font-size: clamp(2.5rem, 10vw, 3.4rem);
+    line-height: 0.9;
   }
+
+  .hero-copy,
+  .availability {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .availability { margin-bottom: 1.5rem; }
+
+  h2 { font-size: clamp(2rem, 11vw, 3.4rem); }
 
   .entry,
   .research-grid,
@@ -868,16 +960,20 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
 
   .world-menu {
     right: var(--page-gutter);
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    left: var(--page-gutter);
+    bottom: 0.75rem;
+    z-index: 15;
+    display: flex;
+    overflow-x: auto;
     gap: 0.35rem;
     padding: 0.35rem;
+    scrollbar-width: none;
   }
 
+  .world-menu::-webkit-scrollbar { display: none; }
+
   .world-menu-header {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: space-between;
+    display: none;
     align-items: center;
     padding: 0.15rem 0.35rem;
   }
@@ -893,8 +989,13 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
 
   .world-menu :is(button, a) {
     min-height: 2.75rem;
-    padding: 0.45rem;
-    white-space: normal;
+    flex: 0 0 auto;
+    padding: 0.45rem 0.7rem;
+    white-space: nowrap;
+  }
+
+  .chapter-indicator {
+    display: none;
   }
 }
 
