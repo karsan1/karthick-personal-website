@@ -1,15 +1,15 @@
-# Performance Profile — Phase 20 static audit
+# Performance Profile — Phase 21 static audit
 
 **Profile date:** 2026-09-21
-**Scope:** active Phase 16–20 shared worktree. This is a static/source and asset-manifest audit, not a production-browser benchmark. No FPS, frame-time, GPU-memory, renderer-info, transfer-waterfall, or React Profiler result is claimed below.
+**Scope:** active Phase 16–21 shared worktree. This is a static/source and asset-manifest audit plus local visual review, not a production-browser benchmark. No FPS, frame-time, GPU-memory, renderer-info, transfer-waterfall, or React Profiler result is claimed below.
 
 ## Finding: active venue source accounting is controlled, but it is not a whole-frame measurement
 
-**Evidence:** `RetroEnvironment` exports `RETRO_ENVIRONMENT_METRICS` with 32 structural draw submissions against a 34-call ceiling, 11 shared `MeshStandardMaterial` instances, 11 instanced groups, and 125 high-detail instances. The source accounts for 45 instances at low detail (court/venue instancing only), 109 at medium (32 seats + 32 crowd), and 125 at high (32 seats + 48 crowd). The draw-submission count is 30/32/32 for low/medium/high: low omits seats and crowd; medium/high retain the same submissions but vary crowd instance count. Court, seven station silhouettes, and stadium structural blocks remain in every tier.
+**Evidence:** `RetroEnvironment` exports `RETRO_ENVIRONMENT_METRICS` with 33 structural draw submissions against a 34-call ceiling, 11 shared `MeshStandardMaterial` instances, 13 instanced groups, and 161 high-detail instances. The Phase 21 source accounts for 81 instances at low detail (court/venue instancing only), 145 at medium (32 seats + 32 crowd), and 161 at high (32 seats + 48 crowd). The draw-submission count is 31/33/33 for low/medium/high: low omits seats and crowd; medium/high retain the same submissions but vary crowd instance count. Court, seven station silhouettes, and stadium structural blocks remain in every tier.
 
 **Impact:** instancing and shared materials bound the known repeated-geometry cost. These figures exclude players, ball/shadow, lights, debug content, and browser/driver work, so they must not be reported as final renderer draw calls or triangle counts.
 
-**Change:** no runtime change. The previous Phase 09 14-call/six-material baseline is obsolete for the active Phase 16 venue and is not used here.
+**Change:** Phase 21 replaces the transparent wireframe net plane with two instanced opaque cord groups and expands the instanced court-line/wear geometry. It adds one structural draw submission and 36 high-detail instances without adding a material or texture. The previous Phase 09 14-call/six-material baseline is obsolete for the active venue and is not used here.
 
 **Expected effect:** deterministic tier changes remove 80 repeated seat/crowd instances on low while retaining navigation landmarks and the court identity.
 
@@ -31,7 +31,7 @@
 
 **Evidence:** `SCENE_QUALITY` caps DPR at high/medium/low = 2/1.5/1; it sets the single shadow-map size to 1024/512/256 and enables shadows at high/medium only. `Lighting` has a hemisphere fill, a single shadow-capable directional key, and a non-shadow directional fill. `ExperienceCanvas` applies the selected DPR and shadow flag directly. No active `EffectComposer`, post-processing API, custom shader material, or texture loader was found in `src`.
 
-**Impact:** relative maximum render-target pixel work is 4 : 2.25 : 1 versus DPR 1. Shadow-map texels are 1,048,576 : 262,144 : 0 because the low tier disables shadow casting (the retained 256 setting is inactive). Transparent wireframe net and standard-material lighting remain potential GPU costs that cannot be ranked without a trace.
+**Impact:** relative maximum render-target pixel work is 4 : 2.25 : 1 versus DPR 1. Shadow-map texels are 1,048,576 : 262,144 : 0 because the low tier disables shadow casting (the retained 256 setting is inactive). The Phase 21 net uses opaque instanced cords rather than a transparent wireframe plane; standard-material lighting and expanded shadow-receiving grass still require a measured GPU trace.
 
 **Change:** no quality reduction without measured need; it would alter the intended lighting and court readability.
 

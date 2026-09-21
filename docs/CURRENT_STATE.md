@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Phases 01–12 and 14–19 are implemented: the
+Phases 01–12, 14–19, and 21 are implemented: the
 scroll-scrubbed camera choreography now frames the venue as an old-console tennis game.
 An elevated baseline gameplay camera acts as the visual anchor, and each narrative
 chapter uses a restrained station-visit crop/shift rather than a cinematic orbit.
@@ -15,6 +15,11 @@ reviewed `blockbench-export` path and render as the ordinary rally actors. Their
 authored clips remain driven by the deterministic master progress, use 15fps
 character-only stepping selected from the 12/15/18fps application-camera review,
 and retain exact contact anchoring while the ball and camera remain smooth.
+
+Phase 21 is accepted. The procedural grass court now has a larger runoff apron,
+complete singles/doubles/service markings, broad near-coplanar mowing zones,
+broken olive wear patches, and a dark low-density cord net. The rally, camera,
+hotspot, and Phase 04 fallback contracts remain unchanged.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
@@ -33,6 +38,8 @@ fallbacks only.
 ## Current objective
 
 - Continue Phase 20 external release evidence without overstating local checks.
+- Continue with Phase 22 venue structure only after retaining the accepted Phase 21
+  court composition and coordinates.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,
@@ -223,7 +230,7 @@ fallbacks only.
 - `docs/PERFORMANCE_PROFILE.md` records verified asset, texture, instancing, quality,
   lifecycle, and animation-ownership results plus the production-browser measurement
   matrix. Current GLBs total 68,604 bytes, use Meshopt/quantization, and contain no
-  raster textures; the active procedural environment records 30/32/32 structural
+  raster textures; the active procedural environment records 31/33/33 structural
   submissions by low/medium/high tier against its 34-call ceiling.
 
 ## Phase 13 integration status
@@ -281,7 +288,7 @@ fallbacks only.
   controls with 44px targets; reduced-motion and non-WebGL paths retain those DOM
   controls without requiring raw Canvas focus.
 
-## Phase 16 implementation status
+## Historical Phase 16 implementation status (court surface superseded by Phase 21)
 
 - The procedural court now uses a brighter grass palette, broad alternating
   mowing bands, muted wear strips, cream lines, dark net mesh/white tape, and
@@ -345,6 +352,27 @@ fallbacks only.
 - Phase 20 local static hardening and documentation are in progress. Preview,
   cross-browser/real-device, production performance, and rollback evidence remain
   external release gates and are not implied by passing local checks.
+
+## Phase 21 implementation status
+
+- The marked court remains centered on the original rally coordinates within an
+  11.6 × 16.8 grass lawn. Grass runoff now extends beyond both baselines and
+  doubles sidelines; deep-green retaining walls sit outside the apron.
+- Crisp cream baselines, doubles and singles sidelines, service lines, center
+  service line, and small center marks read as a complete court. Broad near-coplanar
+  light/dark mowing zones and 22 broken, muted-olive wear patches replace the old
+  raised panels and four straight tan strips. No raster grass texture was added.
+- The net uses opaque low-density dark cords, a cream tape, and grounded posts.
+  The court receives enabled player/post shadows and the deterministic ball shadow.
+  The unchanged rally, player, ball, camera, hotspot, DOM, and legacy fallback
+  paths remain the only owners of those contracts.
+- Structural accounting is 33 draw submissions against a 34-call ceiling, 11
+  shared materials, 13 instanced groups, and 161/145/81 instances at high/medium/low.
+  Full lint, typecheck, and production build passed. Local production-browser
+  review passed desktop 1440 × 900, tablet 1024 × 768, mobile 390 × 844,
+  About/player, Projects/scoreboard, low-quality Hero, and reduced-motion Hero:
+  one Canvas, no error overlays or console errors. This is local visual evidence,
+  not a production deployment or physical-device claim.
 
 ## Do not claim yet
 

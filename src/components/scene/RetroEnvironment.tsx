@@ -10,22 +10,34 @@ import { WorldHotspot } from "./interactions/WorldHotspot";
 import { WORLD_HOTSPOTS } from "./interactions/worldHotspots";
 
 /** Phase 16 keeps the Phase 04 court/rally coordinate contract; venue props stay outside its clearance. */
-const COURT_WIDTH = 8.2;
-const COURT_LENGTH = 12.4;
+const LAWN_WIDTH = 11.6;
+const LAWN_LENGTH = 16.8;
 const NET_HEIGHT = COURT_DIMENSIONS.netHeight;
 type RetroPalette = Record<"grass" | "grassLight" | "grassDark" | "worn" | "light" | "net" | "dark" | "mid" | "accent" | "purple" | "crowdCream", MeshStandardMaterial>;
 type InstanceTransform = readonly [number, number, number, number, number, number];
 
 const COURT_LINES: readonly InstanceTransform[] = [
-  [0, 0.018, -5.8, 7.7, 0.025, 0.07], [0, 0.018, 5.8, 7.7, 0.025, 0.07],
-  [-3.85, 0.018, 0, 0.07, 0.025, 11.6], [3.85, 0.018, 0, 0.07, 0.025, 11.6],
-  [0, 0.018, -2.1, 5, 0.025, 0.055], [0, 0.018, 2.1, 5, 0.025, 0.055],
-  [0, 0.018, -1.05, 0.055, 0.025, 2.1], [0, 0.018, 1.05, 0.055, 0.025, 2.1],
+  [0, 0.004, -5.8, 7.7, 0.018, 0.07], [0, 0.004, 5.8, 7.7, 0.018, 0.07],
+  [-3.85, 0.004, 0, 0.07, 0.018, 11.6], [3.85, 0.004, 0, 0.07, 0.018, 11.6],
+  [-2.5, 0.004, 0, 0.055, 0.018, 11.6], [2.5, 0.004, 0, 0.055, 0.018, 11.6],
+  [0, 0.004, -2.1, 5, 0.018, 0.055], [0, 0.004, 2.1, 5, 0.018, 0.055],
+  [0, 0.004, -1.05, 0.055, 0.018, 2.1], [0, 0.004, 1.05, 0.055, 0.018, 2.1],
+  [0, 0.004, -5.66, 0.055, 0.018, 0.28], [0, 0.004, 5.66, 0.055, 0.018, 0.28],
 ];
-const GRASS_LIGHT_BANDS: readonly InstanceTransform[] = [[0, 0.002, -4.35, 7.98, 0.012, 1.7], [0, 0.002, -0.95, 7.98, 0.012, 1.7], [0, 0.002, 2.45, 7.98, 0.012, 1.7]];
-const GRASS_DARK_BANDS: readonly InstanceTransform[] = [[0, 0.002, -2.65, 7.98, 0.012, 1.7], [0, 0.002, 0.75, 7.98, 0.012, 1.7], [0, 0.002, 4.15, 7.98, 0.012, 1.7]];
-const WORN_GRASS: readonly InstanceTransform[] = [[0, 0.01, -5.18, 4.7, 0.014, 0.24], [0, 0.01, 5.18, 4.7, 0.014, 0.24], [0, 0.01, -2.1, 2.4, 0.014, 0.16], [0, 0.01, 2.1, 2.4, 0.014, 0.16]];
-const SURROUND_BLOCKS: readonly InstanceTransform[] = [[0, 0.42, -6.95, 11.8, 0.84, 0.48], [0, 0.42, 6.95, 11.8, 0.84, 0.48], [-4.65, 0.42, 0, 0.48, 0.84, 13.4], [4.65, 0.42, 0, 0.48, 0.84, 13.4]];
+const GRASS_LIGHT_BANDS: readonly InstanceTransform[] = [[0, -0.014, -7, 11.5, 0.02, 2.7], [0, -0.014, -1.4, 11.5, 0.02, 2.7], [0, -0.014, 4.2, 11.5, 0.02, 2.7]];
+const GRASS_DARK_BANDS: readonly InstanceTransform[] = [[0, -0.014, -4.2, 11.5, 0.02, 2.7], [0, -0.014, 1.4, 11.5, 0.02, 2.7], [0, -0.014, 7, 11.5, 0.02, 2.7]];
+const WORN_GRASS: readonly InstanceTransform[] = [
+  [-2.02, -0.007, -5.22, 0.42, 0.014, 0.14], [-1.55, -0.007, -5.12, 0.28, 0.014, 0.19], [-1.18, -0.007, -5.26, 0.36, 0.014, 0.13],
+  [0.74, -0.007, -5.13, 0.32, 0.014, 0.17], [1.15, -0.007, -5.25, 0.46, 0.014, 0.12], [1.62, -0.007, -5.16, 0.26, 0.014, 0.2],
+  [-1.72, -0.007, 5.16, 0.3, 0.014, 0.18], [-1.3, -0.007, 5.27, 0.43, 0.014, 0.12], [-0.87, -0.007, 5.14, 0.25, 0.014, 0.17],
+  [1.02, -0.007, 5.25, 0.35, 0.014, 0.13], [1.43, -0.007, 5.13, 0.28, 0.014, 0.2], [1.86, -0.007, 5.22, 0.4, 0.014, 0.14],
+  [-1.4, -0.007, -2.06, 0.34, 0.014, 0.16], [-0.98, -0.007, -2.17, 0.24, 0.014, 0.13], [1.04, -0.007, -2.08, 0.3, 0.014, 0.18],
+  [-1.18, -0.007, 2.18, 0.29, 0.014, 0.15], [-0.78, -0.007, 2.07, 0.23, 0.014, 0.12], [1.34, -0.007, 2.16, 0.36, 0.014, 0.16],
+  [-0.19, -0.007, -0.7, 0.14, 0.014, 0.34], [0.13, -0.007, -0.27, 0.16, 0.014, 0.22], [-0.11, -0.007, 0.46, 0.13, 0.014, 0.29], [0.17, -0.007, 0.83, 0.15, 0.014, 0.24],
+];
+const NET_VERTICAL_CORDS: readonly InstanceTransform[] = [[-3.55, 0.52, 0, 0.026, 0.94, 0.025], [-2.84, 0.52, 0, 0.026, 0.94, 0.025], [-2.13, 0.52, 0, 0.026, 0.94, 0.025], [-1.42, 0.52, 0, 0.026, 0.94, 0.025], [-0.71, 0.52, 0, 0.026, 0.94, 0.025], [0, 0.52, 0, 0.026, 0.94, 0.025], [0.71, 0.52, 0, 0.026, 0.94, 0.025], [1.42, 0.52, 0, 0.026, 0.94, 0.025], [2.13, 0.52, 0, 0.026, 0.94, 0.025], [2.84, 0.52, 0, 0.026, 0.94, 0.025], [3.55, 0.52, 0, 0.026, 0.94, 0.025]];
+const NET_HORIZONTAL_CORDS: readonly InstanceTransform[] = [[0, 0.23, 0, 7.12, 0.024, 0.025], [0, 0.52, 0, 7.12, 0.024, 0.025], [0, 0.81, 0, 7.12, 0.024, 0.025]];
+const SURROUND_BLOCKS: readonly InstanceTransform[] = [[0, 0.42, -8.75, 12.7, 0.84, 0.48], [0, 0.42, 8.75, 12.7, 0.84, 0.48], [-6.15, 0.42, 0, 0.48, 0.84, 17], [6.15, 0.42, 0, 0.48, 0.84, 17]];
 const STAND_BLOCKS: readonly InstanceTransform[] = [[0, 1.15, 8.05, 13.6, 2.3, 1.55], [-6.2, 0.9, 0, 1.2, 1.8, 14.8], [6.2, 0.9, 0, 1.2, 1.8, 14.8]];
 const SIGN_BLOCKS: readonly InstanceTransform[] = [[-3.2, 1.2, 6.7, 2.15, 0.42, 0.08], [3.2, 1.2, 6.7, 2.15, 0.42, 0.08], [-5.35, 1.28, 3.85, 0.08, 0.42, 1.8], [5.35, 1.28, -3.85, 0.08, 0.42, 1.8]];
 const CROWD_COLORS = ["#e8e0c9", "#293d5c", "#703842", "#3f7670", "#d7bd65", "#5e3f77"] as const;
@@ -33,8 +45,8 @@ const crowdColor = new Color();
 const SCOREBOARD_SEGMENT_COUNT = 14;
 const DIGIT_SEGMENTS: readonly (readonly number[])[] = [[0, 1, 2, 4, 5, 6], [2, 5], [0, 2, 3, 4, 6], [0, 2, 3, 5, 6], [1, 2, 3, 5], [0, 1, 3, 5, 6], [0, 1, 3, 4, 5, 6], [0, 2, 5]] as const;
 
-/** Static Phase 16 structural accounting, excluding loaded player GLBs and rally actors. */
-export const RETRO_ENVIRONMENT_METRICS = { drawCalls: 32, drawCallCeiling: 34, materialInstances: 11, instancedGroups: 11, instances: 8 + 6 + 4 + 2 + 4 + 3 + 4 + SCOREBOARD_SEGMENT_COUNT + 32 + 48 } as const;
+/** Static active-venue structural accounting, excluding loaded player GLBs and rally actors. */
+export const RETRO_ENVIRONMENT_METRICS = { drawCalls: 33, drawCallCeiling: 34, materialInstances: 11, instancedGroups: 13, instances: 12 + 6 + 22 + 2 + 11 + 3 + 4 + 3 + 4 + SCOREBOARD_SEGMENT_COUNT + 32 + 48 } as const;
 
 function applyInstances(mesh: InstancedMesh, transforms: readonly InstanceTransform[]) {
   const matrix = new Matrix4();
@@ -45,22 +57,22 @@ function applyInstances(mesh: InstancedMesh, transforms: readonly InstanceTransf
 function StaticBlocks({ transforms, material }: { transforms: readonly InstanceTransform[]; material: MeshStandardMaterial }) {
   const mesh = useRef<InstancedMesh>(null);
   useLayoutEffect(() => { if (mesh.current) applyInstances(mesh.current, transforms); }, [transforms]);
-  return <instancedMesh ref={mesh} args={[undefined, undefined, transforms.length]}><boxGeometry args={[1, 1, 1]} /><primitive object={material} attach="material" dispose={null} /></instancedMesh>;
+  return <instancedMesh ref={mesh} receiveShadow args={[undefined, undefined, transforms.length]}><boxGeometry args={[1, 1, 1]} /><primitive object={material} attach="material" dispose={null} /></instancedMesh>;
 }
 
 function RetroNet({ palette }: { palette: RetroPalette }) {
   const posts = useRef<InstancedMesh>(null);
   useLayoutEffect(() => { if (posts.current) applyInstances(posts.current, [[-4, NET_HEIGHT / 2, 0, 1, 1, 1], [4, NET_HEIGHT / 2, 0, 1, 1, 1]]); }, []);
   return <group>
-    <mesh position={[0, NET_HEIGHT, 0]}><boxGeometry args={[8, 0.08, 0.1]} /><primitive object={palette.light} attach="material" dispose={null} /></mesh>
-    <mesh position={[0, NET_HEIGHT / 2, 0]}><planeGeometry args={[7.9, NET_HEIGHT, 8, 2]} /><primitive object={palette.net} attach="material" dispose={null} /></mesh>
-    <instancedMesh ref={posts} args={[undefined, undefined, 2]}><cylinderGeometry args={[0.065, 0.08, NET_HEIGHT * 1.14, 6]} /><primitive object={palette.dark} attach="material" dispose={null} /></instancedMesh>
+    <mesh position={[0, NET_HEIGHT, 0]} receiveShadow><boxGeometry args={[8, 0.075, 0.1]} /><primitive object={palette.light} attach="material" dispose={null} /></mesh>
+    <StaticBlocks transforms={NET_VERTICAL_CORDS} material={palette.net} /><StaticBlocks transforms={NET_HORIZONTAL_CORDS} material={palette.net} />
+    <instancedMesh ref={posts} castShadow args={[undefined, undefined, 2]}><cylinderGeometry args={[0.075, 0.09, NET_HEIGHT * 1.14, 6]} /><primitive object={palette.dark} attach="material" dispose={null} /></instancedMesh>
   </group>;
 }
 
 function RetroCourt({ palette }: { palette: RetroPalette }) {
   return <group>
-    <mesh receiveShadow position={[0, -0.13, 0]}><boxGeometry args={[COURT_WIDTH, 0.25, COURT_LENGTH]} /><primitive object={palette.grass} attach="material" dispose={null} /></mesh>
+    <mesh receiveShadow position={[0, -0.15, 0]}><boxGeometry args={[LAWN_WIDTH, 0.25, LAWN_LENGTH]} /><primitive object={palette.grass} attach="material" dispose={null} /></mesh>
     <StaticBlocks transforms={GRASS_LIGHT_BANDS} material={palette.grassLight} /><StaticBlocks transforms={GRASS_DARK_BANDS} material={palette.grassDark} /><StaticBlocks transforms={WORN_GRASS} material={palette.worn} />
     <StaticBlocks transforms={COURT_LINES} material={palette.light} /><RetroNet palette={palette} />
   </group>;
@@ -100,7 +112,7 @@ function StadiumShell({ palette, detail }: { palette: RetroPalette; detail: numb
 /** Court mounts immediately; every tier retains the seven station silhouettes. */
 export function RetroEnvironment({ progress, qualityTier, reducedMotion }: { progress: MutableRefObject<NarrativeProgress>; qualityTier: QualityTier; reducedMotion: boolean }) {
   const [stage, setStage] = useState(0); const detail = SCENE_QUALITY[qualityTier].environmentDetail;
-  const palette = useMemo<RetroPalette>(() => ({ grass: new MeshStandardMaterial({ color: "#557a3d", flatShading: true, roughness: 0.95 }), grassLight: new MeshStandardMaterial({ color: "#668a49", flatShading: true, roughness: 0.95 }), grassDark: new MeshStandardMaterial({ color: "#476b35", flatShading: true, roughness: 0.95 }), worn: new MeshStandardMaterial({ color: "#8b8a5a", flatShading: true, roughness: 0.96 }), light: new MeshStandardMaterial({ color: "#f4f1e7", roughness: 0.8 }), net: new MeshStandardMaterial({ color: "#18211d", wireframe: true, transparent: true, opacity: 0.72, roughness: 0.9 }), dark: new MeshStandardMaterial({ color: "#154734", flatShading: true, roughness: 0.9 }), mid: new MeshStandardMaterial({ color: "#1e5a40", flatShading: true, roughness: 0.88 }), accent: new MeshStandardMaterial({ color: "#d7bd65", emissive: "#5a4b18", emissiveIntensity: 0.3, flatShading: true, roughness: 0.7 }), purple: new MeshStandardMaterial({ color: "#5e3f77", flatShading: true, roughness: 0.84 }), crowdCream: new MeshStandardMaterial({ color: "#ffffff", vertexColors: true, flatShading: true, roughness: 0.9 }) }), []);
+  const palette = useMemo<RetroPalette>(() => ({ grass: new MeshStandardMaterial({ color: "#557a3d", flatShading: true, roughness: 0.95 }), grassLight: new MeshStandardMaterial({ color: "#668a49", flatShading: true, roughness: 0.95 }), grassDark: new MeshStandardMaterial({ color: "#476b35", flatShading: true, roughness: 0.95 }), worn: new MeshStandardMaterial({ color: "#747b4c", flatShading: true, roughness: 0.96 }), light: new MeshStandardMaterial({ color: "#f4f1e7", roughness: 0.8 }), net: new MeshStandardMaterial({ color: "#18211d", roughness: 0.94 }), dark: new MeshStandardMaterial({ color: "#154734", flatShading: true, roughness: 0.9 }), mid: new MeshStandardMaterial({ color: "#1e5a40", flatShading: true, roughness: 0.88 }), accent: new MeshStandardMaterial({ color: "#d7bd65", emissive: "#5a4b18", emissiveIntensity: 0.3, flatShading: true, roughness: 0.7 }), purple: new MeshStandardMaterial({ color: "#5e3f77", flatShading: true, roughness: 0.84 }), crowdCream: new MeshStandardMaterial({ color: "#ffffff", vertexColors: true, flatShading: true, roughness: 0.9 }) }), []);
   useEffect(() => () => { Object.values(palette).forEach((material) => material.dispose()); }, [palette]);
   useLayoutEffect(() => { let frame = window.requestAnimationFrame(() => { setStage(1); frame = window.requestAnimationFrame(() => setStage(2)); }); return () => window.cancelAnimationFrame(frame); }, []);
   return <group name="retro-environment"><RetroCourt palette={palette} /><VenueStations palette={palette} progress={progress} reducedMotion={reducedMotion} />{stage >= 1 ? <StadiumShell palette={palette} detail={detail} /> : null}</group>;
