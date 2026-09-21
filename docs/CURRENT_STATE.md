@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Phases 01–12, 14, 15, and 16 are implemented, and Phases 17 and 18 are now implemented: the
+Phases 01–12 and 14–19 are implemented: the
 scroll-scrubbed camera choreography now frames the venue as an old-console tennis game.
 An elevated baseline gameplay camera acts as the visual anchor, and each narrative
 chapter uses a restrained station-visit crop/shift rather than a cinematic orbit.
@@ -10,11 +10,11 @@ Phase 18 now keeps the 3D world visually primary with compact contextual desktop
 surfaces, an intentionally composed mobile bottom-sheet layout, explicit DOM
 interaction layers, and the existing accessible project detail dialog.
 
-Phase 19 is not accepted. The checked-in player assets remain explicitly labeled
-Blockbench calibration fixtures, not human-authored final art. The asset build now
-prevents those fixture sources from being promoted to `blockbench-export`; final
-acceptance requires original, human-authored Blockbench players plus application-
-camera visual approval and a 12/15/18fps readability comparison.
+Phase 19 is accepted. Original authored Blockbench players now ship through the
+reviewed `blockbench-export` path and render as the ordinary rally actors. Their
+authored clips remain driven by the deterministic master progress, use 15fps
+character-only stepping selected from the 12/15/18fps application-camera review,
+and retain exact contact anchoring while the ball and camera remain smooth.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
@@ -26,13 +26,13 @@ and a documented performance profile over the accepted Phase 11 interface.
 Phase 08 adds deterministic authored-character clip playback
 and synchronizes it to the accepted rally while preserving smooth ball, camera,
 scroll, and DOM motion.
-The checked-in animated GLBs remain generated calibration fixtures; human
-Blockbench authoring and final visual approval are still required.
+The checked-in animated GLBs are now reviewed Blockbench exports with final
+application-camera approval; the procedural Phase 06 actors remain load/error
+fallbacks only.
 
 ## Current objective
 
-- Complete Phase 19 only after original human-authored players are available;
-  continue Phase 20 external release evidence without overstating local checks.
+- Continue Phase 20 external release evidence without overstating local checks.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,
@@ -69,8 +69,9 @@ Blockbench authoring and final visual approval are still required.
   copying a particular copyrighted game.
 - Retro styling belongs primarily in the 3D world. The professional portfolio
   UI and meaningful content remain clean, modern, readable semantic HTML.
-- The former capsule/sphere production players were removed in Phase 06 and
-  replaced by articulated direct-R3F prototypes pending final authored assets.
+- The former capsule/sphere production players were removed in Phase 06. Phase 19
+  replaced the interim articulated direct-R3F production bridge with the reviewed
+  authored Blockbench GLBs; the procedural actors remain load/error fallbacks only.
 - Blockbench is preferred for new low-poly character authoring and `.bbmodel`
   source assets. Blender remains supported for existing Phase 04 assets and is
   optional/legacy rather than mandatory for new character work.
@@ -103,7 +104,7 @@ Blockbench authoring and final visual approval are still required.
   records under `tennis-portfolio-plans/archive/pre-retro-roadmap/`.
 - No runtime code, rally/camera behavior, or production Phase 04 asset was changed.
 
-## Phase 06 completion
+## Historical Phase 06 completion (superseded by Phase 19 character art)
 
 - Production `RallyActors` now renders two articulated, faceted low-poly players
   with stable hips/torso/head/limb transform groups and readable wrist-attached
@@ -118,7 +119,7 @@ Blockbench authoring and final visual approval are still required.
 - Desktop, reverse-scroll, and narrow-viewport visual review passed without
   weakening portfolio readability. No Blockbench/Phase 07 assets were created.
 
-## Phase 07 implementation status
+## Historical Phase 07 implementation status (superseded by Phase 19 character art)
 
 - `assets-source/blockbench/` contains committed Player A/B hierarchy and pivot
   calibration templates. `blockbench-exports/` and `/public/models/` contain
@@ -135,7 +136,7 @@ Blockbench authoring and final visual approval are still required.
   remains on the accepted Phase 06 prototype; each calibration GLB has that
   prototype as its Suspense/error fallback. No final clips or choreography changed.
 
-## Phase 08 implementation status
+## Historical Phase 08 implementation status (superseded by Phase 19 character art)
 
 - Generated Player A/B calibration GLBs contain the required stable named clips.
   Optimization preserves them and validation enforces exact clip sets, positive
@@ -221,7 +222,7 @@ Blockbench authoring and final visual approval are still required.
   Escape/backdrop close, and scroll locking.
 - `docs/PERFORMANCE_PROFILE.md` records verified asset, texture, instancing, quality,
   lifecycle, and animation-ownership results plus the production-browser measurement
-  matrix. Current GLBs total 31,920 bytes, use Meshopt/quantization, and contain no
+  matrix. Current GLBs total 68,604 bytes, use Meshopt/quantization, and contain no
   raster textures; the active procedural environment records 30/32/32 structural
   submissions by low/medium/high tier against its 34-call ceiling.
 
@@ -232,9 +233,9 @@ Blockbench authoring and final visual approval are still required.
 - The Blender sources, source exports, optimizer branch, runtime GLBs, and manual
   reproduction procedure are retained because the fallback and default asset build
   still depend on them. They are not eligible for archive/removal in this phase.
-- Blockbench remains the preferred authoring tool for new characters. The checked-in
-  player GLBs are still generated calibration fixtures pending human-authored visual
-  approval; this art task is not silently converted into a release claim.
+- Blockbench remains the preferred authoring tool for new characters. Phase 19 has
+  superseded the former calibration players with reviewed authored exports without
+  changing the retained Phase 04 environment fallback or its build inputs.
 - Ordinary portfolio copy, experience, research, project, link, contact, and
   navigation edits remain semantic data/DOM work and require neither Blockbench nor
   Blender.
@@ -331,17 +332,22 @@ Blockbench authoring and final visual approval are still required.
 
 ## Phase 19 / 20 status
 
-- Phase 19 is blocked on original human-authored, visually approved Blockbench
-  players. Calibration fixtures cannot be promoted as reviewed exports; the
-  pipeline now enforces that provenance boundary before mutating production assets.
+- Phase 19 is accepted. Reviewed Player A/B GLBs are the production actors, preserve
+  the contracted roots/socket and exact clip sets, use three runtime flat palette
+  materials, and retain the procedural actors only during loading or a genuine
+  runtime asset failure. A 15fps character cadence was selected after comparing
+  12/15/18fps in the gameplay camera; contact-anchored serve/forehand/backhand
+  sampling and recovery/reduced-motion idle remain deterministic and reversible.
+- Desktop/tablet active-rally cameras were pulled back within the existing Phase 17
+  keyframe architecture so both final players remain visible. Player A keeps the
+  generous root-level About proxy, while hotspot hover moves only its marker rather
+  than the animated character hierarchy.
 - Phase 20 local static hardening and documentation are in progress. Preview,
   cross-browser/real-device, production performance, and rollback evidence remain
   external release gates and are not implied by passing local checks.
 
 ## Do not claim yet
 
-- Do not claim final-player art acceptance or launch readiness while the checked-in
-  characters remain calibration fixtures.
 - Do not claim preview, production-browser, physical-device, or rollback evidence
   until those checks are performed and recorded.
 - Do not delete/archive Phase 04 assets while the fallback chain and default asset

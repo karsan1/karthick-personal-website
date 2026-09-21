@@ -2,7 +2,7 @@
   "schemaVersion": 4,
   "sourceKinds": [
     "blender-export",
-    "blockbench-calibration-fixture"
+    "blockbench-export"
   ],
   "coordinateSystem": "Y-up glTF; court center [0, 0, 0]; +Z is north baseline; 8.2m x 12.4m outer court.",
   "optimization": "Per-asset; character assets never run weld automatically.",
@@ -36,10 +36,10 @@
     },
     {
       "file": "player-a.glb",
-      "sourceKind": "blockbench-calibration-fixture",
+      "sourceKind": "blockbench-export",
       "assetKind": "character",
-      "sourceBytes": 4820,
-      "optimizedBytes": 6144,
+      "sourceBytes": 58064,
+      "optimizedBytes": 25736,
       "budgetBytes": 80000,
       "texturePolicy": "No raster textures; PBR base-color materials only.",
       "animationClips": [
@@ -59,10 +59,10 @@
     },
     {
       "file": "player-b.glb",
-      "sourceKind": "blockbench-calibration-fixture",
+      "sourceKind": "blockbench-export",
       "assetKind": "character",
-      "sourceBytes": 4676,
-      "optimizedBytes": 5888,
+      "sourceBytes": 52204,
+      "optimizedBytes": 22980,
       "budgetBytes": 80000,
       "texturePolicy": "No raster textures; PBR base-color materials only.",
       "animationClips": [

@@ -95,8 +95,9 @@ deployment was promoted, and no rollback was executed.
       states.
 - [ ] Identify the current production deployment and verify the rollback path;
       retain the prior known-good deployment as the rollback target.
-- [ ] Phase 19 remains blocked: checked-in players are generated Blockbench
-      calibration fixtures, not human-authored final art. Release requires
-      original reviewed player assets, application-camera visual approval, and
-      the 12/15/18 fps readability comparison. Do not claim production-art
-      acceptance from the passing fixture validation.
+- [x] Phase 19 accepted locally: reviewed authored Blockbench players pass the
+      reviewed build and validation path, render as production actors, preserve
+      deterministic contacts and the About hotspot, and use the selected 15fps
+      cadence after a 12/15/18fps application-camera comparison. This does not
+      satisfy the separate preview, cross-browser/device, performance, or
+      rollback gates above.

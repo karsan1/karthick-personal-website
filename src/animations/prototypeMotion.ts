@@ -118,7 +118,39 @@ export type CharacterRootTransformSample = {
  * and GSAP master progress remain smooth. The runtime may opt out for clip
  * review, but should not change this value per actor.
  */
-export const CHARACTER_ANIMATION_FPS = 18;
+export type CharacterAnimationCadence = 12 | 15 | 18 | "smooth";
+
+/** Production default; review can select another approved cadence without changing narrative timing. */
+export const CHARACTER_ANIMATION_FPS: Exclude<CharacterAnimationCadence, "smooth"> = 15;
+
+const CHARACTER_ANIMATION_CADENCES = new Set<CharacterAnimationCadence>([12, 15, 18, "smooth"]);
+
+/**
+ * Limits the review surface to the four intentional presentation modes. This
+ * value controls only authored mixer-time quantization; GSAP progress, ball,
+ * and camera continue to sample their existing smooth paths.
+ */
+export function resolveCharacterAnimationCadence(
+  value: string | number | null | undefined,
+): CharacterAnimationCadence {
+  const normalized = typeof value === "string" ? value.toLowerCase() : value;
+  if (normalized === "smooth") return normalized;
+
+  const fps = typeof normalized === "number" ? normalized : Number(normalized);
+  return CHARACTER_ANIMATION_CADENCES.has(fps as CharacterAnimationCadence)
+    ? fps as Exclude<CharacterAnimationCadence, "smooth">
+    : CHARACTER_ANIMATION_FPS;
+}
+
+/**
+ * Optional URL review seam: `?characterFps=12`, `15`, `18`, or `smooth`.
+ * It is read once by the character controller and has no effect outside the
+ * authored character clips.
+ */
+export function readCharacterAnimationCadence() {
+  if (typeof window === "undefined") return CHARACTER_ANIMATION_FPS;
+  return resolveCharacterAnimationCadence(new URLSearchParams(window.location.search).get("characterFps"));
+}
 
 /**
  * Accepted ball/racket contact contract:
@@ -303,41 +335,41 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   // ── Hero (0.00–0.12): iconic elevated baseline center — full court, both players, grass, scoreboard ──
   {
     progress: 0,
-    position: new Vector3(0.3, 5.6, -11.8),
+    position: new Vector3(0.3, 6.3, -13.2),
     target: new Vector3(0, 0.8, 0.5),
-    fov: 30,
+    fov: 35,
   },
   // Rally tracking: serve toss (0.08) — slight pull toward toss height
   {
     progress: PROTOTYPE_LABELS.serveToss,
-    position: new Vector3(0.2, 5.7, -11.6),
+    position: new Vector3(0.2, 6.35, -13.0),
     target: new Vector3(0, 1.6, -2.8),
-    fov: 30,
+    fov: 35,
   },
   // ── About (0.12): shift closer/lower toward Player A, preserve court context ──
   // Rally events serveContact (0.14) and firstBounce (0.24) interpolate naturally
   // through this and the next keyframe.
   {
     progress: 0.12,
-    position: new Vector3(-0.6, 4.8, -10.5),
+    position: new Vector3(-0.6, 5.8, -12.0),
     target: new Vector3(-0.3, 0.9, -2.2),
-    fov: 31,
+    fov: 35,
     transition: "soft-cut",
   },
   // ── Experience (0.24): lateral shift toward bench side (−X), court visible ──
   {
     progress: 0.24,
-    position: new Vector3(-2.8, 4.6, -10.2),
+    position: new Vector3(-2.8, 5.7, -12.0),
     target: new Vector3(-1.5, 0.7, -0.6),
-    fov: 32,
+    fov: 36,
     transition: "soft-cut",
   },
   // Hold through rally conclusion
   {
     progress: 0.46,
-    position: new Vector3(-2.8, 4.6, -10.2),
+    position: new Vector3(-2.8, 5.7, -12.0),
     target: new Vector3(-1.5, 0.7, -0.6),
-    fov: 32,
+    fov: 36,
   },
   // ── Research (0.50): sideline shift toward umpire chair (+X) ──
   {
@@ -400,12 +432,12 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
 /** Narrow landscape: same chapter structure, pulled back with wider FOV. */
 const TABLET_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   // Hero
-  { progress: 0, position: new Vector3(0.3, 6.0, -12.8), target: new Vector3(0, 0.8, 0.5), fov: 34 },
+  { progress: 0, position: new Vector3(0.3, 6.4, -13.5), target: new Vector3(0, 0.8, 0.5), fov: 36 },
   // About
-  { progress: 0.12, position: new Vector3(-0.6, 5.3, -11.6), target: new Vector3(-0.3, 0.9, -2.0), fov: 35, transition: "soft-cut" },
+  { progress: 0.12, position: new Vector3(-0.6, 5.8, -12.4), target: new Vector3(-0.3, 0.9, -2.0), fov: 37, transition: "soft-cut" },
   // Experience
-  { progress: 0.24, position: new Vector3(-2.4, 5.1, -11.2), target: new Vector3(-1.3, 0.7, -0.5), fov: 36, transition: "soft-cut" },
-  { progress: 0.46, position: new Vector3(-2.4, 5.1, -11.2), target: new Vector3(-1.3, 0.7, -0.5), fov: 36 },
+  { progress: 0.24, position: new Vector3(-2.4, 5.6, -12.0), target: new Vector3(-1.3, 0.7, -0.5), fov: 38, transition: "soft-cut" },
+  { progress: 0.46, position: new Vector3(-2.4, 5.6, -12.0), target: new Vector3(-1.3, 0.7, -0.5), fov: 38 },
   // Research
   { progress: 0.50, position: new Vector3(2.0, 5.7, -11.8), target: new Vector3(1.4, 0.9, 0.7), fov: 35, transition: "soft-cut" },
   { progress: 0.61, position: new Vector3(2.0, 5.7, -11.8), target: new Vector3(1.4, 0.9, 0.7), fov: 35 },
@@ -509,7 +541,7 @@ export function sampleReducedMotionCharacterPose(target: CharacterNarrativeSampl
 /**
  * Samples the smooth, application-owned root choreography retained from the
  * Phase 06 prototype. It deliberately uses raw master progress rather than
- * 18fps character clip sampling, so court placement remains smooth and does
+ * stepped character clip sampling, so court placement remains smooth and does
  * not fight in-place GLB animation or reverse scrolling.
  */
 export function sampleCharacterRootTransform(
@@ -568,14 +600,15 @@ export function quantizeCharacterClipTime(
 /**
  * Converts an allocation-free narrative sample to a deterministic mixer time.
  * Pass `sample.contactLocalProgress` as the final argument to preserve the
- * exact shot contact under 18fps stepping. Pass `stepped: false` only for
- * smooth reference/debug playback.
+ * exact shot contact under any approved stepped cadence. Pass `stepped: false`
+ * only for smooth reference/debug playback.
  */
 export function sampleCharacterClipTime(
   localProgress: number,
   clipDuration: number,
   stepped = true,
   contactLocalProgress?: number,
+  fps = CHARACTER_ANIMATION_FPS,
 ) {
   const duration = Math.max(clipDuration, 0);
   const time = clampProgress(localProgress) * duration;
@@ -584,7 +617,7 @@ export function sampleCharacterClipTime(
   }
 
   const contactTime = contactLocalProgress === undefined ? undefined : clampProgress(contactLocalProgress) * duration;
-  const steppedTime = quantizeCharacterClipTime(time, CHARACTER_ANIMATION_FPS, contactTime);
+  const steppedTime = quantizeCharacterClipTime(time, fps, contactTime);
   // A contact-anchored floor can precede zero when the contact is off-grid.
   // Clamp in mixer-time space without moving the exact contact sample.
   return Math.min(Math.max(steppedTime, 0), duration);

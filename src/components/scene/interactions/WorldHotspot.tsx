@@ -57,7 +57,6 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
   return (
     <group
       name={`hotspot-${config.id}`}
-      position={isHovered ? [0, 0.04, 0] : [0, 0, 0]}
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
       onClick={onClick}
@@ -73,7 +72,7 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
         <mesh
           position={[
             hitPosition[0],
-            hitPosition[1] + hitArea[1] / 2 + 0.28,
+            hitPosition[1] + hitArea[1] / 2 + 0.28 + (isHovered ? 0.04 : 0),
             hitPosition[2],
           ]}
           rotation={[0, 0, Math.PI / 4]}

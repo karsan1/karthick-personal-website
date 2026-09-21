@@ -1,6 +1,6 @@
 # Performance Profile — Phase 20 static audit
 
-**Profile date:** 2026-09-19
+**Profile date:** 2026-09-21
 **Scope:** active Phase 16–20 shared worktree. This is a static/source and asset-manifest audit, not a production-browser benchmark. No FPS, frame-time, GPU-memory, renderer-info, transfer-waterfall, or React Profiler result is claimed below.
 
 ## Finding: active venue source accounting is controlled, but it is not a whole-frame measurement
@@ -17,11 +17,11 @@
 
 ## Finding: the checked-in GLB set is small and within every declared asset budget
 
-**Evidence:** `assets:validate` passed on 2026-09-19 for all six production GLBs, including exact manifest/provenance, Meshopt, environment contracts, and in-place character clips. `asset-manifest.json` and on-disk byte counts total 31,920 B: court 8,544 B; props 5,044 B; scoreboard 3,076 B; stadium shell 3,224 B; Player A 6,144 B; Player B 5,888 B. Each environment partition is below its 100 KB budget (scoreboard 60 KB); each player is below 80 KB. The manifest requires Meshopt and declares no raster textures or KTX2 payloads. The player files remain Blockbench calibration fixtures, not final art.
+**Evidence:** `assets:build:reviewed-characters` and `assets:validate` passed on 2026-09-21 for all six production GLBs, including exact manifest/provenance, Meshopt, environment contracts, and in-place character clips. `asset-manifest.json` and on-disk byte counts total 68,604 B: court 8,544 B; props 5,044 B; scoreboard 3,076 B; stadium shell 3,224 B; Player A 25,736 B; Player B 22,980 B. Each environment partition is below its 100 KB budget (scoreboard 60 KB); each player is below 80 KB. The manifest requires Meshopt and declares no raster textures or KTX2 payloads. Both players are reviewed `blockbench-export` assets.
 
 **Impact:** static asset-transfer and texture-content pressure are low. Disk bytes are not HTTP transfer, decode time, runtime geometry memory, or GPU texture memory; all of those remain unmeasured. The default venue is procedural, so legacy environment GLBs load only through the explicit legacy or error-fallback path; both player GLBs still stream for rally actors.
 
-**Change:** no runtime change. `useGLTF(path, false, true)` keeps Meshopt decoding explicit for legacy environment and player asset paths.
+**Change:** the reviewed player GLBs now load as the ordinary match actors through `useGLTF(path, false, true)`. Three flat runtime palette materials per player replace the exports' non-visible default material without adding textures; the materials are created once per cloned actor and disposed on unmount.
 
 **Expected effect:** no raster texture allocation is introduced by current GLBs. KTX2/Basis remains unnecessary until authored raster textures exist and a visual/performance comparison justifies it.
 

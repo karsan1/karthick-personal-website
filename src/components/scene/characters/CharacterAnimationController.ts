@@ -3,6 +3,8 @@ import { useFrame } from "@react-three/fiber";
 import { AnimationMixer, LoopOnce, type AnimationAction, type AnimationClip, type Group, type Object3D } from "three";
 import {
   CHARACTER_ANIMATION_FPS,
+  readCharacterAnimationCadence,
+  type CharacterAnimationCadence,
   sampleCharacterClipTime,
   sampleCharacterNarrative,
   sampleCharacterRootTransform,
@@ -21,6 +23,8 @@ type CharacterAnimationControllerOptions = {
   side: CharacterSide;
   reducedMotion: boolean;
   smoothReference: boolean;
+  /** Optional explicit review override; otherwise `?characterFps=` is used. */
+  cadence?: CharacterAnimationCadence;
 };
 
 type CharacterActions = Partial<Record<CharacterClipName, AnimationAction>>;
@@ -60,6 +64,7 @@ export function useCharacterAnimationController({
   side,
   reducedMotion,
   smoothReference,
+  cadence,
 }: CharacterAnimationControllerOptions) {
   const runtime = useRef<CharacterRuntime | null>(null);
   if (runtime.current === null) {
@@ -81,6 +86,9 @@ export function useCharacterAnimationController({
     scaleY: 1,
   });
   const activeAction = useRef<AnimationAction | undefined>(undefined);
+  // Keep a stable review choice through a mount. It is intentionally outside
+  // the frame loop so no per-frame URL/state work reaches the render path.
+  const resolvedCadence = useRef<CharacterAnimationCadence>(cadence ?? readCharacterAnimationCadence());
 
   useFrame(() => {
     const currentRuntime = runtime.current;
@@ -108,12 +116,13 @@ export function useCharacterAnimationController({
       activeAction.current = action;
     }
 
-    const stepped = !smoothReference && CHARACTER_ANIMATION_FPS > 0;
+    const stepped = !smoothReference && resolvedCadence.current !== "smooth" && CHARACTER_ANIMATION_FPS > 0;
     action.time = sampleCharacterClipTime(
       target.localProgress,
       action.getClip().duration,
       stepped,
       target.contactLocalProgress,
+      resolvedCadence.current === "smooth" ? CHARACTER_ANIMATION_FPS : resolvedCadence.current,
     );
     currentRuntime.mixer.update(0);
   });

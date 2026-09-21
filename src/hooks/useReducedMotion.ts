@@ -7,7 +7,9 @@ export function useReducedMotion() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    const params = new URLSearchParams(window.location.search);
+    const reviewOverride = params.get("debug") === "1" && params.get("reducedMotion") === "1";
+    const updatePreference = () => setPrefersReducedMotion(reviewOverride || mediaQuery.matches);
 
     updatePreference();
     mediaQuery.addEventListener("change", updatePreference);
