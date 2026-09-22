@@ -868,9 +868,11 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
   }
 
   .hero-content {
-    width: min(72vw, 18rem);
+    width: min(40vw, 10rem);
     max-height: none;
   }
+
+  .hero h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
 
   .content-card,
   .chapter-panel,

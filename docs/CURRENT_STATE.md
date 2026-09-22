@@ -37,7 +37,7 @@ fallbacks only.
 
 ## Current objective
 
-- Complete the Phase 19B visual acceptance matrix using the verified v4
+- Complete the Phase 19 visual acceptance matrix using the verified v5
   Blockbench exports and measured production bounds.
 - Continue Phase 20 external release evidence without overstating local checks.
 - Continue with Phase 22 venue structure only after retaining the accepted Phase 21
@@ -342,22 +342,25 @@ fallbacks only.
 ## Phase 19 / 20 status
 
 - Phase 19 is implemented / visual acceptance pending. Reviewed Player A/B GLBs are the production actors, preserve
-  the contracted roots/socket and exact clip sets, use three runtime flat palette
+  the contracted roots/socket and exact clip sets, use player-only unlit palette
   materials, and retain the procedural actors only during loading or a genuine
   runtime asset failure. A 15fps character cadence was selected after comparing
   12/15/18fps in the gameplay camera; contact-anchored serve/forehand/backhand
   sampling and recovery/reduced-motion idle remain deterministic and reversible.
 - Desktop/tablet active-rally cameras have been reframed within the existing Phase 17
-  keyframe architecture, pending review with the v4 players. Player A keeps the
+  keyframe architecture. Player A keeps the
   generous root-level About proxy, while hotspot hover moves only its marker rather
   than the animated character hierarchy.
 - Phase 19B has a compact left-docked desktop destination menu and a shorter,
-  scrollable mobile content sheet. The v4 `.bbmodel` sources and direct Blockbench
-  exports are canonical; both optimized production GLBs measure 1.800 world
-  units tall and now have a conservative bind-pose size guard. Desktop and tablet
-  contact frames keep Player A visible through the Research transition, but an
-  outgoing mobile Experience sheet can still cover Player B during the rally;
-  visual acceptance remains pending that overlay correction and complete review.
+  scrollable mobile content sheet. The v5 `.bbmodel` sources and direct Blockbench
+  exports are canonical; both optimized production GLBs measure 1.763 world
+  units tall and pass the conservative bind-pose size guard. V5 replaces the
+  angular v4 anatomy/paddle racket with chunkier limbs and an open racket frame;
+  player-only MeshBasicMaterial removes the triangular Lambert face shading.
+  Desktop Hero, serve, B forehand, A backhand, About, tablet Hero, and mobile Hero
+  have been reviewed locally. An outgoing mobile Experience sheet can still cover
+  Player B during the rally, and reduced-motion v5 visual review remains outstanding;
+  Phase 19 visual acceptance is pending those checks.
 - Phase 20 local static hardening and documentation are in progress. Preview,
   cross-browser/real-device, production performance, and rollback evidence remain
   external release gates and are not implied by passing local checks.

@@ -38,8 +38,8 @@
       "file": "player-a.glb",
       "sourceKind": "blockbench-export",
       "assetKind": "character",
-      "sourceBytes": 55416,
-      "optimizedBytes": 25332,
+      "sourceBytes": 54696,
+      "optimizedBytes": 24508,
       "budgetBytes": 80000,
       "texturePolicy": "No raster textures; PBR base-color materials only.",
       "animationClips": [
@@ -61,8 +61,8 @@
       "file": "player-b.glb",
       "sourceKind": "blockbench-export",
       "assetKind": "character",
-      "sourceBytes": 50176,
-      "optimizedBytes": 22980,
+      "sourceBytes": 50716,
+      "optimizedBytes": 22600,
       "budgetBytes": 80000,
       "texturePolicy": "No raster textures; PBR base-color materials only.",
       "animationClips": [

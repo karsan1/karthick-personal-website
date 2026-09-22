@@ -360,7 +360,7 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   {
     progress: 0.24,
     position: new Vector3(-3.1, 6.6, -16.0),
-    target: new Vector3(-2.2, 0.7, -0.6),
+    target: new Vector3(-0.7, 0.7, -0.6),
     fov: 30,
     transition: "soft-cut",
   },
@@ -368,7 +368,7 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   {
     progress: 0.46,
     position: new Vector3(-3.1, 6.6, -16.0),
-    target: new Vector3(-2.2, 0.7, -0.6),
+    target: new Vector3(-0.7, 0.7, -0.6),
     fov: 30,
   },
   // ── Research (0.50): sideline shift toward umpire chair (+X) ──
