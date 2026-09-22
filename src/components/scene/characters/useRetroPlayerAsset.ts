@@ -1,6 +1,13 @@
 import { useGLTF } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
-import { MeshBasicMaterial, type AnimationClip, type Group, type Mesh, type Object3D } from "three";
+import {
+  DoubleSide,
+  MeshBasicMaterial,
+  type AnimationClip,
+  type Group,
+  type Mesh,
+  type Object3D,
+} from "three";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
 import { CHARACTER_ASSETS, CHARACTER_NODE_CONTRACT, type CharacterSide } from "./characterAssetContract";
 
@@ -20,17 +27,17 @@ const PLAYER_PALETTES = {
     hair: "#2b211d",
     shoes: "#f0ebdc",
     racket: "#713a44",
-    strings: "#e8dcc3",
+    strings: "#f6edcf",
     accent: "#70455e",
   },
   b: {
-    kit: "#dedfd4",
+    kit: "#e3e3d8",
     skin: "#a66c4f",
     hair: "#211e1b",
-    shoes: "#eee9dc",
-    racket: "#465e8d",
-    strings: "#e9dec7",
-    accent: "#465e8d",
+    shoes: "#f2ede0",
+    racket: "#405d8c",
+    strings: "#f7edcf",
+    accent: "#405d8c",
   },
 } as const satisfies Record<CharacterSide, Record<MaterialRole, string>>;
 
@@ -46,13 +53,9 @@ function materialRole(name: string): MaterialRole {
 }
 
 /**
- * The v5 players intentionally use unlit palette materials.
- *
- * The authored Blockbench cubes are triangulated in GLB. Flat Lambert shading
- * can expose the triangle diagonal on otherwise planar box faces, producing an
- * "origami/paper shard" look. MeshBasicMaterial keeps the characters visually
- * closer to a 16-bit / early-console sports sprite while the modeled silhouette
- * and projected court shadow provide depth.
+ * V6 characters use fully opaque, double-sided, fog-independent palette
+ * materials. The far player must not fade into the scene fog or lose faces
+ * when viewed from the opposite baseline.
  */
 export function useRetroPlayerAsset(side: CharacterSide): RetroPlayerAsset {
   const { scene, animations } = useGLTF(CHARACTER_ASSETS[side], false, true);
@@ -74,7 +77,12 @@ export function useRetroPlayerAsset(side: CharacterSide): RetroPlayerAsset {
         new MeshBasicMaterial({
           color: palette[role],
           toneMapped: false,
-          fog: true,
+          fog: false,
+          side: DoubleSide,
+          transparent: false,
+          opacity: 1,
+          depthTest: true,
+          depthWrite: true,
         }),
       ]),
     ) as Record<MaterialRole, MeshBasicMaterial>;
@@ -85,6 +93,7 @@ export function useRetroPlayerAsset(side: CharacterSide): RetroPlayerAsset {
       mesh.material = materials[materialRole(mesh.name)];
       mesh.castShadow = true;
       mesh.receiveShadow = false;
+      mesh.frustumCulled = true;
     });
 
     instance.userData.phase19Materials = Object.values(materials);

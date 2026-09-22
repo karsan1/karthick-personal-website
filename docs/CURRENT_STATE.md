@@ -37,7 +37,7 @@ fallbacks only.
 
 ## Current objective
 
-- Complete the Phase 19 visual acceptance matrix using the verified v5
+- Complete the Phase 19 visual acceptance matrix using the verified v6
   Blockbench exports and measured production bounds.
 - Continue Phase 20 external release evidence without overstating local checks.
 - Continue with Phase 22 venue structure only after retaining the accepted Phase 21
@@ -352,15 +352,21 @@ fallbacks only.
   generous root-level About proxy, while hotspot hover moves only its marker rather
   than the animated character hierarchy.
 - Phase 19B has a compact left-docked desktop destination menu and a shorter,
-  scrollable mobile content sheet. The v5 `.bbmodel` sources and direct Blockbench
-  exports are canonical; both optimized production GLBs measure 1.763 world
-  units tall and pass the conservative bind-pose size guard. V5 replaces the
-  angular v4 anatomy/paddle racket with chunkier limbs and an open racket frame;
-  player-only MeshBasicMaterial removes the triangular Lambert face shading.
-  Desktop Hero, serve, B forehand, A backhand, About, tablet Hero, and mobile Hero
-  have been reviewed locally. An outgoing mobile Experience sheet can still cover
-  Player B during the rally, and reduced-motion v5 visual review remains outstanding;
-  Phase 19 visual acceptance is pending those checks.
+  scrollable mobile content sheet. The v6 `.bbmodel` sources and direct Blockbench
+  exports are canonical; both optimized production GLBs measure 1.622 world
+  units tall and pass the conservative bind-pose size guard. V6 has open racket
+  frames with three vertical and three horizontal strings; player-only opaque,
+  double-sided MeshBasicMaterial excludes fog while retaining court shadows.
+  Player roots and the About hotspot use the 6.45-unit behind-baseline station,
+  while the painted baselines remain at ±5.8 and legal bounce locations remain
+  unchanged. Desktop Hero, serve, B forehand, A backhand, mobile Hero, and
+  reduced-motion Hero have been reviewed locally. The Hero and reduced-motion
+  cameras were pulled back to keep Player A's feet inside the frame. B's
+  forehand looks near the ball at contact, but serve
+  and A backhand still show a visible ball-to-racket gap at the application
+  camera. An outgoing mobile Experience sheet can cover Player B during the
+  rally. Phase 19 visual acceptance is pending corrections and a complete
+  tablet/mobile contact review.
 - Phase 20 local static hardening and documentation are in progress. Preview,
   cross-browser/real-device, production performance, and rollback evidence remain
   external release gates and are not implied by passing local checks.

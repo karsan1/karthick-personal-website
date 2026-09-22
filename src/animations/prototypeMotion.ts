@@ -43,7 +43,8 @@ export const COURT_DIMENSIONS = {
   width: 8,
   length: 12,
   netHeight: 1.05,
-  playerBaselineZ: 5.15,
+  markedBaselineZ: 5.8,
+  playerBaselineZ: 6.45,
 } as const;
 
 export const PROTOTYPE_LABELS = {
@@ -205,6 +206,8 @@ export const CHARACTER_NARRATIVE_BEATS: readonly CharacterMotionBeat[] = [
 ] as const;
 
 const ballAtRest = new Vector3(0, 1.25, -COURT_DIMENSIONS.playerBaselineZ);
+const PLAYER_CONTACT_Z = COURT_DIMENSIONS.playerBaselineZ - 0.25;
+const PLAYER_APPROACH_Z = COURT_DIMENSIONS.playerBaselineZ - 0.45;
 
 /**
  * Discrete game states intentionally share the normalized master range used by
@@ -232,9 +235,9 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     end: PROTOTYPE_LABELS.serveContact,
     curve: new CubicBezierCurve3(
       ballAtRest.clone(),
-      new Vector3(0, 2.5, -5.15),
-      new Vector3(0, 3.25, -5.15),
-      new Vector3(0, 2.25, -5.15),
+      new Vector3(0, 2.5, -PLAYER_CONTACT_Z),
+      new Vector3(0, 3.25, -PLAYER_CONTACT_Z),
+      new Vector3(0, 2.25, -PLAYER_CONTACT_Z),
     ),
   },
   {
@@ -242,7 +245,7 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     start: PROTOTYPE_LABELS.serveContact,
     end: PROTOTYPE_LABELS.firstBounce,
     curve: new CubicBezierCurve3(
-      new Vector3(0, 2.25, -5.15),
+      new Vector3(0, 2.25, -PLAYER_CONTACT_Z),
       new Vector3(-0.2, 2.6, -2.6),
       new Vector3(0.8, 1.7, 1.4),
       new Vector3(0.9, 0.2, 3.9),
@@ -255,9 +258,9 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     end: PROTOTYPE_LABELS.playerBReturn,
     curve: new CubicBezierCurve3(
       new Vector3(0.9, 0.2, 3.9),
-      new Vector3(1.15, 1.05, 4.3),
-      new Vector3(0.65, 1.55, 4.9),
-      new Vector3(0.15, 1.25, 5.05),
+      new Vector3(1.15, 1.05, PLAYER_APPROACH_Z - 1.6),
+      new Vector3(0.65, 1.55, PLAYER_APPROACH_Z - 0.7),
+      new Vector3(0.15, 1.25, PLAYER_CONTACT_Z),
     ),
   },
   {
@@ -265,7 +268,7 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     start: PROTOTYPE_LABELS.playerBReturn,
     end: PROTOTYPE_LABELS.secondBounce,
     curve: new CubicBezierCurve3(
-      new Vector3(0.15, 1.25, 5.05),
+      new Vector3(0.15, 1.25, PLAYER_CONTACT_Z),
       new Vector3(-1.2, 2.25, 2.25),
       new Vector3(-1.35, 1.3, -1.8),
       new Vector3(-1.1, 0.2, -3.9),
@@ -278,9 +281,9 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     end: PROTOTYPE_LABELS.playerAReturn,
     curve: new CubicBezierCurve3(
       new Vector3(-1.1, 0.2, -3.9),
-      new Vector3(-1.55, 1.1, -4.35),
-      new Vector3(-0.75, 1.65, -4.85),
-      new Vector3(-0.15, 1.3, -5.0),
+      new Vector3(-1.55, 1.1, -(PLAYER_APPROACH_Z - 1.6)),
+      new Vector3(-0.75, 1.65, -(PLAYER_APPROACH_Z - 0.7)),
+      new Vector3(-0.15, 1.3, -PLAYER_CONTACT_Z),
     ),
   },
   {
@@ -288,7 +291,7 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     start: PROTOTYPE_LABELS.playerAReturn,
     end: PROTOTYPE_LABELS.contentPause,
     curve: new CubicBezierCurve3(
-      new Vector3(-0.15, 1.3, -5.0),
+      new Vector3(-0.15, 1.3, -PLAYER_CONTACT_Z),
       new Vector3(1.3, 2.1, -2.4),
       new Vector3(1.6, 1.35, 1.3),
       new Vector3(1.1, 0.2, 3.45),
@@ -322,7 +325,7 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
  * chapter views are purely station-framing.
  *
  * Station world positions (from RetroEnvironment):
- *   Player A:       (−0.12, 0, −5.15)
+ *   Player A:       (−0.12, 0, −6.45)
  *   Bench:          (−5.15, 0.64, −2.7)
  *   Umpire chair:   (4.85, 1.15, 0.4)
  *   Scoreboard:     (0, 3.6, 7.7)
@@ -335,8 +338,8 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   // ── Hero (0.00–0.12): iconic elevated baseline center — full court, both players, grass, scoreboard ──
   {
     progress: 0,
-    position: new Vector3(0.3, 7.1, -17.0),
-    target: new Vector3(0, 0.8, 0.5),
+    position: new Vector3(0.3, 7.1, -18.0),
+    target: new Vector3(0, 0.6, 0),
     fov: 29,
   },
   // Rally tracking: serve toss (0.08) — slight pull toward toss height
@@ -472,8 +475,8 @@ const MOBILE_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
 
 /** Reduced motion: single calm composition, zero camera travel. */
 const REDUCED_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
-  { progress: 0, position: new Vector3(0, 6.8, -13.5), target: new Vector3(0, 0.8, 0.5), fov: 34 },
-  { progress: 1, position: new Vector3(0, 6.8, -13.5), target: new Vector3(0, 0.8, 0.5), fov: 34 },
+  { progress: 0, position: new Vector3(0, 7.1, -18.0), target: new Vector3(0, 0.6, 0), fov: 29 },
+  { progress: 1, position: new Vector3(0, 7.1, -18.0), target: new Vector3(0, 0.6, 0), fov: 29 },
 ];
 
 function clampProgress(progress: number) {

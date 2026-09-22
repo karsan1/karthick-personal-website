@@ -3,6 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { AnimationMixer, LoopOnce, type AnimationAction, type AnimationClip, type Group, type Object3D } from "three";
 import {
   CHARACTER_ANIMATION_FPS,
+  COURT_DIMENSIONS,
   readCharacterAnimationCadence,
   type CharacterAnimationCadence,
   sampleCharacterClipTime,
@@ -80,7 +81,7 @@ export function useCharacterAnimationController({
   const rootTransform = useRef<CharacterRootTransformSample>({
     positionX: side === "a" ? -0.12 : 0.14,
     positionY: 0,
-    positionZ: side === "a" ? -5.15 : 5.15,
+    positionZ: side === "a" ? -COURT_DIMENSIONS.playerBaselineZ : COURT_DIMENSIONS.playerBaselineZ,
     rotationY: side === "a" ? 0.12 : Math.PI + 0.12,
     rotationZ: 0,
     scaleY: 1,

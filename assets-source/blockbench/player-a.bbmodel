@@ -5,8 +5,8 @@
     "model_format": "free",
     "box_uv": true
   },
-  "name": "CHAR_PlayerA_Root_RetroTennis_V5",
-  "model_identifier": "char_playera_root_retro_tennis_v5",
+  "name": "CHAR_PlayerA_Root_RetroTennis_V6",
+  "model_identifier": "char_playera_root_retro_tennis_v6",
   "visible_box": [
     1,
     1,
@@ -28,21 +28,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.8,
-        13.4,
-        -1.7
+        -2.576,
+        12.328,
+        -1.564
       ],
       "to": [
-        2.8,
-        16.4,
-        1.7
+        2.576,
+        15.088,
+        1.564
       ],
       "autouv": 0,
       "color": 1,
       "origin": [
-        0,
-        15.2,
-        0
+        0.0,
+        13.984,
+        0.0
       ],
       "faces": {
         "north": {
@@ -112,21 +112,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -3.15,
-        16.0,
-        -1.9
+        -2.898,
+        14.72,
+        -1.748
       ],
       "to": [
-        3.15,
-        23.2,
-        1.9
+        2.898,
+        21.344,
+        1.748
       ],
       "autouv": 0,
       "color": 0,
       "origin": [
-        0,
-        19.0,
-        0
+        0.0,
+        17.48,
+        0.0
       ],
       "faces": {
         "north": {
@@ -196,21 +196,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.0,
-        23.0,
-        -1.75
+        -1.84,
+        21.16,
+        -1.61
       ],
       "to": [
-        2.0,
-        27.2,
-        1.75
+        1.84,
+        25.024,
+        1.61
       ],
       "autouv": 0,
       "color": 2,
       "origin": [
-        0,
-        24.6,
-        0
+        0.0,
+        22.632,
+        0.0
       ],
       "faces": {
         "north": {
@@ -280,21 +280,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.1,
-        25.5,
-        -1.85
+        -1.932,
+        23.46,
+        -1.702
       ],
       "to": [
-        2.1,
-        28.4,
-        1.85
+        1.932,
+        26.128,
+        1.702
       ],
       "autouv": 0,
       "color": 3,
       "origin": [
-        0,
-        26.6,
-        0
+        0.0,
+        24.472,
+        0.0
       ],
       "faces": {
         "north": {
@@ -364,21 +364,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -1.6,
-        24.7,
-        -2.15
+        -1.472,
+        22.724,
+        -1.978
       ],
       "to": [
-        1.6,
-        26.1,
-        -1.35
+        1.472,
+        24.012,
+        -1.242
       ],
       "autouv": 0,
       "color": 3,
       "origin": [
-        0,
-        25.2,
-        -1.7
+        0.0,
+        23.184,
+        -1.564
       ],
       "faces": {
         "north": {
@@ -448,21 +448,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -4.45,
-        16.0,
-        -1.0
+        -4.094,
+        14.72,
+        -0.92
       ],
       "to": [
-        -2.75,
-        20.7,
-        1.0
+        -2.53,
+        19.044,
+        0.92
       ],
       "autouv": 0,
       "color": 4,
       "origin": [
-        -3.0,
-        20.5,
-        0
+        -2.76,
+        18.86,
+        0.0
       ],
       "faces": {
         "north": {
@@ -532,21 +532,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -4.8,
-        12.4,
-        -0.9
+        -4.416,
+        11.408,
+        -0.828
       ],
       "to": [
-        -3.1,
-        16.2,
-        0.9
+        -2.852,
+        14.904,
+        0.828
       ],
       "autouv": 0,
       "color": 4,
       "origin": [
-        -3.75,
-        16.0,
-        0
+        -3.45,
+        14.72,
+        0.0
       ],
       "faces": {
         "north": {
@@ -616,21 +616,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        2.75,
-        16.0,
-        -1.0
+        2.53,
+        14.72,
+        -0.92
       ],
       "to": [
-        4.45,
-        20.7,
-        1.0
+        4.094,
+        19.044,
+        0.92
       ],
       "autouv": 0,
       "color": 4,
       "origin": [
-        3.0,
-        20.5,
-        0
+        2.76,
+        18.86,
+        0.0
       ],
       "faces": {
         "north": {
@@ -700,21 +700,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        3.1,
-        12.4,
-        -0.9
+        2.852,
+        11.408,
+        -0.828
       ],
       "to": [
-        4.8,
-        16.2,
-        0.9
+        4.416,
+        14.904,
+        0.828
       ],
       "autouv": 0,
       "color": 4,
       "origin": [
-        3.75,
-        16.0,
-        0
+        3.45,
+        14.72,
+        0.0
       ],
       "faces": {
         "north": {
@@ -784,21 +784,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.35,
-        8.0,
-        -1.15
+        -2.162,
+        7.36,
+        -1.058
       ],
       "to": [
-        -0.35,
-        13.7,
-        1.15
+        -0.322,
+        12.604,
+        1.058
       ],
       "autouv": 0,
       "color": 1,
       "origin": [
-        -1.35,
-        13.5,
-        0
+        -1.242,
+        12.42,
+        0.0
       ],
       "faces": {
         "north": {
@@ -868,21 +868,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.2,
-        2.4,
-        -1.0
+        -2.024,
+        2.208,
+        -0.92
       ],
       "to": [
-        -0.5,
-        8.2,
-        1.0
+        -0.46,
+        7.544,
+        0.92
       ],
       "autouv": 0,
       "color": 4,
       "origin": [
-        -1.35,
-        8.0,
-        0
+        -1.242,
+        7.36,
+        0.0
       ],
       "faces": {
         "north": {
@@ -952,21 +952,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.55,
-        0.2,
-        -2.0
+        -2.346,
+        0.184,
+        -1.84
       ],
       "to": [
-        -0.2,
-        2.2,
-        1.45
+        -0.184,
+        2.024,
+        1.334
       ],
       "autouv": 0,
       "color": 5,
       "origin": [
-        -1.35,
-        1.5,
-        -0.2
+        -1.242,
+        1.38,
+        -0.184
       ],
       "faces": {
         "north": {
@@ -1036,21 +1036,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        0.35,
-        8.0,
-        -1.15
+        0.322,
+        7.36,
+        -1.058
       ],
       "to": [
-        2.35,
-        13.7,
-        1.15
+        2.162,
+        12.604,
+        1.058
       ],
       "autouv": 0,
       "color": 1,
       "origin": [
-        1.35,
-        13.5,
-        0
+        1.242,
+        12.42,
+        0.0
       ],
       "faces": {
         "north": {
@@ -1120,21 +1120,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        0.5,
-        2.4,
-        -1.0
+        0.46,
+        2.208,
+        -0.92
       ],
       "to": [
-        2.2,
-        8.2,
-        1.0
+        2.024,
+        7.544,
+        0.92
       ],
       "autouv": 0,
       "color": 4,
       "origin": [
-        1.35,
-        8.0,
-        0
+        1.242,
+        7.36,
+        0.0
       ],
       "faces": {
         "north": {
@@ -1204,21 +1204,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        0.2,
-        0.2,
-        -2.0
+        0.184,
+        0.184,
+        -1.84
       ],
       "to": [
-        2.55,
-        2.2,
-        1.45
+        2.346,
+        2.024,
+        1.334
       ],
       "autouv": 0,
       "color": 5,
       "origin": [
-        1.35,
-        1.5,
-        -0.2
+        1.242,
+        1.38,
+        -0.184
       ],
       "faces": {
         "north": {
@@ -1288,21 +1288,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -3.18,
-        18.0,
-        -1.98
+        -2.9256,
+        16.56,
+        -1.8216
       ],
       "to": [
-        3.18,
-        18.65,
-        -1.75
+        2.9256,
+        17.158,
+        -1.61
       ],
       "autouv": 0,
       "color": 8,
       "origin": [
-        0,
-        18.3,
-        -1.85
+        0.0,
+        16.836,
+        -1.702
       ],
       "faces": {
         "north": {
@@ -1363,510 +1363,6 @@
       "uuid": "d266063b-1016-4126-8bf4-3f1ee4e74d24"
     },
     {
-      "name": "MESH_Racket_Handle",
-      "box_uv": true,
-      "rescale": false,
-      "locked": false,
-      "light_emission": 0,
-      "render_order": "default",
-      "allow_mirror_modeling": true,
-      "type": "cube",
-      "from": [
-        -4.55,
-        9.1,
-        -0.28
-      ],
-      "to": [
-        -4.0,
-        13.4,
-        0.28
-      ],
-      "autouv": 0,
-      "color": 6,
-      "origin": [
-        -4.25,
-        12.9,
-        0
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        }
-      },
-      "uuid": "e3c18692-8973-4c43-bdad-959d04e4d3ed"
-    },
-    {
-      "name": "MESH_Racket_FrameTop",
-      "box_uv": true,
-      "rescale": false,
-      "locked": false,
-      "light_emission": 0,
-      "render_order": "default",
-      "allow_mirror_modeling": true,
-      "type": "cube",
-      "from": [
-        -6.75,
-        16.8,
-        -0.28
-      ],
-      "to": [
-        -2.2,
-        17.35,
-        0.28
-      ],
-      "autouv": 0,
-      "color": 6,
-      "origin": [
-        -4.45,
-        17.0,
-        0
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        }
-      },
-      "uuid": "cada2bf3-30dd-412b-adfe-9db0a21eb6ee"
-    },
-    {
-      "name": "MESH_Racket_FrameBottom",
-      "box_uv": true,
-      "rescale": false,
-      "locked": false,
-      "light_emission": 0,
-      "render_order": "default",
-      "allow_mirror_modeling": true,
-      "type": "cube",
-      "from": [
-        -6.75,
-        13.4,
-        -0.28
-      ],
-      "to": [
-        -2.2,
-        13.95,
-        0.28
-      ],
-      "autouv": 0,
-      "color": 6,
-      "origin": [
-        -4.45,
-        13.7,
-        0
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        }
-      },
-      "uuid": "a18d6a72-e780-424c-8bb2-b88b58cdbcac"
-    },
-    {
-      "name": "MESH_Racket_FrameLeft",
-      "box_uv": true,
-      "rescale": false,
-      "locked": false,
-      "light_emission": 0,
-      "render_order": "default",
-      "allow_mirror_modeling": true,
-      "type": "cube",
-      "from": [
-        -6.75,
-        13.85,
-        -0.28
-      ],
-      "to": [
-        -6.2,
-        16.9,
-        0.28
-      ],
-      "autouv": 0,
-      "color": 6,
-      "origin": [
-        -6.45,
-        15.4,
-        0
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        }
-      },
-      "uuid": "54fa06c9-1745-4c9d-ab3d-af0dfaebc6b5"
-    },
-    {
-      "name": "MESH_Racket_FrameRight",
-      "box_uv": true,
-      "rescale": false,
-      "locked": false,
-      "light_emission": 0,
-      "render_order": "default",
-      "allow_mirror_modeling": true,
-      "type": "cube",
-      "from": [
-        -2.75,
-        13.85,
-        -0.28
-      ],
-      "to": [
-        -2.2,
-        16.9,
-        0.28
-      ],
-      "autouv": 0,
-      "color": 6,
-      "origin": [
-        -2.45,
-        15.4,
-        0
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        }
-      },
-      "uuid": "8c4cce11-4bae-46e1-8c5d-7fcf3ab61fd9"
-    },
-    {
-      "name": "MESH_Racket_Strings",
-      "box_uv": true,
-      "rescale": false,
-      "locked": false,
-      "light_emission": 0,
-      "render_order": "default",
-      "allow_mirror_modeling": true,
-      "type": "cube",
-      "from": [
-        -6.15,
-        14.05,
-        -0.08
-      ],
-      "to": [
-        -2.8,
-        16.65,
-        0.08
-      ],
-      "autouv": 0,
-      "color": 7,
-      "origin": [
-        -4.45,
-        15.35,
-        0
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            4,
-            4
-          ],
-          "texture": null
-        }
-      },
-      "uuid": "ace85dc6-aec7-444e-98da-5bdd0cae593e"
-    },
-    {
       "name": "MESH_AccentBand_Shorts",
       "box_uv": true,
       "rescale": false,
@@ -1876,21 +1372,21 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.82,
-        15.5,
-        -1.78
+        -2.5944,
+        14.26,
+        -1.6376
       ],
       "to": [
-        2.82,
-        16.0,
-        -1.55
+        2.5944,
+        14.72,
+        -1.426
       ],
       "autouv": 0,
       "color": 8,
       "origin": [
-        0,
-        15.75,
-        -1.65
+        0.0,
+        14.49,
+        -1.518
       ],
       "faces": {
         "north": {
@@ -1949,15 +1445,1107 @@
         }
       },
       "uuid": "2cc10454-0407-40ea-846a-8886fc6c5ca8"
+    },
+    {
+      "name": "MESH_Racket_Handle",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -4.72,
+        11.55,
+        -0.24
+      ],
+      "to": [
+        -4.18,
+        15.15,
+        0.24
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -4.45,
+        14.7,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "64e5196e-c2bd-452c-8a08-d34c25e3abf9"
+    },
+    {
+      "name": "MESH_Racket_FrameTop",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -6.25,
+        19.55,
+        -0.28
+      ],
+      "to": [
+        -2.55,
+        20.1,
+        0.28
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -4.4,
+        19.8,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "b4d0f97d-363b-4e6d-985a-9221c815c679"
+    },
+    {
+      "name": "MESH_Racket_FrameBottom",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -6.25,
+        14.7,
+        -0.28
+      ],
+      "to": [
+        -2.55,
+        15.25,
+        0.28
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -4.4,
+        15.0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "e8f79eb9-fb59-495b-8a93-ac5ab9d4592b"
+    },
+    {
+      "name": "MESH_Racket_FrameLeft",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -6.4,
+        15.15,
+        -0.28
+      ],
+      "to": [
+        -5.85,
+        19.65,
+        0.28
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -6.1,
+        17.4,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "bca87836-c36c-4471-84ca-115f0797af18"
+    },
+    {
+      "name": "MESH_Racket_FrameRight",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -2.95,
+        15.15,
+        -0.28
+      ],
+      "to": [
+        -2.4,
+        19.65,
+        0.28
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -2.7,
+        17.4,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "13bcb750-5de7-4c8b-b378-561ce24e48e1"
+    },
+    {
+      "name": "MESH_Racket_FrameThroatLeft",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -5.0,
+        14.25,
+        -0.24
+      ],
+      "to": [
+        -4.55,
+        15.35,
+        0.24
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -4.78,
+        14.8,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "d6b7d921-4820-4875-9adc-f89d21f6cbf1"
+    },
+    {
+      "name": "MESH_Racket_FrameThroatRight",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -4.2,
+        14.25,
+        -0.24
+      ],
+      "to": [
+        -3.75,
+        15.35,
+        0.24
+      ],
+      "autouv": 0,
+      "color": 6,
+      "origin": [
+        -3.98,
+        14.8,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "c3dff3ec-8aff-47e7-9452-d3fd9f6c35c3"
+    },
+    {
+      "name": "MESH_Racket_Strings_V1",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -5.55,
+        15.35,
+        -0.07
+      ],
+      "to": [
+        -5.41,
+        19.45,
+        0.07
+      ],
+      "autouv": 0,
+      "color": 7,
+      "origin": [
+        -5.48,
+        17.4,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "47cda2b4-115f-4c8a-ab60-98ccf80c03ce"
+    },
+    {
+      "name": "MESH_Racket_Strings_V2",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -4.62,
+        15.35,
+        -0.07
+      ],
+      "to": [
+        -4.48,
+        19.45,
+        0.07
+      ],
+      "autouv": 0,
+      "color": 7,
+      "origin": [
+        -4.55,
+        17.4,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "13e21f51-77eb-4de6-8a3c-21a704a32574"
+    },
+    {
+      "name": "MESH_Racket_Strings_V3",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -3.69,
+        15.35,
+        -0.07
+      ],
+      "to": [
+        -3.55,
+        19.45,
+        0.07
+      ],
+      "autouv": 0,
+      "color": 7,
+      "origin": [
+        -3.62,
+        17.4,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "3583be0c-dc21-402c-8e92-716cd244f9b9"
+    },
+    {
+      "name": "MESH_Racket_Strings_H1",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -5.75,
+        16.15,
+        -0.07
+      ],
+      "to": [
+        -3.05,
+        16.29,
+        0.07
+      ],
+      "autouv": 0,
+      "color": 7,
+      "origin": [
+        -4.4,
+        16.22,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "4290264a-54c2-42d6-8b18-211d80dc511b"
+    },
+    {
+      "name": "MESH_Racket_Strings_H2",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -5.75,
+        17.35,
+        -0.07
+      ],
+      "to": [
+        -3.05,
+        17.49,
+        0.07
+      ],
+      "autouv": 0,
+      "color": 7,
+      "origin": [
+        -4.4,
+        17.42,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "a419a876-6429-4e1c-9db1-252710b6c765"
+    },
+    {
+      "name": "MESH_Racket_Strings_H3",
+      "box_uv": true,
+      "rescale": false,
+      "locked": false,
+      "light_emission": 0,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "type": "cube",
+      "from": [
+        -5.75,
+        18.55,
+        -0.07
+      ],
+      "to": [
+        -3.05,
+        18.69,
+        0.07
+      ],
+      "autouv": 0,
+      "color": 7,
+      "origin": [
+        -4.4,
+        18.62,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": null
+        }
+      },
+      "uuid": "b5f30e1a-f9d5-43a4-9ff4-fabd70c09d55"
     }
   ],
   "outliner": [
     {
       "name": "CHAR_PlayerA_Root",
       "origin": [
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0
       ],
       "color": 0,
       "uuid": "be343995-f74e-46e3-a567-f092909c9893",
@@ -1968,9 +2556,9 @@
         {
           "name": "BONE_Hips",
           "origin": [
-            0,
-            15.2,
-            0
+            0.0,
+            13.984,
+            0.0
           ],
           "color": 1,
           "uuid": "06ada1f0-8cb3-46fb-a1f6-16b8ed525178",
@@ -1983,9 +2571,9 @@
             {
               "name": "BONE_Spine",
               "origin": [
-                0,
-                16.2,
-                0
+                0.0,
+                14.904,
+                0.0
               ],
               "color": 0,
               "uuid": "479a78e0-f750-4202-9335-58f22fa7b2f2",
@@ -1998,9 +2586,9 @@
                 {
                   "name": "BONE_Head",
                   "origin": [
-                    0,
-                    23.2,
-                    0
+                    0.0,
+                    21.344,
+                    0.0
                   ],
                   "color": 3,
                   "uuid": "52bbdd71-1ebb-4e28-9b9c-16f7078853f8",
@@ -2016,9 +2604,9 @@
                 {
                   "name": "BONE_Arm_L_Upper",
                   "origin": [
-                    -3.0,
-                    20.5,
-                    0
+                    -2.76,
+                    18.86,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "a7edfd37-ae74-4611-afea-48f2c150a709",
@@ -2030,9 +2618,9 @@
                     {
                       "name": "BONE_Arm_L_Lower",
                       "origin": [
-                        -3.75,
-                        16.0,
-                        0
+                        -3.45,
+                        14.72,
+                        0.0
                       ],
                       "color": 4,
                       "uuid": "6b253e27-66fb-400c-9ff0-f4db306b62dc",
@@ -2044,8 +2632,8 @@
                         {
                           "name": "SOCKET_Racket",
                           "origin": [
-                            -4.05,
-                            13.2,
+                            -4.35,
+                            14.6,
                             0
                           ],
                           "color": 6,
@@ -2054,12 +2642,19 @@
                           "locked": false,
                           "visibility": true,
                           "children": [
-                            "e3c18692-8973-4c43-bdad-959d04e4d3ed",
-                            "cada2bf3-30dd-412b-adfe-9db0a21eb6ee",
-                            "a18d6a72-e780-424c-8bb2-b88b58cdbcac",
-                            "54fa06c9-1745-4c9d-ab3d-af0dfaebc6b5",
-                            "8c4cce11-4bae-46e1-8c5d-7fcf3ab61fd9",
-                            "ace85dc6-aec7-444e-98da-5bdd0cae593e"
+                            "64e5196e-c2bd-452c-8a08-d34c25e3abf9",
+                            "b4d0f97d-363b-4e6d-985a-9221c815c679",
+                            "e8f79eb9-fb59-495b-8a93-ac5ab9d4592b",
+                            "bca87836-c36c-4471-84ca-115f0797af18",
+                            "13bcb750-5de7-4c8b-b378-561ce24e48e1",
+                            "d6b7d921-4820-4875-9adc-f89d21f6cbf1",
+                            "c3dff3ec-8aff-47e7-9452-d3fd9f6c35c3",
+                            "47cda2b4-115f-4c8a-ab60-98ccf80c03ce",
+                            "13e21f51-77eb-4de6-8a3c-21a704a32574",
+                            "3583be0c-dc21-402c-8e92-716cd244f9b9",
+                            "4290264a-54c2-42d6-8b18-211d80dc511b",
+                            "a419a876-6429-4e1c-9db1-252710b6c765",
+                            "b5f30e1a-f9d5-43a4-9ff4-fabd70c09d55"
                           ]
                         }
                       ]
@@ -2069,9 +2664,9 @@
                 {
                   "name": "BONE_Arm_R_Upper",
                   "origin": [
-                    3.0,
-                    20.5,
-                    0
+                    2.76,
+                    18.86,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "27f3df06-9efe-48b2-9664-310b4b8749e0",
@@ -2083,9 +2678,9 @@
                     {
                       "name": "BONE_Arm_R_Lower",
                       "origin": [
-                        3.75,
-                        16.0,
-                        0
+                        3.45,
+                        14.72,
+                        0.0
                       ],
                       "color": 4,
                       "uuid": "1b671b52-0120-45b6-a1a5-f72a4f804669",
@@ -2103,9 +2698,9 @@
             {
               "name": "BONE_Leg_L_Upper",
               "origin": [
-                -1.35,
-                13.5,
-                0
+                -1.242,
+                12.42,
+                0.0
               ],
               "color": 1,
               "uuid": "99109061-9661-44f4-a7ce-fd3e91e1b183",
@@ -2117,9 +2712,9 @@
                 {
                   "name": "BONE_Leg_L_Lower",
                   "origin": [
-                    -1.35,
-                    8.0,
-                    0
+                    -1.242,
+                    7.36,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "a8ca75d0-c2e8-4c86-9bd9-b05b6068f8d3",
@@ -2136,9 +2731,9 @@
             {
               "name": "BONE_Leg_R_Upper",
               "origin": [
-                1.35,
-                13.5,
-                0
+                1.242,
+                12.42,
+                0.0
               ],
               "color": 1,
               "uuid": "74d20699-2b19-4b76-8554-ac909277aac8",
@@ -2150,9 +2745,9 @@
                 {
                   "name": "BONE_Leg_R_Lower",
                   "origin": [
-                    1.35,
-                    8.0,
-                    0
+                    1.242,
+                    7.36,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "ad046b26-0b3c-42d1-9d02-751f62b0be7d",
