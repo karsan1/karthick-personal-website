@@ -27,7 +27,7 @@ const PLAYER_PALETTES = {
     hair: "#2b211d",
     shoes: "#f0ebdc",
     racket: "#713a44",
-    strings: "#f6edcf",
+    strings: "#fff3cf",
     accent: "#70455e",
   },
   b: {
@@ -36,27 +36,22 @@ const PLAYER_PALETTES = {
     hair: "#211e1b",
     shoes: "#f2ede0",
     racket: "#405d8c",
-    strings: "#f7edcf",
+    strings: "#fff3cf",
     accent: "#405d8c",
   },
 } as const satisfies Record<CharacterSide, Record<MaterialRole, string>>;
 
 function materialRole(name: string): MaterialRole {
-  if (/Hair/.test(name)) return "hair";
-  if (/Shoe/.test(name)) return "shoes";
-  if (/Racket_Strings/.test(name)) return "strings";
-  if (/Racket_(Frame.*|Handle)/.test(name)) return "racket";
-  if (/Head|Arm|Leg_.*_Lower/.test(name)) return "skin";
-  if (/Torso|Shorts|Leg_.*_Upper/.test(name)) return "kit";
   if (/AccentBand/.test(name)) return "accent";
+  if (/Hair/.test(name)) return "hair";
+  if (/Shoe|Sock/.test(name)) return "shoes";
+  if (/Racket_Strings/.test(name)) return "strings";
+  if (/Racket_(Frame.*|Handle|Throat.*)/.test(name)) return "racket";
+  if (/Head|Arm|Leg_.*_(Upper|Lower)/.test(name)) return "skin";
+  if (/Torso|Shorts|Sleeve/.test(name)) return "kit";
   return "accent";
 }
 
-/**
- * V6 characters use fully opaque, double-sided, fog-independent palette
- * materials. The far player must not fade into the scene fog or lose faces
- * when viewed from the opposite baseline.
- */
 export function useRetroPlayerAsset(side: CharacterSide): RetroPlayerAsset {
   const { scene, animations } = useGLTF(CHARACTER_ASSETS[side], false, true);
 

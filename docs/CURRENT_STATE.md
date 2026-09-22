@@ -37,7 +37,7 @@ fallbacks only.
 
 ## Current objective
 
-- Complete the Phase 19 visual acceptance matrix using the verified v6
+- Complete the Phase 19 visual acceptance matrix using the V7 direct
   Blockbench exports and measured production bounds.
 - Continue Phase 20 external release evidence without overstating local checks.
 - Continue with Phase 22 venue structure only after retaining the accepted Phase 21
@@ -352,8 +352,8 @@ fallbacks only.
   generous root-level About proxy, while hotspot hover moves only its marker rather
   than the animated character hierarchy.
 - Phase 19B has a compact left-docked desktop destination menu and a shorter,
-  scrollable mobile content sheet. The v6 `.bbmodel` sources and direct Blockbench
-  exports are canonical; both optimized production GLBs measure 1.622 world
+  scrollable mobile content sheet. The former v6 `.bbmodel` sources and direct Blockbench
+  exports were canonical at that milestone; both optimized production GLBs measured 1.622 world
   units tall and pass the conservative bind-pose size guard. V6 has open racket
   frames with three vertical and three horizontal strings; player-only opaque,
   double-sided MeshBasicMaterial excludes fog while retaining court shadows.
@@ -367,6 +367,17 @@ fallbacks only.
   camera. An outgoing mobile Experience sheet can cover Player B during the
   rally. Phase 19 visual acceptance is pending corrections and a complete
   tablet/mobile contact review.
+- Phase 19C V7 sources and direct Blockbench exports are installed under the
+  canonical character filenames. Both optimized players retain the V6 height
+  of 1.622 world units, the 6.45 player station, and the 5.8 marked baseline.
+  The V7 runtime palette maps sleeves, skin-colored thighs, socks, racket
+  throats, and string bars; the Hero resting ball is staged beside Player A.
+  Reviewed-character build, asset validation, bounds inspection, lint,
+  typecheck, and production build passed. Local production-browser review
+  covered desktop Hero, serve toss/contact, B return, A backhand, and mobile
+  Hero with no fallback actor or browser errors. The contact frames still show
+  visible ball-to-racket separation, and a V7 reduced-motion screenshot was
+  not captured; Phase 19 visual acceptance remains pending.
 - Phase 20 local static hardening and documentation are in progress. Preview,
   cross-browser/real-device, production performance, and rollback evidence remain
   external release gates and are not implied by passing local checks.

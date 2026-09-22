@@ -205,7 +205,11 @@ export const CHARACTER_NARRATIVE_BEATS: readonly CharacterMotionBeat[] = [
   },
 ] as const;
 
-const ballAtRest = new Vector3(0, 1.25, -COURT_DIMENSIONS.playerBaselineZ);
+const ballAtRest = new Vector3(
+  0.42,
+  0.92,
+  -COURT_DIMENSIONS.playerBaselineZ + 0.08,
+);
 const PLAYER_CONTACT_Z = COURT_DIMENSIONS.playerBaselineZ - 0.25;
 const PLAYER_APPROACH_Z = COURT_DIMENSIONS.playerBaselineZ - 0.45;
 
@@ -235,7 +239,7 @@ export const PROTOTYPE_SHOTS: readonly Shot[] = [
     end: PROTOTYPE_LABELS.serveContact,
     curve: new CubicBezierCurve3(
       ballAtRest.clone(),
-      new Vector3(0, 2.5, -PLAYER_CONTACT_Z),
+      new Vector3(0.24, 1.9, -PLAYER_CONTACT_Z),
       new Vector3(0, 3.25, -PLAYER_CONTACT_Z),
       new Vector3(0, 2.25, -PLAYER_CONTACT_Z),
     ),
