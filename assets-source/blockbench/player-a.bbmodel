@@ -5,8 +5,8 @@
     "model_format": "free",
     "box_uv": true
   },
-  "name": "CHAR_PlayerA_Root_RetroTennis_V3",
-  "model_identifier": "char_playera_root_retro_tennis_v3",
+  "name": "CHAR_PlayerA_Root_RetroTennis_V4",
+  "model_identifier": "char_playera_root_retro_tennis_v4",
   "visible_box": [
     1,
     1,
@@ -28,14 +28,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.3,
-        10.4,
-        -1.5
+        -2.99,
+        13.52,
+        -1.95
       ],
       "to": [
-        2.3,
-        12.6,
-        1.5
+        2.99,
+        16.38,
+        1.95
       ],
       "autouv": 0,
       "color": 1,
@@ -107,14 +107,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.6,
-        12.3,
-        -1.7
+        -3.38,
+        15.99,
+        -2.21
       ],
       "to": [
-        2.6,
-        18.4,
-        1.7
+        3.38,
+        23.92,
+        2.21
       ],
       "autouv": 0,
       "color": 0,
@@ -186,14 +186,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -1.85,
-        18.4,
-        -1.55
+        -2.405,
+        23.92,
+        -2.015
       ],
       "to": [
-        1.85,
-        21.9,
-        1.55
+        2.405,
+        28.47,
+        2.015
       ],
       "autouv": 0,
       "color": 2,
@@ -265,14 +265,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -1.95,
-        20.1,
-        -1.65
+        -2.535,
+        26.13,
+        -2.145
       ],
       "to": [
-        1.95,
-        22.3,
-        1.65
+        2.535,
+        28.99,
+        2.145
       ],
       "autouv": 0,
       "color": 3,
@@ -344,14 +344,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -1.4,
-        19.8,
-        -2.05
+        -1.82,
+        25.74,
+        -2.665
       ],
       "to": [
-        1.4,
-        20.9,
-        -1.2
+        1.82,
+        27.17,
+        -1.56
       ],
       "autouv": 0,
       "color": 3,
@@ -423,14 +423,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -4.0,
-        12.6,
-        -0.95
+        -5.2,
+        16.38,
+        -1.235
       ],
       "to": [
-        -2.4,
-        16.7,
-        0.95
+        -3.12,
+        21.71,
+        1.235
       ],
       "autouv": 0,
       "color": 4,
@@ -502,14 +502,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -4.7,
-        8.8,
-        -0.82
+        -6.11,
+        11.44,
+        -1.066
       ],
       "to": [
-        -3.1,
-        13.0,
-        0.82
+        -4.03,
+        16.9,
+        1.066
       ],
       "autouv": 0,
       "color": 4,
@@ -581,14 +581,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        2.4,
-        12.6,
-        -0.95
+        3.12,
+        16.38,
+        -1.235
       ],
       "to": [
-        4.0,
-        16.7,
-        0.95
+        5.2,
+        21.71,
+        1.235
       ],
       "autouv": 0,
       "color": 4,
@@ -660,14 +660,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        3.1,
-        8.8,
-        -0.82
+        4.03,
+        11.44,
+        -1.066
       ],
       "to": [
-        4.7,
-        13.0,
-        0.82
+        6.11,
+        16.9,
+        1.066
       ],
       "autouv": 0,
       "color": 4,
@@ -739,14 +739,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.0,
-        6.3,
-        -1.05
+        -2.6,
+        8.19,
+        -1.365
       ],
       "to": [
-        -0.25,
-        10.5,
-        1.05
+        -0.325,
+        13.65,
+        1.365
       ],
       "autouv": 0,
       "color": 1,
@@ -818,14 +818,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -1.95,
-        1.65,
-        -0.92
+        -2.535,
+        2.145,
+        -1.196
       ],
       "to": [
-        -0.25,
-        6.45,
-        0.92
+        -0.325,
+        8.385,
+        1.196
       ],
       "autouv": 0,
       "color": 4,
@@ -897,14 +897,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.25,
-        0.15,
-        -1.9
+        -2.925,
+        0.195,
+        -2.47
       ],
       "to": [
         0.0,
-        1.45,
-        1.35
+        1.885,
+        1.755
       ],
       "autouv": 0,
       "color": 5,
@@ -976,14 +976,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        0.25,
-        6.3,
-        -1.05
+        0.325,
+        8.19,
+        -1.365
       ],
       "to": [
-        2.0,
-        10.5,
-        1.05
+        2.6,
+        13.65,
+        1.365
       ],
       "autouv": 0,
       "color": 1,
@@ -1055,14 +1055,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        0.25,
-        1.65,
-        -0.92
+        0.325,
+        2.145,
+        -1.196
       ],
       "to": [
-        1.95,
-        6.45,
-        0.92
+        2.535,
+        8.385,
+        1.196
       ],
       "autouv": 0,
       "color": 4,
@@ -1135,13 +1135,13 @@
       "type": "cube",
       "from": [
         0.0,
-        0.15,
-        -1.9
+        0.195,
+        -2.47
       ],
       "to": [
-        2.25,
-        1.45,
-        1.35
+        2.925,
+        1.885,
+        1.755
       ],
       "autouv": 0,
       "color": 5,
@@ -1213,14 +1213,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -4.55,
-        5.9,
-        -0.24
+        -5.915,
+        7.67,
+        -0.312
       ],
       "to": [
-        -4.05,
-        9.15,
-        0.24
+        -5.265,
+        11.895,
+        0.312
       ],
       "autouv": 0,
       "color": 6,
@@ -1297,14 +1297,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -6.7,
-        8.2,
-        -0.24
+        -8.71,
+        10.66,
+        -0.312
       ],
       "to": [
-        -2.5,
-        12.9,
-        0.24
+        -3.25,
+        16.77,
+        0.312
       ],
       "autouv": 0,
       "color": 6,
@@ -1381,14 +1381,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -6.0,
-        8.95,
-        -0.1
+        -7.8,
+        11.635,
+        -0.13
       ],
       "to": [
-        -3.2,
-        12.15,
-        0.1
+        -4.16,
+        15.795,
+        0.13
       ],
       "autouv": 0,
       "color": 7,
@@ -1465,14 +1465,14 @@
       "allow_mirror_modeling": true,
       "type": "cube",
       "from": [
-        -2.65,
-        14.8,
-        -1.85
+        -3.445,
+        19.24,
+        -2.405
       ],
       "to": [
-        2.65,
-        15.35,
-        -1.55
+        3.445,
+        19.955,
+        -2.015
       ],
       "autouv": 0,
       "color": 8,
@@ -1539,9 +1539,9 @@
     {
       "name": "CHAR_PlayerA_Root",
       "origin": [
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0
       ],
       "color": 0,
       "uuid": "b8bb60a6-da47-42ff-9315-1b08a1bd7fb9",
@@ -1552,9 +1552,9 @@
         {
           "name": "BONE_Hips",
           "origin": [
-            0,
-            12,
-            0
+            0.0,
+            15.6,
+            0.0
           ],
           "color": 1,
           "uuid": "7c4ec47b-3c32-42ae-b1ab-de3f993df4b4",
@@ -1566,9 +1566,9 @@
             {
               "name": "BONE_Spine",
               "origin": [
-                0,
-                12.5,
-                0
+                0.0,
+                16.25,
+                0.0
               ],
               "color": 0,
               "uuid": "b0054ba0-8a11-45e8-977d-f7598ac084cf",
@@ -1581,9 +1581,9 @@
                 {
                   "name": "BONE_Head",
                   "origin": [
-                    0,
-                    18.6,
-                    0
+                    0.0,
+                    24.18,
+                    0.0
                   ],
                   "color": 3,
                   "uuid": "875113e8-ff79-489f-9680-57f5b9d54cda",
@@ -1599,9 +1599,9 @@
                 {
                   "name": "BONE_Arm_L_Upper",
                   "origin": [
-                    -2.6,
-                    16.1,
-                    0
+                    -3.38,
+                    20.93,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "8f69867d-e3b6-443d-9366-bf137d63f45e",
@@ -1613,9 +1613,9 @@
                     {
                       "name": "BONE_Arm_L_Lower",
                       "origin": [
-                        -3.85,
-                        12.75,
-                        0
+                        -5.005,
+                        16.575,
+                        0.0
                       ],
                       "color": 4,
                       "uuid": "ffc16ae6-a139-40b1-8f79-504d890ed379",
@@ -1627,9 +1627,9 @@
                         {
                           "name": "SOCKET_Racket",
                           "origin": [
-                            -4.1,
-                            9.0,
-                            0
+                            -5.33,
+                            11.7,
+                            0.0
                           ],
                           "color": 6,
                           "uuid": "b8bd1414-cdfe-4f41-8e2e-092b11a3cafc",
@@ -1649,9 +1649,9 @@
                 {
                   "name": "BONE_Arm_R_Upper",
                   "origin": [
-                    2.6,
-                    16.1,
-                    0
+                    3.38,
+                    20.93,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "9b0c0e0c-8363-4175-9f52-396dcb7a8b6f",
@@ -1663,9 +1663,9 @@
                     {
                       "name": "BONE_Arm_R_Lower",
                       "origin": [
-                        3.85,
-                        12.75,
-                        0
+                        5.005,
+                        16.575,
+                        0.0
                       ],
                       "color": 4,
                       "uuid": "a159c9e0-dc27-40c3-b9ef-34e286fdb476",
@@ -1683,9 +1683,9 @@
             {
               "name": "BONE_Leg_L_Upper",
               "origin": [
-                -1.1,
-                10.3,
-                0
+                -1.43,
+                13.39,
+                0.0
               ],
               "color": 1,
               "uuid": "391a0677-dd7a-468b-8f38-a9701fd2c9fd",
@@ -1697,9 +1697,9 @@
                 {
                   "name": "BONE_Leg_L_Lower",
                   "origin": [
-                    -1.1,
-                    6.2,
-                    0
+                    -1.43,
+                    8.06,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "66456812-0304-472e-9d80-1e0c9e2d3100",
@@ -1716,9 +1716,9 @@
             {
               "name": "BONE_Leg_R_Upper",
               "origin": [
-                1.1,
-                10.3,
-                0
+                1.43,
+                13.39,
+                0.0
               ],
               "color": 1,
               "uuid": "a4c46e9c-5de9-478b-ba62-6ae73e4410e7",
@@ -1730,9 +1730,9 @@
                 {
                   "name": "BONE_Leg_R_Lower",
                   "origin": [
-                    1.1,
-                    6.2,
-                    0
+                    1.43,
+                    8.06,
+                    0.0
                   ],
                   "color": 4,
                   "uuid": "16bc6f08-a44f-46e8-9de0-cca43bd0b9b1",
