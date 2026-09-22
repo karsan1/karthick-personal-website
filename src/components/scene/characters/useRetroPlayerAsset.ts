@@ -1,6 +1,6 @@
 import { useGLTF } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
-import { MeshStandardMaterial, type AnimationClip, type Group, type Mesh, type Object3D } from "three";
+import { MeshLambertMaterial, type AnimationClip, type Group, type Mesh, type Object3D } from "three";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
 import { CHARACTER_ASSETS, CHARACTER_NODE_CONTRACT, type CharacterSide } from "./characterAssetContract";
 
@@ -11,15 +11,22 @@ export type RetroPlayerAsset = {
   animations: AnimationClip[];
 };
 
-const PLAYER_PALETTES = {
-  a: { kit: "#f2ead8", skin: "#a96847", accent: "#74558d" },
-  b: { kit: "#7a2943", skin: "#875136", accent: "#d2a84b" },
-} as const satisfies Record<CharacterSide, Record<"kit" | "skin" | "accent", string>>;
+type MaterialRole = "kit" | "skin" | "hair" | "shoes" | "racket" | "strings" | "accent";
 
-function materialRole(name: string) {
-  if (/Head|Arm|Leg_.*_Lower/.test(name)) return "skin" as const;
-  if (/Torso|ShirtSleeve|Shorts|Leg_.*_Upper/.test(name)) return "kit" as const;
-  return "accent" as const;
+const PLAYER_PALETTES = {
+  a: { kit: "#eee6d4", skin: "#b87958", hair: "#30231e", shoes: "#d9d3c2", racket: "#783d45", strings: "#f1e5ca", accent: "#70455e" },
+  b: { kit: "#742d43", skin: "#a66c4f", hair: "#211e1b", shoes: "#c9c4b5", racket: "#b4965b", strings: "#eee2c9", accent: "#d1ad73" },
+} as const satisfies Record<CharacterSide, Record<MaterialRole, string>>;
+
+function materialRole(name: string): MaterialRole {
+  if (/Hair/.test(name)) return "hair";
+  if (/Shoe/.test(name)) return "shoes";
+  if (/Racket_Strings/.test(name)) return "strings";
+  if (/Racket_(Frame|Handle)/.test(name)) return "racket";
+  if (/Head|Arm|Leg_.*_Lower/.test(name)) return "skin";
+  if (/Torso|ShirtSleeve|Shorts|Leg_.*_Upper/.test(name)) return "kit";
+  if (/AccentBand/.test(name)) return "accent";
+  return "accent";
 }
 
 /**
@@ -36,11 +43,12 @@ export function useRetroPlayerAsset(side: CharacterSide): RetroPlayerAsset {
     const racketSocket = instance.getObjectByName(contract.racketSocket);
     if (!root || !racketSocket) throw new Error(`Invalid ${side} character GLB: required root/socket nodes are missing.`);
     const palette = PLAYER_PALETTES[side];
-    const materials = {
-      kit: new MeshStandardMaterial({ color: palette.kit, flatShading: true, roughness: 0.9, metalness: 0 }),
-      skin: new MeshStandardMaterial({ color: palette.skin, flatShading: true, roughness: 0.92, metalness: 0 }),
-      accent: new MeshStandardMaterial({ color: palette.accent, flatShading: true, roughness: 0.86, metalness: 0 }),
-    };
+    const materials = Object.fromEntries(
+      (Object.keys(palette) as MaterialRole[]).map((role) => [
+        role,
+        new MeshLambertMaterial({ color: palette[role], flatShading: true }),
+      ]),
+    ) as Record<MaterialRole, MeshLambertMaterial>;
     instance.traverse((object) => {
       if ((object as Mesh).isMesh) (object as Mesh).material = materials[materialRole(object.name)];
     });
@@ -49,7 +57,7 @@ export function useRetroPlayerAsset(side: CharacterSide): RetroPlayerAsset {
   }, [animations, scene, side]);
 
   useEffect(() => () => {
-    for (const material of asset.scene.userData.phase19Materials as MeshStandardMaterial[]) material.dispose();
+    for (const material of asset.scene.userData.phase19Materials as MeshLambertMaterial[]) material.dispose();
   }, [asset.scene]);
 
   return asset;
