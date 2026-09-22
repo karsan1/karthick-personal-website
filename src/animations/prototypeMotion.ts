@@ -335,55 +335,55 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   // ── Hero (0.00–0.12): iconic elevated baseline center — full court, both players, grass, scoreboard ──
   {
     progress: 0,
-    position: new Vector3(0.3, 6.3, -13.2),
+    position: new Vector3(0.3, 7.1, -17.0),
     target: new Vector3(0, 0.8, 0.5),
-    fov: 35,
+    fov: 29,
   },
   // Rally tracking: serve toss (0.08) — slight pull toward toss height
   {
     progress: PROTOTYPE_LABELS.serveToss,
-    position: new Vector3(0.2, 6.35, -13.0),
+    position: new Vector3(0.2, 7.15, -16.8),
     target: new Vector3(0, 1.6, -2.8),
-    fov: 35,
+    fov: 29,
   },
   // ── About (0.12): shift closer/lower toward Player A, preserve court context ──
   // Rally events serveContact (0.14) and firstBounce (0.24) interpolate naturally
   // through this and the next keyframe.
   {
     progress: 0.12,
-    position: new Vector3(-0.6, 5.8, -12.0),
+    position: new Vector3(-0.6, 6.6, -16.0),
     target: new Vector3(-0.3, 0.9, -2.2),
-    fov: 35,
+    fov: 29,
     transition: "soft-cut",
   },
   // ── Experience (0.24): lateral shift toward bench side (−X), court visible ──
   {
     progress: 0.24,
-    position: new Vector3(-2.8, 5.7, -12.0),
-    target: new Vector3(-1.5, 0.7, -0.6),
-    fov: 36,
+    position: new Vector3(-3.1, 6.6, -16.0),
+    target: new Vector3(-2.2, 0.7, -0.6),
+    fov: 30,
     transition: "soft-cut",
   },
   // Hold through rally conclusion
   {
     progress: 0.46,
-    position: new Vector3(-2.8, 5.7, -12.0),
-    target: new Vector3(-1.5, 0.7, -0.6),
-    fov: 36,
+    position: new Vector3(-3.1, 6.6, -16.0),
+    target: new Vector3(-2.2, 0.7, -0.6),
+    fov: 30,
   },
   // ── Research (0.50): sideline shift toward umpire chair (+X) ──
   {
     progress: 0.50,
-    position: new Vector3(2.4, 5.2, -10.8),
+    position: new Vector3(2.4, 6.4, -15.4),
     target: new Vector3(1.6, 0.9, 0.8),
-    fov: 31,
+    fov: 29,
     transition: "soft-cut",
   },
   {
     progress: 0.61,
-    position: new Vector3(2.4, 5.2, -10.8),
+    position: new Vector3(2.4, 6.4, -15.4),
     target: new Vector3(1.6, 0.9, 0.8),
-    fov: 31,
+    fov: 29,
   },
   // ── Projects (0.64): elevate gaze toward far-wall scoreboard, court below ──
   {
@@ -432,15 +432,15 @@ const DESKTOP_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
 /** Narrow landscape: same chapter structure, pulled back with wider FOV. */
 const TABLET_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   // Hero
-  { progress: 0, position: new Vector3(0.3, 6.4, -13.5), target: new Vector3(0, 0.8, 0.5), fov: 36 },
+  { progress: 0, position: new Vector3(0.3, 7.1, -16.4), target: new Vector3(0, 0.8, 0.5), fov: 32 },
   // About
-  { progress: 0.12, position: new Vector3(-0.6, 5.8, -12.4), target: new Vector3(-0.3, 0.9, -2.0), fov: 37, transition: "soft-cut" },
+  { progress: 0.12, position: new Vector3(-0.6, 6.6, -15.6), target: new Vector3(-0.3, 0.9, -2.0), fov: 32, transition: "soft-cut" },
   // Experience
-  { progress: 0.24, position: new Vector3(-2.4, 5.6, -12.0), target: new Vector3(-1.3, 0.7, -0.5), fov: 38, transition: "soft-cut" },
-  { progress: 0.46, position: new Vector3(-2.4, 5.6, -12.0), target: new Vector3(-1.3, 0.7, -0.5), fov: 38 },
+  { progress: 0.24, position: new Vector3(-2.7, 6.5, -15.7), target: new Vector3(-1.3, 0.7, -0.5), fov: 33, transition: "soft-cut" },
+  { progress: 0.46, position: new Vector3(-2.7, 6.5, -15.7), target: new Vector3(-1.3, 0.7, -0.5), fov: 33 },
   // Research
-  { progress: 0.50, position: new Vector3(2.0, 5.7, -11.8), target: new Vector3(1.4, 0.9, 0.7), fov: 35, transition: "soft-cut" },
-  { progress: 0.61, position: new Vector3(2.0, 5.7, -11.8), target: new Vector3(1.4, 0.9, 0.7), fov: 35 },
+  { progress: 0.50, position: new Vector3(2.0, 6.8, -15.6), target: new Vector3(1.4, 0.9, 0.7), fov: 32, transition: "soft-cut" },
+  { progress: 0.61, position: new Vector3(2.0, 6.8, -15.6), target: new Vector3(1.4, 0.9, 0.7), fov: 32 },
   // Projects
   { progress: 0.64, position: new Vector3(0.4, 6.4, -11.0), target: new Vector3(0, 2.2, 3.2), fov: 33, transition: "soft-cut" },
   { progress: 0.79, position: new Vector3(0.4, 6.4, -11.0), target: new Vector3(0, 2.2, 3.2), fov: 33 },
@@ -455,10 +455,10 @@ const TABLET_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
 /** Portrait: elevated overhead baseline view, fewer transitions, wider FOV for court legibility. */
 const MOBILE_CAMERA_KEYFRAMES: readonly CameraKeyframe[] = [
   // Hero: overhead behind baseline, both players readable
-  { progress: 0, position: new Vector3(0, 7.2, -14.5), target: new Vector3(0, 0.6, 0.5), fov: 48 },
+  { progress: 0, position: new Vector3(0, 8.0, -18.3), target: new Vector3(0, 0.6, 0.5), fov: 42 },
   // Rally hold through About + Experience
-  { progress: PROTOTYPE_LABELS.firstBounce, position: new Vector3(0, 7.4, -14.8), target: new Vector3(0, 0.8, 0), fov: 49 },
-  { progress: 0.46, position: new Vector3(0, 7.4, -14.8), target: new Vector3(0, 0.8, 0), fov: 49 },
+  { progress: PROTOTYPE_LABELS.firstBounce, position: new Vector3(0, 8.2, -18.6), target: new Vector3(0, 0.8, 0), fov: 43 },
+  { progress: 0.46, position: new Vector3(0, 8.2, -18.6), target: new Vector3(0, 0.8, 0), fov: 43 },
   // Research — slight elevation to widen view
   { progress: 0.50, position: new Vector3(0, 7.6, -14.2), target: new Vector3(0, 1.0, 1.0), fov: 49, transition: "soft-cut" },
   { progress: 0.61, position: new Vector3(0, 7.6, -14.2), target: new Vector3(0, 1.0, 1.0), fov: 49 },

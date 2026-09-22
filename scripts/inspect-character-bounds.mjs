@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { Box3, Matrix4, Quaternion, Vector3 } from "three";
 
 const root = resolve(import.meta.dirname, "..");
@@ -53,7 +54,7 @@ function transformedBox(box, matrix) {
   return out;
 }
 
-function worldBounds(json) {
+export function worldBounds(json) {
   const parent = new Map();
   json.nodes?.forEach((node, index) => node.children?.forEach((child) => parent.set(child, index)));
 
@@ -79,15 +80,17 @@ function worldBounds(json) {
   return total;
 }
 
-for (const file of files) {
-  const path = resolve(root, "public/models", file);
-  const json = inspectGlb(await readFile(path));
-  const box = worldBounds(json);
-  const size = new Vector3();
-  box.getSize(size);
-  console.log(file);
-  console.log(`  min: ${box.min.toArray().map((n) => n.toFixed(3)).join(", ")}`);
-  console.log(`  max: ${box.max.toArray().map((n) => n.toFixed(3)).join(", ")}`);
-  console.log(`  size: ${size.toArray().map((n) => n.toFixed(3)).join(" × ")}`);
-  console.log(`  height: ${size.y.toFixed(3)} world units`);
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  for (const file of files) {
+    const path = resolve(root, "public/models", file);
+    const json = inspectGlb(await readFile(path));
+    const box = worldBounds(json);
+    const size = new Vector3();
+    box.getSize(size);
+    console.log(file);
+    console.log(`  min: ${box.min.toArray().map((n) => n.toFixed(3)).join(", ")}`);
+    console.log(`  max: ${box.max.toArray().map((n) => n.toFixed(3)).join(", ")}`);
+    console.log(`  size: ${size.toArray().map((n) => n.toFixed(3)).join(" × ")}`);
+    console.log(`  height: ${size.y.toFixed(3)} world units`);
+  }
 }
