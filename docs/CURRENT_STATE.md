@@ -21,6 +21,15 @@ complete singles/doubles/service markings, broad near-coplanar mowing zones,
 broken olive wear patches, and a dark low-density cord net. The rally, camera,
 hotspot, and Phase 04 fallback contracts remain unchanged.
 
+Phase 22A / V8 venue cast is implemented locally and awaits broader visual
+acceptance. User-exported V8 Blockbench players replace the canonical sources and
+optimized production GLBs without changing their 1.622-unit height. Three authored
+spectator variants now form small quality-tiered clusters, and the authored chair
+umpire occupies the existing Research hotspot. Venue figures use opaque, unlit,
+fog-independent vertex colors and static resting poses; their exported animation
+clips remain available in the GLBs. The stands and other Phase 22 architecture
+tasks remain open.
+
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
 is still outstanding. Those release claims are not implied by Phase 14 acceptance.
@@ -37,11 +46,13 @@ fallbacks only.
 
 ## Current objective
 
-- Complete the Phase 19 visual acceptance matrix using the V7 direct
+- Complete the Phase 19 visual acceptance matrix using the V8 direct
   Blockbench exports and measured production bounds.
 - Continue Phase 20 external release evidence without overstating local checks.
 - Continue with Phase 22 venue structure only after retaining the accepted Phase 21
   court composition and coordinates.
+- Review the V8 venue cast in desktop and mobile application cameras; tune its
+  seating placement before accepting Phase 22A.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,

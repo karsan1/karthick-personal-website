@@ -1,7 +1,25 @@
-# Performance Profile — Phase 21 static audit
+# Performance Profile — Phase 21 baseline and V8 venue cast
 
 **Profile date:** 2026-09-21
-**Scope:** active Phase 16–21 shared worktree. This is a static/source and asset-manifest audit plus local visual review, not a production-browser benchmark. No FPS, frame-time, GPU-memory, renderer-info, transfer-waterfall, or React Profiler result is claimed below.
+**Scope:** Phase 21 baseline with the local V8 cast addition. This is static/source accounting plus local visual review, not a production-browser benchmark. No FPS, frame-time, GPU-memory, renderer-info, transfer-waterfall, or React Profiler result is claimed below.
+
+## V8 venue cast update — 2026-09-22
+
+The active scene now adds one authored chair umpire and up to 12 authored
+spectators, loaded after the court and stadium. The resting-pose geometry of each
+spectator variant is merged at load and drawn as one instanced mesh; the umpire is
+one merged mesh. The new umpire replaces four procedural chair meshes, so its one
+draw plus three spectator draws leaves the prior 33 high-tier structural draws
+unchanged. It adds four basic materials, yielding 15 materials,
+16 instanced groups, and 173/151/84 instances at high/medium/low. The low tier
+retains three authored spectators. These are source counts, not measured renderer
+calls or frame timings. Source GLB animations remain present but venue figures
+currently hold static poses. The four direct venue GLBs total approximately
+139 KB on disk and retain one authored 32px PNG atlas each. The runtime merged
+geometry uses vertex colors instead of those atlases; encoded transfer, decoded
+texture-cache memory, and GPU costs have not been measured.
+
+The Phase 21 findings below remain the baseline before this addition.
 
 ## Finding: active venue source accounting is controlled, but it is not a whole-frame measurement
 

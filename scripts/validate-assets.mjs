@@ -7,6 +7,12 @@ const root = resolve(import.meta.dirname, "..");
 const modelsDirectory = resolve(root, "public/models");
 const epsilon = 0.001;
 const budgets = { "court.glb": 100_000, "stadium-shell.glb": 100_000, "props.glb": 100_000, "scoreboard.glb": 60_000, "player-a.glb": 80_000, "player-b.glb": 80_000 };
+const venueCast = {
+  "audience-spectator-a.glb": { root: "CROWD_Spectator_A_Root", clips: ["clap_loop"], minHeight: 1, maxHeight: 1.3 },
+  "audience-spectator-b.glb": { root: "CROWD_Spectator_B_Root", clips: ["cheer_loop"], minHeight: 1, maxHeight: 1.3 },
+  "audience-spectator-c.glb": { root: "CROWD_Spectator_C_Root", clips: ["react_loop"], minHeight: 1, maxHeight: 1.3 },
+  "chair-umpire.glb": { root: "VENUE_ChairUmpire_Root", clips: ["idle_seated", "call_point"], minHeight: 1.8, maxHeight: 2.2 },
+};
 const kinds = {
   "court.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] }, "stadium-shell.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] }, "props.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] }, "scoreboard.glb": { assetKind: "environment", sourceKinds: ["blender-export", "calibration-fixture"] },
   "player-a.glb": { assetKind: "character", sourceKinds: ["blockbench-calibration-fixture", "blockbench-export"] }, "player-b.glb": { assetKind: "character", sourceKinds: ["blockbench-calibration-fixture", "blockbench-export"] },
@@ -45,7 +51,7 @@ function validateReviewedCharacterSize(file, json) {
 
 const manifest = JSON.parse(await readFile(resolve(modelsDirectory, "asset-manifest.json"), "utf8"));
 const expectedFiles = Object.keys(budgets).sort(); const actualFiles = (await readdir(modelsDirectory)).filter((file) => file.endsWith(".glb")).sort();
-if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) throw new Error("Production GLBs do not exactly match the validated asset set.");
+if (JSON.stringify(actualFiles) !== JSON.stringify([...expectedFiles, ...Object.keys(venueCast)].sort())) throw new Error("Production GLBs do not exactly match the validated asset set.");
 const manifestFiles = manifest.assets.map((asset) => asset.file).sort();
 if (manifest.assets.length !== expectedFiles.length || new Set(manifestFiles).size !== manifestFiles.length || JSON.stringify(manifestFiles) !== JSON.stringify(expectedFiles)) throw new Error("Manifest must contain exactly one entry for every expected production GLB.");
 for (const file of expectedFiles) {
@@ -59,4 +65,38 @@ for (const file of expectedFiles) {
   const named = json.nodes.filter((node) => node.name).map((node) => node.name); const semanticNames = named.filter((name) => !name.startsWith("MESH_")); if (named.length !== json.nodes.length || new Set(named).size !== named.length || JSON.stringify(semanticNames.filter((name) => name !== rootName).sort()) !== JSON.stringify(requiredNodes.slice().sort()) || named.some((name) => /^(cube|bone)\d+$/i.test(name))) throw new Error(`${file} named character hierarchy is not exact and unique.`); for (const node of json.nodes.filter((candidate) => candidate.name.startsWith("MESH_"))) if (node.mesh === undefined || node.children?.length) throw new Error(`${file} MESH_ nodes must be geometry leaves.`); for (const name of requiredNodes) { const index = json.nodes.findIndex((node) => node.name === name); const expectedParent = expectedParents[name] === "ROOT" ? rootIndex : json.nodes.findIndex((node) => node.name === expectedParents[name]); if (parentByNode.get(index) !== expectedParent) throw new Error(`${file} has invalid parentage for ${name}.`); }
   validateCharacterAnimations(file, json, entry, rootIndex); if (entry.sourceKind === "blockbench-export") validateReviewedCharacterSize(file, json); const slots = new Set(json.meshes.flatMap((mesh) => mesh.primitives.map((primitive) => primitive.material).filter((material) => material !== undefined))); if (slots.size > 3) throw new Error(`${file} exceeds the three material-slot budget.`); const triangles = json.nodes.reduce((total, node) => total + (node.mesh === undefined ? 0 : json.meshes[node.mesh].primitives.reduce((sum, primitive) => sum + primitiveTriangles(json, primitive), 0)), 0); if (triangles > 2500) throw new Error(`${file} exceeds the 2,500-triangle review threshold.`);
 }
-console.log(`Validated ${expectedFiles.length} production GLBs: exact manifest, provenance, Meshopt, environment contracts, and in-place character clips.`);
+for (const [file, contract] of Object.entries(venueCast)) {
+  const buffer = await readFile(resolve(modelsDirectory, file));
+  const { json, binaryOffset, binaryLength } = inspectGlb(buffer);
+  if (buffer.byteLength > 60_000 || json.images?.length !== 1 || json.textures?.length !== 1 || json.materials?.length !== 1) throw new Error(`${file} exceeds the venue-cast byte/material/texture budget.`);
+  const image = json.images[0];
+  const [atlasWidth, atlasHeight] = imageDimensions(buffer, json, binaryOffset, binaryLength, image);
+  if (image.mimeType !== "image/png" || atlasWidth > 32 || atlasHeight > 32 || atlasWidth < 1 || atlasHeight < 1) throw new Error(`${file} must retain only its tiny authored PNG atlas.`);
+  if (json.cameras?.length || json.extensionsUsed?.includes("KHR_lights_punctual") || json.scenes?.length !== 1 || json.scenes[0].nodes?.length !== 1) throw new Error(`${file} must have one scene root and no cameras or lights.`);
+  const rootIndex = json.nodes.findIndex((node) => node.name === contract.root);
+  if (rootIndex < 0 || json.scenes[0].nodes[0] !== rootIndex) throw new Error(`${file} has an invalid root.`);
+  const reachable = new Set();
+  const visit = (index) => { if (reachable.has(index)) throw new Error(`${file} hierarchy contains a cycle.`); reachable.add(index); json.nodes[index].children?.forEach(visit); };
+  visit(rootIndex);
+  if (reachable.size !== json.nodes.length) throw new Error(`${file} contains unreachable nodes.`);
+  if (!json.meshes?.length || !json.meshes.some((mesh) => mesh.primitives?.length)) throw new Error(`${file} contains no geometry.`);
+  const meshNodes = json.nodes.filter((node) => node.mesh !== undefined);
+  const meshNames = meshNodes.map((node) => node.name);
+  if (new Set(meshNames).size !== meshNames.length || meshNames.some((name) => !/^MESH_(?:Umpire_)?(?:Seat|Chair|Head|Hair|Arm|Leg|Hips|Torso|Sleeve|Scarf|CapBrim|Shoe|Clipboard|Accent|Glasses)/.test(name))) throw new Error(`${file} has an unrecognized palette mesh name.`);
+  const triangles = meshNodes.reduce((total, node) => total + json.meshes[node.mesh].primitives.reduce((sum, primitive) => sum + primitiveTriangles(json, primitive), 0), 0);
+  if (triangles > 500) throw new Error(`${file} exceeds the 500-triangle venue-cast budget.`);
+  const names = (json.animations ?? []).map((animation) => animation.name);
+  if (JSON.stringify(names) !== JSON.stringify(contract.clips)) throw new Error(`${file} clips do not match the authored contract.`);
+  for (const animation of json.animations) {
+    if (!animation.samplers?.length || !animation.channels?.length) throw new Error(`${file}:${animation.name} has no animation data.`);
+    for (const sampler of animation.samplers) {
+      const input = json.accessors?.[sampler.input];
+      if (input?.type !== "SCALAR" || input.count < 2 || !Number.isFinite(input.max?.[0]) || input.max[0] <= 0) throw new Error(`${file}:${animation.name} has invalid duration.`);
+    }
+    if (animation.channels.some((channel) => channel.target?.node === rootIndex)) throw new Error(`${file}:${animation.name} animates the placement root.`);
+  }
+  const bounds = worldBounds(json);
+  const height = bounds.max.y - bounds.min.y;
+  if (!Number.isFinite(height) || height < contract.minHeight || height > contract.maxHeight || bounds.min.y < -0.1 || bounds.min.y > 0.5) throw new Error(`${file} has implausible export bounds.`);
+}
+console.log(`Validated ${expectedFiles.length} optimized production GLBs and ${Object.keys(venueCast).length} authored venue-cast GLBs.`);
