@@ -36,12 +36,14 @@ chair umpire render from PNG atlases in the existing R3F scene; the V8 GLBs
 remain in the repository for comparison and rollback. The V2 overlay expands
 player cells to 96 × 96 pixels, moves the side crew clear of the stadium walls,
 and samples a reversible 14-exchange rally for both players and the ball across
-master scroll progress 0–1. Chapter timing, camera, court, and navigation
-ownership remain unchanged. Local lint, typecheck, and production build pass.
-Desktop and mobile browser review confirms the scene renders, later chapters
-retain rally action, reverse scroll restores a sampled frame, and Player A
-selects About. Sprite scale, spectator readability, and final art acceptance
-remain open.
+master scroll progress 0–1. V3 reduces player sprite scale, replaces the umpire
+art with a raised-chair silhouette, and shows four smaller ball kids at every
+quality tier. The cast retains loading/error boundaries and stays clear of world
+hotspots. Chapter timing, camera, court, and navigation ownership remain
+unchanged. Local lint, typecheck, and production build pass. Desktop and mobile
+browser review confirms the scene renders, later chapters retain rally action,
+reverse scroll restores a sampled frame, the chair selects Research, and all
+four ball kids appear on the low tier. Final art acceptance remains open.
 
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence

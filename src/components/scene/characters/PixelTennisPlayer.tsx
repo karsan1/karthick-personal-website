@@ -10,8 +10,9 @@ import { PixelAtlasSprite, type PixelAtlasSpriteHandle } from "../sprites/PixelA
 import { PixelShadow } from "../sprites/PixelShadow";
 
 type PixelTennisPlayerProps = { progress: MutableRefObject<NarrativeProgress>; side: CharacterSide; reducedMotion: boolean };
-const PLAYER_WIDTH = 3.05;
-const PLAYER_HEIGHT = 3.05;
+// The rally remains foreground action without obscuring the court or venue cast.
+const PLAYER_WIDTH = 2.58;
+const PLAYER_HEIGHT = 2.58;
 const PLAYER_TRANSPARENT_BOTTOM_ROWS = 10;
 const PLAYER_SPRITE_Y = 0.025 - (PLAYER_TRANSPARENT_BOTTOM_ROWS / PLAYER_PIXEL_ATLAS.frameHeight) * PLAYER_HEIGHT;
 
