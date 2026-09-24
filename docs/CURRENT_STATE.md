@@ -30,6 +30,16 @@ fog-independent vertex colors and static resting poses; their exported animation
 clips remain available in the GLBs. The stands and other Phase 22 architecture
 tasks remain open.
 
+The `codex/new-retro-characters` feature branch now carries a pixel-sprite
+character experiment using the supplied branch pack. Production players,
+audience, and chair umpire render from PNG atlases in the existing R3F scene;
+the V8 GLBs remain in the repository for comparison and rollback. Rally timing,
+root choreography, court, camera, and navigation ownership are unchanged.
+Local lint, typecheck, and production build pass. Desktop and mobile browser
+review confirms the scene renders, Player A selects About, and the chair selects
+Research. Sprite scale and spectator readability still need visual tuning before
+this branch can be treated as accepted art direction.
+
 Phase 13 remains an available regression baseline but is not accepted as a release
 milestone: its production-browser, preview-deployment, and rollback-path evidence
 is still outstanding. Those release claims are not implied by Phase 14 acceptance.
