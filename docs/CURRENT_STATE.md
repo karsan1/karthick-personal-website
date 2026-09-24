@@ -10,30 +10,23 @@ Phase 18 now keeps the 3D world visually primary with compact contextual desktop
 surfaces, an intentionally composed mobile bottom-sheet layout, explicit DOM
 interaction layers, and the existing accessible project detail dialog.
 
-Phase 19 is implemented / visual acceptance pending. Original authored Blockbench players now ship through the
-reviewed `blockbench-export` path and render as the ordinary rally actors. Their
-authored clips remain driven by the deterministic master progress, use 15fps
-character-only stepping selected from the 12/15/18fps application-camera review,
-and retain exact contact anchoring while the ball and camera remain smooth.
+Phase 19's authored Blockbench character implementation is historical. The
+production rally now uses pixel-sprite players driven by deterministic master
+progress; the ball and camera remain smooth.
 
 Phase 21 is accepted. The procedural grass court now has a larger runoff apron,
 complete singles/doubles/service markings, broad near-coplanar mowing zones,
 broken olive wear patches, and a dark low-density cord net. The rally, camera,
 hotspot, and Phase 04 fallback contracts remain unchanged.
 
-Phase 22A / V8 venue cast is implemented locally and awaits broader visual
-acceptance. User-exported V8 Blockbench players replace the canonical sources and
-optimized production GLBs without changing their 1.622-unit height. Three authored
-spectator variants now form small quality-tiered clusters, and the authored chair
-umpire occupies the existing Research hotspot. Venue figures use opaque, unlit,
-fog-independent vertex colors and static resting poses; their exported animation
-clips remain available in the GLBs. The stands and other Phase 22 architecture
-tasks remain open.
+Phase 22A's V8 Blockbench venue cast is historical. The current audience,
+sideline crew, and chair umpire render from pixel sprites. The stands and other
+Phase 22 architecture tasks remain open.
 
-The `codex/new-retro-characters` feature branch carries a pixel-sprite
-character experiment. Production players, audience, sideline officials, and
-chair umpire render from PNG atlases in the existing R3F scene; the V8 GLBs
-remain in the repository for comparison and rollback. The V2 overlay expands
+The pixel-sprite character work is merged into `main`. Production players,
+audience, sideline officials, and chair umpire render from PNG atlases in the
+existing R3F scene. Historical Blockbench source and GLBs remain in the
+repository, but ordinary scene rendering does not load them. V2 expands
 player cells to 96 × 96 pixels, moves the side crew clear of the stadium walls,
 and samples a reversible 14-exchange rally for both players and the ball across
 master scroll progress 0–1. V3 reduces player sprite scale, replaces the umpire
@@ -61,13 +54,11 @@ fallbacks only.
 
 ## Current objective
 
-- Complete the Phase 19 visual acceptance matrix using the V8 direct
-  Blockbench exports and measured production bounds.
+- Verify the pixel-sprite cast on the production domain after the `main` release.
 - Continue Phase 20 external release evidence without overstating local checks.
 - Continue with Phase 22 venue structure only after retaining the accepted Phase 21
   court composition and coordinates.
-- Review the V8 venue cast in desktop and mobile application cameras; tune its
-  seating placement before accepting Phase 22A.
+- Finish pixel-sprite art acceptance in desktop and mobile application cameras.
 - Preserve keyboard, screen-reader, reduced-motion, and non-WebGL reachability for
   every world destination while the 3D scene remains visually primary.
 - Keep Phase 13 release evidence explicitly outstanding until production-browser,

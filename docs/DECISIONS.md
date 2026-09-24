@@ -198,6 +198,25 @@ pointer/camera data in Zustand, or Phase 15 runtime code as part of this decisio
 
 ---
 
+### ADR-010 — Use pixel sprites for production tennis characters
+
+**Status:** Accepted
+
+**Context:** The V8 Blockbench players and venue cast were replaced by the
+pixel-sprite feature branch and selected for the `main` production experience.
+
+**Decision:** Render the two rally players, audience, four ball kids, and chair
+umpire from PNG atlases in the existing R3F scene. Keep GSAP master progress,
+deterministic rally sampling, one Canvas, semantic navigation, reduced-motion
+behavior, and the Phase 04 environment fallback. Do not continue Blockbench
+character production for this experience.
+
+**Consequences:** Historical Blockbench sources and GLBs may remain for recovery,
+but normal scene rendering must not request character GLBs. The sprite cast is the
+current visual baseline for future venue work.
+
+---
+
 ## ADR template
 
 ### ADR-XXX — <title>
