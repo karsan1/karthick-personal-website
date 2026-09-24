@@ -3,8 +3,8 @@ import type { CharacterClip } from "@/animations/prototypeMotion";
 export const PLAYER_PIXEL_ATLAS = {
   columns: 8,
   rows: 5,
-  frameWidth: 48,
-  frameHeight: 64,
+  frameWidth: 96,
+  frameHeight: 96,
   clips: {
     idle_ready: { row: 0, frames: 2 },
     serve: { row: 1, frames: 8 },
@@ -15,7 +15,7 @@ export const PLAYER_PIXEL_ATLAS = {
 } as const;
 
 export const PLAYER_PIXEL_SPRITES = { a: "/sprites/tennis/player-a.png", b: "/sprites/tennis/player-b.png" } as const;
-export const VENUE_PIXEL_SPRITES = { audience: "/sprites/tennis/audience.png", umpire: "/sprites/tennis/umpire.png", shadow: "/sprites/tennis/shadow.png" } as const;
+export const VENUE_PIXEL_SPRITES = { audience: "/sprites/tennis/audience.png", sideline: "/sprites/tennis/sideline.png", umpire: "/sprites/tennis/umpire.png", shadow: "/sprites/tennis/shadow.png" } as const;
 
 export function frameForProgress(localProgress: number, frameCount: number) {
   const clamped = Math.min(Math.max(localProgress, 0), 1);

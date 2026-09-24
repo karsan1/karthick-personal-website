@@ -3,11 +3,10 @@ import { useFrame } from "@react-three/fiber";
 import { MeshBasicMaterial, type Mesh, Vector3 } from "three";
 import {
   COURT_DIMENSIONS,
-  sampleBallPresentation,
-  sampleBallPosition,
   sampleReducedMotionBallPosition,
   type NarrativeProgress,
 } from "@/animations/prototypeMotion";
+import { sampleContinuousRallyBall, sampleContinuousRallyPresentation } from "@/animations/continuousRally";
 import { RetroPlayer } from "./characters/RetroPlayer";
 import { WorldHotspot } from "./interactions/WorldHotspot";
 import { WORLD_HOTSPOTS } from "./interactions/worldHotspots";
@@ -124,10 +123,9 @@ function TennisBall({ progress, reducedMotion }: TennisBallProps) {
     }
 
     const value = progress.current.value;
-    if (reducedMotion) sampleReducedMotionBallPosition(ballPosition);
-    else sampleBallPosition(value, ballPosition);
-    mesh.position.copy(ballPosition);
     if (reducedMotion) {
+      sampleReducedMotionBallPosition(ballPosition);
+      mesh.position.copy(ballPosition);
       mesh.rotation.set(0, 0, 0);
       mesh.scale.setScalar(1);
       shadowMesh.position.set(ballPosition.x, 0.012, ballPosition.z);
@@ -136,9 +134,11 @@ function TennisBall({ progress, reducedMotion }: TennisBallProps) {
       return;
     }
 
-    const sampled = sampleBallPresentation(value, ballPosition, presentation.current);
-    mesh.rotation.x = value * Math.PI * 32;
-    mesh.rotation.z = value * Math.PI * 20;
+    sampleContinuousRallyBall(value, ballPosition);
+    mesh.position.copy(ballPosition);
+    const sampled = sampleContinuousRallyPresentation(value, ballPosition, presentation.current);
+    mesh.rotation.x = value * Math.PI * 56;
+    mesh.rotation.z = value * Math.PI * 34;
     mesh.scale.set(sampled.ballScaleX, sampled.ballScaleY, sampled.ballScaleZ);
     shadowMesh.position.set(ballPosition.x, 0.012, ballPosition.z);
     shadowMesh.scale.set(sampled.shadowScale, sampled.shadowScale, 1);
