@@ -1,4 +1,5 @@
-import { useCallback, useEffect, type ReactNode } from "react";
+import { Html } from "@react-three/drei";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import { BoxGeometry, MeshBasicMaterial } from "three";
 import { requestPortfolioNavigation } from "@/hooks/usePortfolioNavigation";
@@ -21,6 +22,7 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
   const projectDetailOpen = useExperienceStore((state) => state.projectDetailOpen);
   const hoveredHotspot = useExperienceStore((state) => state.hoveredHotspot);
   const selectedHotspot = useExperienceStore((state) => state.selectedHotspot);
+  const [isSceneHovered, setIsSceneHovered] = useState(false);
   const isHovered = hoveredHotspot === config.id;
   const isSelected = selectedHotspot === config.id;
   const enabled = interactionMode === "explore" && !projectDetailOpen;
@@ -36,12 +38,14 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
   const onPointerOver = useCallback((event: ThreeEvent<PointerEvent>) => {
     if (!enabled) return;
     event.stopPropagation();
+    setIsSceneHovered(true);
     useExperienceStore.getState().setHoveredHotspot(config.id);
     document.body.style.cursor = "pointer";
   }, [config.id, enabled]);
 
   const onPointerOut = useCallback((event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
+    setIsSceneHovered(false);
     clearHover();
   }, [clearHover]);
 
@@ -79,6 +83,20 @@ export function WorldHotspot({ children, hitArea, hitPosition = [0, 0, 0], ...co
           geometry={ACCENT_MARKER_GEOMETRY}
           material={ACCENT_MARKER_MATERIAL}
         />
+      ) : null}
+      {isSceneHovered && enabled && hitArea ? (
+        <Html
+          className="world-hotspot-label"
+          position={[
+            hitPosition[0],
+            hitPosition[1] + hitArea[1] / 2 + 0.52,
+            hitPosition[2],
+          ]}
+          center
+          aria-hidden="true"
+        >
+          {config.label}
+        </Html>
       ) : null}
     </group>
   );

@@ -29,6 +29,8 @@ Its final chapter closes the match 6-4, 6-4. Pixel lettering remains within one
 instanced draw submission, and score changes sample the existing master progress
 so reverse scroll restores earlier scores. Other Phase 23 courtside art remains
 open; this is not full Phase 23 acceptance.
+World hotspots now show their existing destination label beside the hovered court
+object; the label clears on pointer exit and leaves scene clicks unobstructed.
 
 Portfolio DOM content now reflects the supplied résumé and inspected project
 repositories: current Fannie Mae work, prior Fannie Mae and Optum internships,
