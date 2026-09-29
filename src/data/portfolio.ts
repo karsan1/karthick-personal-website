@@ -1,13 +1,13 @@
 import type { Portfolio } from "@/types/portfolio";
 
-const email = "karthickg.sankar@gmail.com";
+const email = "karthicksankar10@gmail.com";
 const github = "https://github.com/karsan1";
 
 export const portfolio = {
   name: "Karthick Sankar",
   role: "Software engineer & product builder",
   introduction:
-    "I build useful digital products across the web and Android, pairing clear systems with interfaces people can understand.",
+    "I build reliable products and data systems across web, mobile, and cloud platforms, pairing clear interfaces with maintainable engineering.",
   availability:
     "Open to software engineering opportunities and thoughtful product collaborations.",
   navigation: [
@@ -85,7 +85,7 @@ export const portfolio = {
     eyebrow: "About · First bounce",
     title: "Make complexity feel clear",
     body:
-      "I am a software engineer drawn to the whole product: how information is structured, how an interaction communicates, and how the implementation holds up after launch. My work spans web experiences, Android applications, data-backed products, and the systems that keep their content maintainable.",
+      "I am a software engineer at Fannie Mae working across cloud data integrations, event-driven services, and developer workflows. Outside work, I build web and native iOS products with clear, useful interfaces. I earned a B.S. in Computer Science from the University of Maryland in 2024.",
     principles: [
       "Start with the person using it.",
       "Make the system legible to the next builder.",
@@ -94,32 +94,43 @@ export const portfolio = {
   },
   experience: [
     {
-      id: "independent-products",
-      organization: "Independent product work",
-      role: "Designer & developer",
-      period: "2025 — Present",
+      id: "fannie-mae",
+      organization: "Fannie Mae",
+      role: "Associate Software Engineer",
+      period: "Jul 2025 — Present",
       summary:
-        "Designing and shipping focused websites for academic, cultural, and personal stories, with an emphasis on content systems and durable handoff.",
+        "Build and support AWS, Salesforce, and Redshift data integrations serving more than 10 consumers across 500K+ records.",
       highlights: [
-        "Built an Astro and TypeScript academic portfolio with validated research content.",
-        "Created event and brochure experiences that translate rich source material into clear web narratives.",
-        "Documented editing and deployment workflows so site owners can maintain their own content.",
+        "Migrated CI/CD workflows to GitLab and Terraform for repeatable delivery.",
+        "Built an agentic GitHub Copilot workflow and reduced CDC onboarding from about one week to one day.",
       ],
-      technologies: ["Astro", "TypeScript", "Next.js", "Content collections"],
+      technologies: ["AWS", "Salesforce", "Redshift", "GitLab", "Terraform", "GitHub Copilot"],
     },
     {
-      id: "software-coursework",
-      organization: "Computer science coursework",
-      role: "Software developer",
-      period: "2022 — 2024",
+      id: "fannie-mae-internship",
+      organization: "Fannie Mae",
+      role: "Software Engineer Intern",
+      period: "Jun 2024 — Aug 2024",
       summary:
-        "Built collaborative and individual software across full-stack web and Android courses, moving from interface concepts to database and API integration.",
+        "Developed Java and Spring Boot services with messaging and relational data integrations.",
       highlights: [
-        "Co-developed a MongoDB-backed video game review platform with live PokeAPI search.",
-        "Built a Kotlin Android scheduler around native date, time, and email flows.",
-        "Explored interactive games and utility applications across Java, Kotlin, and the web stack.",
+        "Worked with SQS, SNS, and RDS in service workflows.",
+        "Added unit coverage with JUnit and Mockito.",
       ],
-      technologies: ["Kotlin", "Java", "Node.js", "MongoDB", "REST APIs"],
+      technologies: ["Java", "Spring Boot", "SQS", "SNS", "RDS", "JUnit", "Mockito"],
+    },
+    {
+      id: "optum-internship",
+      organization: "Optum",
+      role: "Software Engineer Intern",
+      period: "Jun 2023 — Aug 2023",
+      summary:
+        "Worked on change data capture and healthcare data workflows with PostgreSQL, Debezium, and Kafka services.",
+      highlights: [
+        "Built and tested CDC flows with Docker, MSK, and Kafka.",
+        "Worked with FHIR data and service integrations.",
+      ],
+      technologies: ["PostgreSQL", "Debezium", "Docker", "MSK", "Kafka", "FHIR"],
     },
   ],
   research: [
@@ -135,23 +146,38 @@ export const portfolio = {
     {
       id: "academic-content-systems",
       title: "Structured publishing for research portfolios",
-      institution: "Roshini academic website",
+      institution: "Independent technical study",
       summary:
-        "Investigating a content-first way to present interdisciplinary research across planetary science, paleomagnetism, astrobiology, policy, teaching, and outreach without duplicating source material in templates.",
+        "Investigating content-first ways to present complex technical work without duplicating source material in templates.",
       methods: ["Content modeling", "Schema validation", "Editorial IA", "Static generation"],
-      href: "https://github.com/karsan1/roshini-website",
     },
   ],
   projects: [
     {
-      id: "roshini-academic-website",
-      title: "Roshini Academic Website",
-      summary: "An editorial scientific portfolio built around structured research content.",
+      id: "marketdeck",
+      title: "MarketDeck",
+      summary: "A stock dashboard with responsive web and native iPhone and iPad apps.",
       details:
-        "The site brings research, science policy, teaching, and outreach into one coherent publishing system. Validated content collections keep project data separate from presentation and make future updates safer.",
-      technologies: ["Astro", "TypeScript", "Content collections", "GitHub Actions"],
-      href: "https://karsan1.github.io/roshini-website/",
-      repoHref: "https://github.com/karsan1/roshini-website",
+        "MarketDeck presents live quotes, watchlists, historical charts, and stock details in a responsive Next.js dashboard and a native SwiftUI app. Finnhub supplies market data; Firebase supports optional sign-in and cross-device state.",
+      technologies: ["Next.js", "React", "TypeScript", "SwiftUI", "Firebase", "Finnhub"],
+      featured: true,
+    },
+    {
+      id: "photo-map-timeline",
+      title: "PhotoMap",
+      summary: "A native iOS memory book that connects photos to their dates and places.",
+      details:
+        "PhotoMap turns a photo library into a timeline and map, with month-based memory views and a focused photo detail experience. Built in SwiftUI with Apple photo and location frameworks.",
+      technologies: ["Swift", "SwiftUI", "PhotoKit", "Core Location"],
+      featured: true,
+    },
+    {
+      id: "city-bus-app",
+      title: "City Bus App",
+      summary: "A map-first iOS transit app for routes, stops, arrivals, and bus alerts.",
+      details:
+        "City Bus App uses SwiftUI and MapKit to show routes, stops, vehicle locations, and trip details. A TypeScript service imports GTFS schedules, processes realtime feeds, and supports arrival and notification features.",
+      technologies: ["SwiftUI", "MapKit", "TypeScript", "GTFS", "GTFS-Realtime"],
       featured: true,
     },
     {
@@ -164,43 +190,12 @@ export const portfolio = {
       repoHref: "https://github.com/karsan1/karthick-personal-website",
       featured: true,
     },
-    {
-      id: "video-game-review",
-      title: "Video Game Review Platform",
-      summary: "A collaborative review blog with persistent posts and live Pokémon lookup.",
-      details:
-        "Users can publish game reviews through a form, browse community submissions stored in MongoDB, and query Pokémon types through the PokeAPI. The project joined server-rendered content, database work, and third-party API handling.",
-      technologies: ["Node.js", "MongoDB", "PokeAPI", "CSS"],
-      href: "https://videogame-review-website.onrender.com/",
-      repoHref: "https://github.com/karsan1/Video-Game-Review",
-      featured: true,
-    },
-    {
-      id: "mobile-meeting-scheduler",
-      title: "Mobile Meeting Scheduler",
-      summary: "A Kotlin Android app for composing calendar-aware meeting reminders.",
-      details:
-        "The app combines native calendar and clock selection with an email handoff, letting a user choose a meeting time and send the reminder directly through a mobile mail flow.",
-      technologies: ["Kotlin", "Android", "Native intents"],
-      repoHref: "https://github.com/karsan1/Android-Final-Project",
-      featured: true,
-    },
-    {
-      id: "arangetram-websites",
-      title: "Arangetram Digital Story",
-      summary: "Event websites that turn a traditional performance program into a shareable experience.",
-      details:
-        "A pair of web builds explored long-form event storytelling and a concise digital brochure format, balancing ceremonial detail with a clear experience for guests on mobile and desktop.",
-      technologies: ["HTML", "CSS", "Responsive design"],
-      repoHref: "https://github.com/karsan1/SrutiArangetramWebsite",
-      featured: false,
-    },
   ],
   capabilities: [
-    { id: "interfaces", title: "Interfaces", items: ["React", "Next.js", "Astro", "TypeScript", "Responsive CSS"] },
-    { id: "immersive", title: "Interactive systems", items: ["Three.js", "React Three Fiber", "GSAP", "Accessible motion"] },
-    { id: "applications", title: "Applications", items: ["Kotlin", "Android", "Java", "Node.js", "REST APIs"] },
-    { id: "data", title: "Data & delivery", items: ["MongoDB", "Content modeling", "GitHub Actions", "Vercel"] },
+    { id: "languages", title: "Languages", items: ["Java", "Python", "JavaScript", "TypeScript", "Swift", "SQL"] },
+    { id: "cloud-data", title: "Cloud & data", items: ["AWS", "Salesforce", "Redshift", "Kafka", "PostgreSQL", "Firebase"] },
+    { id: "backend", title: "Backend systems", items: ["Spring Boot", "REST APIs", "Docker", "Terraform", "CDC", "FHIR"] },
+    { id: "product", title: "Product delivery", items: ["Next.js", "React", "Tailwind CSS", "GitLab", "GitHub Copilot", "Responsive UI"] },
   ],
   contact: {
     eyebrow: "Contact · Match point",

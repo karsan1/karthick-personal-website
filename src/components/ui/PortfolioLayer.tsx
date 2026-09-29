@@ -73,7 +73,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
             id="experience"
             eyebrow="Experience · Rally"
             title="Learning by shipping"
-            introduction="Practical work across independent products and collaborative software projects."
+            introduction="Professional experience building cloud data systems, backend services, and developer workflows."
           />
           <div className="entry-list">
             {portfolio.experience.map((item) => (
@@ -124,7 +124,7 @@ export function PortfolioLayer({ portfolio }: PortfolioLayerProps) {
             id="projects"
             eyebrow="Projects · Sideline sequence"
             title="Selected builds"
-            introduction="Every board uses the same interaction: open the details, understand the work, then follow a standard web link."
+            introduction="Open a project to see the problem, approach, and tools behind the build."
           />
           <ProjectGallery projects={portfolio.projects} />
         </div>

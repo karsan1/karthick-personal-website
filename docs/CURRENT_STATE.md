@@ -23,6 +23,21 @@ Phase 22A's V8 Blockbench venue cast is historical. The current audience,
 sideline crew, and chair umpire render from pixel sprites. The stands and other
 Phase 22 architecture tasks remain open.
 
+The Phase 23 scoreboard portion now shows a two-set tennis match with Karthick
+and Visitor rows, a serving lamp, set totals, and 0/15/30/40 point progression.
+Its final chapter closes the match 6-4, 6-4. Pixel lettering remains within one
+instanced draw submission, and score changes sample the existing master progress
+so reverse scroll restores earlier scores. Other Phase 23 courtside art remains
+open; this is not full Phase 23 acceptance.
+
+Portfolio DOM content now reflects the supplied résumé and inspected project
+repositories: current Fannie Mae work, prior Fannie Mae and Optum internships,
+relevant tools, education, and MarketDeck, PhotoMap, and City Bus App projects.
+Roshini Website is no longer a project. The three requested project repositories
+were private at inspection, so their public-facing cards do not link to them.
+Local lint, typecheck, and production build pass; desktop and narrow browser
+review confirms readable project content and tennis scoreboard rendering.
+
 The pixel-sprite character work is merged into `main`. Production players,
 audience, sideline officials, and chair umpire render from PNG atlases in the
 existing R3F scene. Historical Blockbench source and GLBs remain in the

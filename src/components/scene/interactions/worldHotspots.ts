@@ -70,7 +70,7 @@ export const WORLD_HOTSPOTS = {
   },
   resumeClipboard: {
     id: "resume-clipboard",
-    href: "mailto:karthickg.sankar@gmail.com?subject=R%C3%A9sum%C3%A9%20request",
+    href: "mailto:karthicksankar10@gmail.com?subject=R%C3%A9sum%C3%A9%20request",
     label: "Request résumé",
     shortLabel: "RÉSUMÉ",
     stationKind: "clipboard",

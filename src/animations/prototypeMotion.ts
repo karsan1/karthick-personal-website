@@ -224,7 +224,7 @@ const MATCH_STATES: readonly (MatchState & { start: number })[] = [
   { start: 0.5, chapter: "research", scoreboard: "30 · 15", playerState: "ready", ballState: "settled" },
   { start: 0.64, chapter: "projects", scoreboard: "30 · 30", playerState: "between-points", ballState: "settled" },
   { start: 0.82, chapter: "capabilities", scoreboard: "40 · 30", playerState: "ready", ballState: "final-exchange" },
-  { start: 0.91, chapter: "contact", scoreboard: "GAME · 30", playerState: "match-point", ballState: "final-exchange" },
+  { start: 0.91, chapter: "contact", scoreboard: "MATCH · 2–0", playerState: "match-point", ballState: "final-exchange" },
 ] as const;
 
 // ScrollTrigger can settle a few floating-point units either side of a shared

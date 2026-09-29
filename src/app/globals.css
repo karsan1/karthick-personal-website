@@ -868,7 +868,7 @@ body[data-project-dialog-open="true"] { overflow: hidden; }
   }
 
   .hero-content {
-    width: min(40vw, 10rem);
+    width: min(100%, 30rem);
     max-height: none;
   }
 

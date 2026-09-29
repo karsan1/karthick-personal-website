@@ -4,7 +4,7 @@ import { portfolio } from "@/data/portfolio";
 
 export default function Home() {
   return (
-    <main>
+    <main id="main-content" aria-label="Karthick Sankar portfolio">
       <ExperienceShell />
       <PortfolioLayer portfolio={portfolio} />
     </main>

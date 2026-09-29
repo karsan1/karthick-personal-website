@@ -21,6 +21,13 @@ texture-cache memory, and GPU costs have not been measured.
 
 The Phase 21 findings below remain the baseline before this addition.
 
+The current tennis scoreboard replaces 14 chapter-digit segments with one
+instanced pixel-lettering group whose capacity is recorded by
+`SCOREBOARD_PIXEL_CAPACITY`. It retains the active venue's 33 structural draw
+submissions and adds one owned, disposed text material. The current source
+accounting is 16 material instances and 16 instanced groups; the Phase 21
+figures below are historical baseline measurements.
+
 ## Finding: active venue source accounting is controlled, but it is not a whole-frame measurement
 
 **Evidence:** `RetroEnvironment` exports `RETRO_ENVIRONMENT_METRICS` with 33 structural draw submissions against a 34-call ceiling, 11 shared `MeshStandardMaterial` instances, 13 instanced groups, and 161 high-detail instances. The Phase 21 source accounts for 81 instances at low detail (court/venue instancing only), 145 at medium (32 seats + 32 crowd), and 161 at high (32 seats + 48 crowd). The draw-submission count is 31/33/33 for low/medium/high: low omits seats and crowd; medium/high retain the same submissions but vary crowd instance count. Court, seven station silhouettes, and stadium structural blocks remain in every tier.

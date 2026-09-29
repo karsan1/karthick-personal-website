@@ -1,14 +1,13 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
-import { useFrame } from "@react-three/fiber";
 import type { InstancedMesh } from "three";
 import { Color, Matrix4, MeshStandardMaterial } from "three";
-import { COURT_DIMENSIONS, NARRATIVE_CHAPTERS, sampleScoreboardEmphasis, type NarrativeChapter, type NarrativeProgress } from "@/animations/prototypeMotion";
-import { useExperienceStore } from "@/store/experienceStore";
+import { COURT_DIMENSIONS, type NarrativeProgress } from "@/animations/prototypeMotion";
 import type { QualityTier } from "@/store/experienceStore";
 import { SCENE_QUALITY } from "./sceneQuality";
 import { WorldHotspot } from "./interactions/WorldHotspot";
 import { WORLD_HOTSPOTS } from "./interactions/worldHotspots";
 import { VenueCastAudience, VenueCastUmpire } from "./VenueCast";
+import { RetroScoreboard, SCOREBOARD_PIXEL_CAPACITY } from "./RetroScoreboard";
 
 /** Phase 16 keeps the Phase 04 court/rally coordinate contract; venue props stay outside its clearance. */
 const LAWN_WIDTH = 11.6;
@@ -43,11 +42,8 @@ const STAND_BLOCKS: readonly InstanceTransform[] = [[0, 1.15, 8.05, 13.6, 2.3, 1
 const SIGN_BLOCKS: readonly InstanceTransform[] = [[-3.2, 1.2, 6.7, 2.15, 0.42, 0.08], [3.2, 1.2, 6.7, 2.15, 0.42, 0.08], [-5.35, 1.28, 3.85, 0.08, 0.42, 1.8], [5.35, 1.28, -3.85, 0.08, 0.42, 1.8]];
 const CROWD_COLORS = ["#e8e0c9", "#293d5c", "#703842", "#3f7670", "#d7bd65", "#5e3f77"] as const;
 const crowdColor = new Color();
-const SCOREBOARD_SEGMENT_COUNT = 14;
-const DIGIT_SEGMENTS: readonly (readonly number[])[] = [[0, 1, 2, 4, 5, 6], [2, 5], [0, 2, 3, 4, 6], [0, 2, 3, 5, 6], [1, 2, 3, 5], [0, 1, 3, 5, 6], [0, 1, 3, 4, 5, 6], [0, 2, 5]] as const;
-
 /** Static active-venue structural accounting, excluding loaded player GLBs and rally actors. */
-export const RETRO_ENVIRONMENT_METRICS = { drawCalls: 33, drawCallCeiling: 34, materialInstances: 15, instancedGroups: 16, instances: 12 + 6 + 22 + 2 + 11 + 3 + 4 + 3 + 4 + SCOREBOARD_SEGMENT_COUNT + 32 + 48 + 12 } as const;
+export const RETRO_ENVIRONMENT_METRICS = { drawCalls: 33, drawCallCeiling: 34, materialInstances: 16, instancedGroups: 16, instances: 12 + 6 + 22 + 2 + 11 + 3 + 4 + 3 + 4 + SCOREBOARD_PIXEL_CAPACITY + 32 + 48 + 12 } as const;
 
 function applyInstances(mesh: InstancedMesh, transforms: readonly InstanceTransform[]) {
   const matrix = new Matrix4();
@@ -77,18 +73,6 @@ function RetroCourt({ palette }: { palette: RetroPalette }) {
     <StaticBlocks transforms={GRASS_LIGHT_BANDS} material={palette.grassLight} /><StaticBlocks transforms={GRASS_DARK_BANDS} material={palette.grassDark} /><StaticBlocks transforms={WORN_GRASS} material={palette.worn} />
     <StaticBlocks transforms={COURT_LINES} material={palette.light} /><RetroNet palette={palette} />
   </group>;
-}
-
-function RetroScoreboard({ palette, progress, reducedMotion }: { palette: RetroPalette; progress: MutableRefObject<NarrativeProgress>; reducedMotion: boolean }) {
-  const digits = useRef<InstancedMesh>(null); const accent = useRef<MeshStandardMaterial>(palette.accent); const activeChapter = useExperienceStore((state) => state.activeChapter);
-  useFrame(() => { accent.current.emissiveIntensity = sampleScoreboardEmphasis(progress.current.value, reducedMotion); });
-  useLayoutEffect(() => {
-    const mesh = digits.current; if (!mesh) return; const matrix = new Matrix4(); const chapterNumber = Math.max(1, NARRATIVE_CHAPTERS.indexOf(activeChapter as NarrativeChapter) + 1); let instance = 0;
-    [0, chapterNumber].forEach((value, digitIndex) => { const enabled = new Set(DIGIT_SEGMENTS[value] ?? DIGIT_SEGMENTS[0]); const centerX = digitIndex === 0 ? -0.62 : 0.62;
-      for (let segment = 0; segment < 7; segment += 1) { const horizontal = segment === 0 || segment === 3 || segment === 6; const localX = horizontal ? 0 : segment === 1 || segment === 4 ? -0.22 : 0.22; const localY = segment === 0 ? 0.42 : segment === 3 ? 0 : segment === 6 ? -0.42 : segment < 3 ? 0.22 : -0.22; const visible = enabled.has(segment); matrix.makeScale(visible ? (horizontal ? 0.36 : 0.08) : 0, visible ? (horizontal ? 0.08 : 0.36) : 0, 0.06); matrix.setPosition(centerX + localX, 3.6 + localY, 7.5); mesh.setMatrixAt(instance, matrix); instance += 1; }
-    }); mesh.instanceMatrix.needsUpdate = true;
-  }, [activeChapter]);
-  return <group><mesh position={[0, 3.6, 7.7]}><boxGeometry args={[4.5, 2.05, 0.34]} /><primitive object={palette.dark} attach="material" dispose={null} /></mesh><mesh position={[0, 3.6, 7.52]}><boxGeometry args={[3.9, 1.42, 0.08]} /><primitive object={palette.mid} attach="material" dispose={null} /></mesh><mesh position={[0, 4.72, 7.51]}><boxGeometry args={[2.45, 0.11, 0.09]} /><primitive object={palette.purple} attach="material" dispose={null} /></mesh><instancedMesh ref={digits} args={[undefined, undefined, SCOREBOARD_SEGMENT_COUNT]}><boxGeometry args={[1, 1, 1]} /><primitive object={palette.accent} attach="material" dispose={null} /></instancedMesh></group>;
 }
 
 function VenueStations({ palette, progress, reducedMotion, castReady }: { palette: RetroPalette; progress: MutableRefObject<NarrativeProgress>; reducedMotion: boolean; castReady: boolean }) {
